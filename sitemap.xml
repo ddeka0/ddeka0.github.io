@@ -13,7 +13,22 @@
   </url>
   
   <url>
+    <loc>https://ddeka0.github.io/tags/</loc>
+    <lastmod>2019-11-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ddeka0.github.io/tags/ubuntu/</loc>
+    <lastmod>2019-11-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://ddeka0.github.io/post/2015-02-26-ubuntu-customization/</loc>
+    <lastmod>2019-11-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://ddeka0.github.io/tags/zsh/</loc>
     <lastmod>2019-11-30T00:00:00+00:00</lastmod>
   </url>
   
@@ -27,10 +42,6 @@
   
   <url>
     <loc>https://ddeka0.github.io/page/</loc>
-  </url>
-  
-  <url>
-    <loc>https://ddeka0.github.io/tags/</loc>
   </url>
   
 </urlset>
