@@ -7,17 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>youremail@domain.com (Debashish Deka)</managingEditor>
     <webMaster>youremail@domain.com (Debashish Deka)</webMaster>
-    <lastBuildDate>Sat, 30 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 01 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://ddeka0.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>C&#43;&#43; nullptr</title>
+      <link>https://ddeka0.github.io/post/2016-03-08-code-sample/</link>
+      <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
+      <author>youremail@domain.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/post/2016-03-08-code-sample/</guid>
+      <description>First we will discu
+#include &amp;lt;bits/stdc++.h&amp;gt; using namespace std; template&amp;lt;typename FuncType, typename MuxType, typename PtrType&amp;gt; decltype(auto) lockAndCall(FuncType func, MuxType &amp;amp; mtx, PtrType ptr) { std::lock_guard&amp;lt;std::mutex&amp;gt; g(mtx); return func(ptr); } std::shared_ptr&amp;lt;int&amp;gt; f1(void *) { return std::make_shared&amp;lt;int&amp;gt;(); } int main() { std::mutex f1_mtx; if(nullptr != lockAndCall(f1,f1_mtx,nullptr)) { cout &amp;lt;&amp;lt;&amp;#34;done&amp;#34;&amp;lt;&amp;lt;endl; } return 0; } </description>
+    </item>
+    
+    <item>
       <title>Ubuntu Customization</title>
-      <link>https://ddeka0.github.io/post/2015-02-26-ubuntu-customization/</link>
+      <link>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</link>
       <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate>
       <author>youremail@domain.com (Debashish Deka)</author>
-      <guid>https://ddeka0.github.io/post/2015-02-26-ubuntu-customization/</guid>
+      <guid>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</guid>
       <description>How about customizing your new ubuntu installation? Default installation of Ubuntu 18.04 does not come with few things like, a good terminal theme, vim 8, touch-pad gestures for laptop, power management etc. This blog will explore some of the cool tools that we can use to make ubuntu a more convenient for developers.
 First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh makes your terminal work really simplified.</description>
     </item>

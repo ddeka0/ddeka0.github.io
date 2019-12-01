@@ -202,7 +202,85 @@
           
           
             <article class="post-preview">
-    <a href="https://ddeka0.github.io/post/2015-02-26-ubuntu-customization/">
+    <a href="https://ddeka0.github.io/post/2016-03-08-code-sample/">
+        <h2 class="post-title">C&#43;&#43; nullptr</h2>
+        
+        <h3 class="post-subtitle">
+            why nullptr is better choice than NULL and 0
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on December 1, 2019
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;51&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Debashish Deka
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p>First we will discu</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">    <span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;bits/stdc++.h&gt;</span><span class="cp">
+</span><span class="cp"></span>    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">FuncType</span><span class="p">,</span>
+            <span class="k">typename</span> <span class="n">MuxType</span><span class="p">,</span>
+            <span class="k">typename</span> <span class="n">PtrType</span><span class="o">&gt;</span>
+    <span class="k">decltype</span><span class="p">(</span><span class="k">auto</span><span class="p">)</span> <span class="n">lockAndCall</span><span class="p">(</span><span class="n">FuncType</span> <span class="n">func</span><span class="p">,</span> 
+                                <span class="n">MuxType</span> <span class="o">&amp;</span> <span class="n">mtx</span><span class="p">,</span> 
+                                <span class="n">PtrType</span> <span class="n">ptr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">g</span><span class="p">(</span><span class="n">mtx</span><span class="p">)</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nf">func</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">f1</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">mutex</span> <span class="n">f1_mtx</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="k">nullptr</span> <span class="o">!</span><span class="o">=</span> <span class="n">lockAndCall</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span><span class="n">f1_mtx</span><span class="p">,</span><span class="k">nullptr</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;</span><span class="o">&lt;</span><span class="sa"></span><span class="s">&#34;</span><span class="s">done</span><span class="s">&#34;</span><span class="o">&lt;</span><span class="o">&lt;</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://ddeka0.github.io//tags/cpp/">cpp</a>&nbsp;
+        
+        <a href="https://ddeka0.github.io//tags/cpp11/">cpp11</a>&nbsp;
+        
+        <a href="https://ddeka0.github.io//tags/cpp14/">cpp14</a>&nbsp;
+        
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/">
         <h2 class="post-title">Ubuntu Customization</h2>
         
         <h3 class="post-subtitle">
@@ -239,7 +317,7 @@
         
         How about customizing your new ubuntu installation? Default installation of Ubuntu 18.04 does not come with few things like, a good terminal theme, vim 8, touch-pad gestures for laptop, power management etc. This blog will explore some of the cool tools that we can use to make ubuntu a more convenient for developers.
 First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh makes your terminal work really simplified.
-        <a href="https://ddeka0.github.io/post/2015-02-26-ubuntu-customization/" class="post-read-more">[Read More]</a>
+        <a href="https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/" class="post-read-more">[Read More]</a>
         
     </div>
 

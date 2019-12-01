@@ -14,10 +14,10 @@
     
     <item>
       <title>Ubuntu Customization</title>
-      <link>https://ddeka0.github.io/post/2015-02-26-ubuntu-customization/</link>
+      <link>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</link>
       <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate>
       <author>youremail@domain.com (Debashish Deka)</author>
-      <guid>https://ddeka0.github.io/post/2015-02-26-ubuntu-customization/</guid>
+      <guid>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</guid>
       <description>How about customizing your new ubuntu installation? Default installation of Ubuntu 18.04 does not come with few things like, a good terminal theme, vim 8, touch-pad gestures for laptop, power management etc. This blog will explore some of the cool tools that we can use to make ubuntu a more convenient for developers.
 First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh makes your terminal work really simplified.</description>
     </item>
