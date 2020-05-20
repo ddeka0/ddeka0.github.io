@@ -5,8 +5,8 @@
     <link>https://ddeka0.github.io/tags/cpp14/</link>
     <description>Recent content in cpp14 on Ethereal</description>
     <generator>Hugo -- gohugo.io</generator>
-    <managingEditor>youremail@domain.com (Debashish Deka)</managingEditor>
-    <webMaster>youremail@domain.com (Debashish Deka)</webMaster>
+    <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
+    <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
     <lastBuildDate>Sun, 01 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://ddeka0.github.io/tags/cpp14/index.xml" rel="self" type="application/rss+xml" />
@@ -16,7 +16,7 @@
       <title>C&#43;&#43; nullptr</title>
       <link>https://ddeka0.github.io/post/2016-03-08-code-sample/</link>
       <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
-      <author>youremail@domain.com (Debashish Deka)</author>
+      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2016-03-08-code-sample/</guid>
       <description>First we will discu
 #include &amp;lt;bits/stdc++.h&amp;gt; using namespace std; template&amp;lt;typename FuncType, typename MuxType, typename PtrType&amp;gt; decltype(auto) lockAndCall(FuncType func, MuxType &amp;amp; mtx, PtrType ptr) { std::lock_guard&amp;lt;std::mutex&amp;gt; g(mtx); return func(ptr); } std::shared_ptr&amp;lt;int&amp;gt; f1(void *) { return std::make_shared&amp;lt;int&amp;gt;(); } int main() { std::mutex f1_mtx; if(nullptr != lockAndCall(f1,f1_mtx,nullptr)) { cout &amp;lt;&amp;lt;&amp;#34;done&amp;#34;&amp;lt;&amp;lt;endl; } return 0; } </description>

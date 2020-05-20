@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Ethereal</title>
-    <link>https://ddeka0.github.io/post/</link>
-    <description>Recent content in Posts on Ethereal</description>
+    <title>3gpp on Ethereal</title>
+    <link>https://ddeka0.github.io/tags/3gpp/</link>
+    <description>Recent content in 3gpp on Ethereal</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
     <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://ddeka0.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://ddeka0.github.io/tags/3gpp/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,16 +19,6 @@
       <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/</guid>
       <description>Let us assume you are in conversation with someone on your phone while traveling on a train. Currently, your phone is connected to a nearby cellular tower that provides a wireless connection to your phone and transfers voice signals to the other end of the phone call. When you move far away from your current connected cellular tower, do you think the phone will still be connected to the current cellular tower?</description>
-    </item>
-    
-    <item>
-      <title>Ubuntu Customization</title>
-      <link>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</link>
-      <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
-      <guid>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</guid>
-      <description>How about customizing your new ubuntu installation? Default installation of Ubuntu 18.04 does not come with few things like, a good terminal theme, vim 8, touch-pad gestures for laptop, power management etc. This blog will explore some of the cool tools that we can use to make ubuntu a more convenient for developers.
-First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh makes your terminal work really simplified.</description>
     </item>
     
   </channel>

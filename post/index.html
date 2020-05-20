@@ -38,10 +38,8 @@
   <meta name="twitter:title" content="Posts" />
   <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:site" content="@username" />
-  <meta name="twitter:creator" content="@username" />
   <link href='https://ddeka0.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.60.0" />
+  <meta name="generator" content="Hugo 0.70.0" />
   <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -185,7 +183,7 @@
                 <span class="post-meta">
   
   
-  <i class="fas fa-calendar"></i>&nbsp;Posted on December 1, 2019
+  <i class="fas fa-calendar"></i>&nbsp;Posted on May 20, 2020
   
   
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;0&nbsp;minutes
@@ -219,11 +217,11 @@
         <div class="posts-list">
           
             <article class="post-preview">
-    <a href="https://ddeka0.github.io/post/2016-03-08-code-sample/">
-        <h2 class="post-title">C&#43;&#43; nullptr</h2>
+    <a href="https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/">
+        <h2 class="post-title">Cellular Network</h2>
         
         <h3 class="post-subtitle">
-            why nullptr is better choice than NULL and 0
+            Basics of Telephone network and Moblity Management Protocol.
         </h3>
         
         
@@ -234,13 +232,13 @@
         <span class="post-meta">
   
   
-  <i class="fas fa-calendar"></i>&nbsp;Posted on December 1, 2019
+  <i class="fas fa-calendar"></i>&nbsp;Posted on May 20, 2020
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;minutes
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;51&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;517&nbsp;words
   
   
     
@@ -254,42 +252,17 @@
     </p>
     <div class="post-entry">
         
-        <p>First we will discu</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">    <span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;bits/stdc++.h&gt;</span><span class="cp">
-</span><span class="cp"></span>    <span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">FuncType</span><span class="p">,</span>
-            <span class="k">typename</span> <span class="n">MuxType</span><span class="p">,</span>
-            <span class="k">typename</span> <span class="n">PtrType</span><span class="o">&gt;</span>
-    <span class="k">decltype</span><span class="p">(</span><span class="k">auto</span><span class="p">)</span> <span class="n">lockAndCall</span><span class="p">(</span><span class="n">FuncType</span> <span class="n">func</span><span class="p">,</span> 
-                                <span class="n">MuxType</span> <span class="o">&amp;</span> <span class="n">mtx</span><span class="p">,</span> 
-                                <span class="n">PtrType</span> <span class="n">ptr</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">g</span><span class="p">(</span><span class="n">mtx</span><span class="p">)</span><span class="p">;</span>
-        <span class="k">return</span> <span class="nf">func</span><span class="p">(</span><span class="n">ptr</span><span class="p">)</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">f1</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="p">)</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">std</span><span class="o">:</span><span class="o">:</span><span class="n">mutex</span> <span class="n">f1_mtx</span><span class="p">;</span>
-        <span class="k">if</span><span class="p">(</span><span class="k">nullptr</span> <span class="o">!</span><span class="o">=</span> <span class="n">lockAndCall</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span><span class="n">f1_mtx</span><span class="p">,</span><span class="k">nullptr</span><span class="p">)</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">cout</span> <span class="o">&lt;</span><span class="o">&lt;</span><span class="sa"></span><span class="s">&#34;</span><span class="s">done</span><span class="s">&#34;</span><span class="o">&lt;</span><span class="o">&lt;</span><span class="n">endl</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-    <span class="p">}</span>
-</code></pre></div><!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-
+        Let us assume you are in conversation with someone on your phone while traveling on a train. Currently, your phone is connected to a nearby cellular tower that provides a wireless connection to your phone and transfers voice signals to the other end of the phone call. When you move far away from your current connected cellular tower, do you think the phone will still be connected to the current cellular tower?
+        <a href="https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/" class="post-read-more">[Read More]</a>
         
     </div>
 
     
     <div class="blog-tags">
         
-        <a href="https://ddeka0.github.io//tags/cpp/">cpp</a>&nbsp;
+        <a href="https://ddeka0.github.io//tags/mm/">MM</a>&nbsp;
         
-        <a href="https://ddeka0.github.io//tags/cpp11/">cpp11</a>&nbsp;
-        
-        <a href="https://ddeka0.github.io//tags/cpp14/">cpp14</a>&nbsp;
+        <a href="https://ddeka0.github.io//tags/3gpp/">3gpp</a>&nbsp;
         
     </div>
     
@@ -364,6 +337,22 @@ First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh 
         <ul class="list-inline text-center footer-links">
           
               <li>
+                <a href="mailto:debashishdekanits2015@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/username" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
                 <a href="https://github.com/ddeka0" title="GitHub">
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
@@ -387,18 +376,26 @@ First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh 
                   </span>
                 </a>
               </li>
+              <li>
+                <a href="https://www.youtube.com/channel/UCXhljYypuZkCoo__Y0fNz9w" title="Youtube">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-youtube fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
           
         </ul>
         <p class="credits copyright text-muted">
           
             
-              <a href="yourwebsite.com">Debashish Deka</a>
+              Debashish Deka
             
           
 
           &nbsp;&bull;&nbsp;&copy;
           
-            2019
+            2020
           
 
           
@@ -408,7 +405,7 @@ First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh 
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.60.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.70.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
