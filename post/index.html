@@ -183,7 +183,7 @@
                 <span class="post-meta">
   
   
-  <i class="fas fa-calendar"></i>&nbsp;Posted on May 20, 2020
+  <i class="fas fa-calendar"></i>&nbsp;Posted on August 22, 2020
   
   
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;0&nbsp;minutes
@@ -215,6 +215,62 @@
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
         <div class="posts-list">
+          
+            <article class="post-preview">
+    <a href="https://ddeka0.github.io/post/2020-07-23-cpp-chronicle-1/">
+        <h2 class="post-title">Cpp chronicle #1</h2>
+        
+        <h3 class="post-subtitle">
+            Joinable and interruptible thread in C&#43;&#43;20
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on August 22, 2020
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;10&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1969&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Debashish Deka
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        What is the problem with the std::thread ?
+The following program will cause core dump.
+/* gcc version 10.0.1 20200314 (experimental) (GCC) Ubuntu 18.04.5 LTS x86_64 GNU/Linux 5.6.2 */ #include &lt;thread&gt;#include &lt;iostream&gt; int main() { std::thread t{[]() { std::cout &lt;&lt;&#34;Hello from thread t&#34;&lt;&lt;std::endl; }}; } The reason for the core dump is std::terminate() called by the destructor of the std::thread object t.
+// from std::thread header ~thread() { if (joinable()) std::terminate(); } The default terminate handler calls abort.
+        <a href="https://ddeka0.github.io/post/2020-07-23-cpp-chronicle-1/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+        <a href="https://ddeka0.github.io//tags/c&#43;&#43;/">c&#43;&#43;</a>&nbsp;
+        
+        <a href="https://ddeka0.github.io//tags/thread/">thread</a>&nbsp;
+        
+    </div>
+    
+
+</article>
           
             <article class="post-preview">
     <a href="https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/">
