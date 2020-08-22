@@ -18,7 +18,7 @@
       <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
       <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2020-07-23-cpp-chronicle-1/</guid>
-      <description>What is the problem with the std::thread ?
+      <description>What are some of the problems with the std::thread ?
 The following program will cause core dump.
 /* gcc version 10.0.1 20200314 (experimental) (GCC) Ubuntu 18.04.5 LTS x86_64 GNU/Linux 5.6.2 */ #include &amp;lt;thread&amp;gt;#include &amp;lt;iostream&amp;gt; int main() { std::thread t{[]() { std::cout &amp;lt;&amp;lt;&amp;#34;Hello from thread t&amp;#34;&amp;lt;&amp;lt;std::endl; }}; } The reason for the core dump is std::terminate() called by the destructor of the std::thread object t.
 // from std::thread header ~thread() { if (joinable()) std::terminate(); } The default terminate handler calls abort.</description>
