@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Cpp chronicle #1 - Ethereal</title>
+  <meta name="description" content="Joinable and interruptible thread in C&#43;&#43;20">
+  <meta name="author" content="Debashish Deka"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Ethereal",
+    
+    "url": "https:\/\/ddeka0.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ddeka0.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ddeka0.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ddeka0.github.io\/post\/2020-07-23-cpp-chronicle-1\/",
+          "name": "Cpp chronicle #1"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Debashish Deka"
+  },
+  "headline": "Cpp chronicle #1",
+  "description" : "What is the problem with the std::thread ?\nThe following program will cause core dump.\n\/* gcc version 10.0.1 20200314 (experimental) (GCC) Ubuntu 18.04.5 LTS x86_64 GNU\/Linux 5.6.2 *\/ #include \u0026lt;thread\u0026gt;#include \u0026lt;iostream\u0026gt; int main() { std::thread t{[]() { std::cout \u0026lt;\u0026lt;\u0026#34;Hello from thread t\u0026#34;\u0026lt;\u0026lt;std::endl; }}; } The reason for the core dump is std::terminate() called by the destructor of the std::thread object t.\n\/\/ from std::thread header ~thread() { if (joinable()) std::terminate(); } The default terminate handler calls abort.",
+  "inLanguage" : "en",
+  "wordCount":  1969 ,
+  "datePublished" : "2020-08-23T03:25:32",
+  "dateModified" : "2020-08-23T03:25:32",
+  "image" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "c\u002b\u002b, thread" ],
+  "mainEntityOfPage" : "https:\/\/ddeka0.github.io\/post\/2020-07-23-cpp-chronicle-1\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ddeka0.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Cpp chronicle #1" />
+<meta property="og:description" content="Joinable and interruptible thread in C&#43;&#43;20">
+<meta property="og:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ddeka0.github.io/post/2020-07-23-cpp-chronicle-1/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Ethereal" />
+
+  <meta name="twitter:title" content="Cpp chronicle #1" />
+  <meta name="twitter:description" content="Joinable and interruptible thread in C&#43;&#43;20">
+  <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary" />
+  <link href='https://ddeka0.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.74.3" />
+  <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ddeka0.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ddeka0.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ddeka0.github.io/">Ethereal</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Ethereal" href="https://ddeka0.github.io/">
+            <img class="avatar-img" src="https://ddeka0.github.io/img/avatar-icon.png" alt="Ethereal" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Cpp chronicle #1</h1>
+              
+              
+              
+                
+                  <h2 class="post-subheading">Joinable and interruptible thread in C&#43;&#43;20</h2>
+                
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on August 23, 2020
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;10&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1969&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Debashish Deka
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>What is the problem with the <code>std::thread</code> ?</p>
+<p>The following program will cause <code>core dump</code>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/* 
+</span><span class="cm">gcc version 10.0.1 20200314 (experimental) (GCC)
+</span><span class="cm">Ubuntu 18.04.5 LTS
+</span><span class="cm">x86_64 GNU/Linux 5.6.2
+</span><span class="cm">*/</span>
+<span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">{[]()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Hello from thread t&#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}};</span>
+<span class="p">}</span>
+</code></pre></div><p><img src="/img/core_dump.png#floatleft" alt="core_dump"></p>
+<p>The reason for the core dump is <code>std::terminate()</code> called by the destructor of the <code>std::thread</code> object <code>t</code>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// from std::thread header
+</span><span class="c1"></span><span class="o">~</span><span class="kr">thread</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">joinable</span><span class="p">())</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">terminate</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p>The default terminate handler calls <code>abort</code>. More on this <a href="https://en.cppreference.com/w/cpp/error/terminate">link</a>.</p>
+<p>Therefore the above code can be fixed by calling <code>join()</code> or <code>detach()</code> on the <code>std::thread</code> object <code>t</code>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">{[]()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Hello from thread t&#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}};</span>
+
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">joinable</span><span class="p">()</span><span class="o">?</span><span class="s">&#34;joinable&#34;</span><span class="o">:</span><span class="s">&#34;joined already&#34;</span><span class="p">)</span>
+        <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cm">/* output:
+</span><span class="cm">Hello from thread t
+</span><span class="cm">joined already
+</span><span class="cm">*/</span>
+</code></pre></div><p>Thats looks fine. But there is still a problem. The problem is due to possible uncaught exceptions that might occur before <code>t.join()</code>. For example,</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">{[]()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Hello from thread t&#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}};</span>
+
+    <span class="cm">/*this will throw an std::out_of_range*/</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&#34;abc&#34;</span><span class="p">).</span><span class="n">at</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span> 
+
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">joinable</span><span class="p">()</span><span class="o">?</span><span class="s">&#34;joinable&#34;</span><span class="o">:</span><span class="s">&#34;joined already&#34;</span><span class="p">)</span>
+        <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cm">/* output:
+</span><span class="cm">terminate called without an active exception
+</span><span class="cm">[1]    13976 abort (core dumped)  ./a.out
+</span><span class="cm">*/</span>
+</code></pre></div><p>In the above example, the generated exception is not caught which will cause <code>std::terminate</code>.
+We can also fix this with <code>try catch</code> block.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">{[]()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Hello from thread t&#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}};</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+
+        <span class="cm">/* do other things and it might cause exception */</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&#34;abc&#34;</span><span class="p">).</span><span class="n">at</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    
+    <span class="p">}</span><span class="k">catch</span><span class="p">(...)</span> <span class="p">{</span> <span class="cm">/*std::out_of_range is not a std::exception */</span>
+        <span class="k">auto</span> <span class="n">ePtr</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">current_exception</span><span class="p">();</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ePtr</span><span class="p">)</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">rethrow_exception</span><span class="p">(</span><span class="n">ePtr</span><span class="p">);</span>
+
+        <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">exception</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>
+                <span class="o">&lt;&lt;</span> <span class="s">&#34;Caught exception </span><span class="se">\&#34;</span><span class="s">&#34;</span><span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;</span><span class="se">\&#34;\n</span><span class="s">&#34;</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">joinable</span><span class="p">()</span><span class="o">?</span><span class="s">&#34;joinable&#34;</span><span class="o">:</span><span class="s">&#34;joined already&#34;</span><span class="p">)</span>
+        <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/*
+</span><span class="cm">Hello from thread t
+</span><span class="cm">
+</span><span class="cm">Caught exception &#34;basic_string::at: __n (which is 5) &gt;= this-&gt;size() (which is 3)&#34;
+</span><span class="cm">joined already
+</span><span class="cm">*/</span>
+</code></pre></div><p>Therefore, we must need to take care of a proper <code>join()</code> in the case of <code>std::thread</code>.</p>
+<hr>
+<p>There is also a basic requirement missing from <code>std::thread</code> class, which is interruption capability.
+The <code>std::thread</code> does not provide a direct method of stopping or interrupting a running thread. A programmer has to create his/her own signaling mechanism (for example using <code>std::future/std::promise</code>) to achieve thread interruption.</p>
+<h4 id="stdjthread">std::jthread</h4>
+<p>The <code>std::jthread</code> (C++20) solves the problem of <code>std::terminate</code> and calls <code>join()</code> on <code>~jthread()</code>. We dont need to worry about the joining of a <code>std::jthread</code>. Following is a basic example using <code>std::jthread</code>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">jthread</span> <span class="n">t</span><span class="p">{[]()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Hello from thread t&#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}};</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">t</span><span class="p">.</span><span class="n">joinable</span><span class="p">()</span><span class="o">?</span><span class="s">&#34;joinable&#34;</span><span class="o">:</span><span class="s">&#34;joined already&#34;</span><span class="p">)</span>
+        <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cm">/*
+</span><span class="cm">from std::jthread class
+</span><span class="cm">
+</span><span class="cm">~jthread()
+</span><span class="cm">{
+</span><span class="cm">    if (joinable())
+</span><span class="cm">    {
+</span><span class="cm">        request_stop(); // (?) discussed below
+</span><span class="cm">        join();
+</span><span class="cm">    }
+</span><span class="cm">}
+</span><span class="cm">
+</span><span class="cm">output:
+</span><span class="cm">Hello from thread t
+</span><span class="cm">joinable
+</span><span class="cm">
+</span><span class="cm">Or
+</span><span class="cm">
+</span><span class="cm">joinable
+</span><span class="cm">Hello from thread t
+</span><span class="cm">*/</span>
+</code></pre></div><p>As we can see, in the destructor of a <code>std::jthread</code>, it tries to <code>join()</code> if still joinable. We can also notice a call to <code>request_stop()</code>. This <code>request_stop()</code> is a new concept introduced in <code>C++20</code> for co-operative cancellation of any threads (<code>std::thread</code> or <code>std::jthread</code>). In fact this is a new co-operative cancellation mechanism and is independet feature from <code>std::thread</code>.  We will see how this feature is embedded in <code>std::jthread</code> class.</p>
+<p>Basically, in C++20, we have new header called <code>stop_token</code>. It provides three entities:</p>
+<ol>
+<li><code>stop_source</code>
+2.<code>stop_token</code></li>
+<li><code>stop_callback</code></li>
+</ol>
+<p>In brief:</p>
+<ol>
+<li><code>stop_source</code> : used to create stop request</li>
+<li><code>stop_token</code> : client side of the stop_source, which can see the stop request</li>
+<li><code>stop_callback</code>: callback registration feature, registered callbacks are invoked on stop_request</li>
+</ol>
+<p>Let us see, how to use these three in the following example.</p>
+<h6 id="example1">Example1.</h6>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stop_token&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="cm">/*we create a stop_source first
+</span><span class="cm">    * this provides the means to issue a stop request to a running entity.
+</span><span class="cm">    * this stop_cource object can create tokens.
+</span><span class="cm">    */</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stop_source</span> <span class="n">stSrc</span><span class="p">;</span>
+
+    <span class="cm">/* We take a stop_token from the created stop_source.
+</span><span class="cm">    * we can pass (by value) this token to thread or jthread
+</span><span class="cm">    */</span>
+    <span class="k">auto</span> <span class="n">token</span> <span class="o">=</span> <span class="n">stSrc</span><span class="p">.</span><span class="n">get_token</span><span class="p">();</span>
+
+    <span class="cm">/*this std::thread taking int and a stop_token*/</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">{[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">stop_token</span> <span class="n">token</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">done</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">done</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[&#34;</span><span class="o">&lt;&lt;</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="s">&#34;] Hello from inside of the std::thread &#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="cm">/* stop_token has a method called stop_requested()
+</span><span class="cm">            * it returns true when request_stop() is called on its associated
+</span><span class="cm">            * stop_cource object.
+</span><span class="cm">            * It means, whenever request_stop() is called a stop_cource object
+</span><span class="cm">            * this request becomes visible to all the tokens taken from the same 
+</span><span class="cm">            * stop_source object.
+</span><span class="cm">            */</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">token</span><span class="p">.</span><span class="n">stop_requested</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;This thread work is done!&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+        <span class="p">}</span>
+
+    <span class="p">},</span><span class="mi">10</span><span class="p">,</span><span class="n">token</span><span class="p">};</span> <span class="cm">/*pass the token to the thread function (or client)*/</span>
+
+
+    <span class="c1">// lets ask to stop the thread t
+</span><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="cm">/* as explained above, we are going to call request_stop() on the
+</span><span class="cm">    * source object. The std::thread t can detect this request and 
+</span><span class="cm">    * complete its execution.
+</span><span class="cm">    */</span>
+    <span class="n">stSrc</span><span class="p">.</span><span class="n">request_stop</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;stop requested from main&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p>This is co-operative cancellation, because <code>thread</code> <code>t</code> need not necessarily check <code>stop_requested()</code>, or even if it does take actions on <code>stop_request()</code>, the actions are completely upto thread <code>t</code>'s wish. In the above example, we are just returning from the function, we could have done something else.</p>
+<p>We can pass <code>token</code> to any number of threads/jthreads and call <code>request_stop()</code> on the source object. A <code>stop_token</code> follows <a href="https://isocpp.org/wiki/faq/value-vs-ref-semantics">value semantics</a>, it means, we can simply pass the token by value and still send <code>stop_request</code> to the copied token. The <a href="https://stackoverflow.com/questions/3106110/what-is-move-semantics">move semantics</a> are also enabled for <code>stop_token</code>, therefore if we call <a href="https://en.cppreference.com/w/cpp/utility/move"><code>std::move(token)</code></a> before passing the token to a thread, the thread will not receive any <code>stop_request</code> called on the associated <code>stop_source</code> object. For example,</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stop_source</span> <span class="n">stSrc</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">token</span> <span class="o">=</span> <span class="n">stSrc</span><span class="p">.</span><span class="n">get_token</span><span class="p">();</span>
+    <span class="k">auto</span> <span class="n">token2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">token</span><span class="p">);</span> <span class="c1">// moved
+</span><span class="c1"></span>    
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">{[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">stop_token</span> <span class="n">token</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">done</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">done</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[&#34;</span><span class="o">&lt;&lt;</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="s">&#34;] Hello from inside of the std::thread &#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">token</span><span class="p">.</span><span class="n">stop_requested</span><span class="p">())</span> <span class="p">{</span> <span class="cm">/*checking or polling*/</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;This thread work is done!&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+        <span class="p">}</span>
+
+    <span class="p">},</span><span class="mi">10</span><span class="p">,</span><span class="n">token</span><span class="p">};</span> <span class="cm">/*token is a moved object now*/</span>
+
+    <span class="c1">// lets ask to stop the thread t
+</span><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">stSrc</span><span class="p">.</span><span class="n">request_stop</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;stop requested from main&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    
+    
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span> <span class="cm">/* we are using thread for now */</span>
+<span class="p">}</span>
+</code></pre></div><p>The above program will print <code>Hello from inside of the std::thread</code> infinitely.</p>
+<p>All the copy and move operations are enabled for <code>std::stop_token</code> class.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// from stop_token header
+</span><span class="c1"></span><span class="cm">/*copy constructor*/</span>
+<span class="n">stop_token</span><span class="p">(</span><span class="k">const</span> <span class="n">stop_token</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="cm">/*move constructor*/</span>
+<span class="n">stop_token</span><span class="p">(</span><span class="n">stop_token</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="cm">/*copy assignment*/</span>
+<span class="n">stop_token</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">stop_token</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+<span class="cm">/*move assginment*/</span>
+<span class="n">stop_token</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">stop_token</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+</code></pre></div><hr>
+<p>Before going back to <code>std::jthread</code>, lets discuss about the <code>stop_callback</code> feature also.</p>
+<p>We can register <a href="https://stackoverflow.com/questions/2298242/callback-functions-in-c">callback function</a> on a <code>stop_token</code>. When <code>request_stop()</code> is called on the
+associated <code>stop_source</code> object, all the callbacks registered on associated tokens of this source will be invoked. For example,</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stop_token&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cp">#define Debug(arg) std::cout &lt;&lt;&#34;Tid[&#34; \
+</span><span class="cp">    &lt;&lt;std::this_thread::get_id()&lt;&lt;&#34;]&#34; \
+</span><span class="cp">    &lt;&lt;&#34; &#34;&lt;&lt;arg &lt;&lt;std::endl;
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stop_source</span> <span class="n">stSrc</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">token</span> <span class="o">=</span> <span class="n">stSrc</span><span class="p">.</span><span class="n">get_token</span><span class="p">();</span>
+    
+    <span class="n">std</span><span class="o">::</span><span class="n">stop_callback</span> <span class="n">cb1</span><span class="p">{</span><span class="n">token</span><span class="p">,[</span><span class="o">&amp;</span><span class="p">]()</span> <span class="p">{</span>
+        <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Callback-1&#34;</span><span class="p">);</span>
+    <span class="p">}};</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">stop_callback</span> <span class="n">cb2</span><span class="p">{</span><span class="n">token</span><span class="p">,[</span><span class="o">&amp;</span><span class="p">]()</span> <span class="p">{</span>
+        <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Callback-2&#34;</span><span class="p">);</span>
+    <span class="p">}};</span>
+
+    <span class="n">stSrc</span><span class="p">.</span><span class="n">request_stop</span><span class="p">();</span>
+
+    <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Stop requested from main&#34;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="cm">/* output:
+</span><span class="cm">Tid[140537881631744] Callback-2
+</span><span class="cm">Tid[140537881631744] Callback-1
+</span><span class="cm">Tid[140537881631744] Stop requested from main
+</span><span class="cm">*/</span>
+</code></pre></div><p>The registred callback functions can run either in the context where <code>request_stop()</code>
+is called or in the context where callback constructor is called. <a href="https://en.cppreference.com/w/cpp/thread/stop_callback">The second case happens when
+<code>request_stop()</code> is called even before the callback constructor is called.</a></p>
+<p>In the above example, we only have a single thread context, which is the main thread, therefore the output
+shows only one Thread Id value.</p>
+<p>Lets take few other examples of the use cases of <code>stop_token</code> and <code>stop_callback</code>.</p>
+<h6 id="example2">Example2:</h6>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;future&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stop_token&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;condition_variable&gt;</span><span class="cp">
+</span><span class="cp">#define Debug(arg) std::cout &lt;&lt;&#34;Tid[&#34; \
+</span><span class="cp">    &lt;&lt;std::this_thread::get_id()&lt;&lt;&#34;]&#34; \
+</span><span class="cp">    &lt;&lt;&#34; &#34;&lt;&lt;arg &lt;&lt;std::endl;
+</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stop_source</span> <span class="n">stSrc</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">token</span> <span class="o">=</span> <span class="n">stSrc</span><span class="p">.</span><span class="n">get_token</span><span class="p">();</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">{[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">stop_token</span> <span class="n">token</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">;</span>        
+        <span class="k">auto</span> <span class="n">fu</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">get_future</span><span class="p">();</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">stop_callback</span> <span class="n">cb</span><span class="p">{</span><span class="n">token</span><span class="p">,[</span><span class="o">&amp;</span><span class="p">]()</span> <span class="p">{</span>
+            <span class="c1">// runs in the main thread context
+</span><span class="c1"></span>            <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Promise Value Set&#34;</span><span class="p">);</span>
+            <span class="n">p</span><span class="p">.</span><span class="n">set_value</span><span class="p">();</span>
+        <span class="p">}};</span>
+        
+        <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Sleeping...&#34;</span><span class="p">);</span>
+        <span class="cm">/*this thread will wait on the future received from the promise
+</span><span class="cm">        * main function will call request_stop after 2 sec
+</span><span class="cm">        * therefore callback function will also run after 2 sec
+</span><span class="cm">        * promise will set the value
+</span><span class="cm">        * the wait on the future will end and this thread will wake up after 2 sec
+</span><span class="cm">        */</span>
+        <span class="n">fu</span><span class="p">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+        <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Woke up...&#34;</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">token</span><span class="p">.</span><span class="n">stop_requested</span><span class="p">())</span> <span class="p">{</span>
+            <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Returning...&#34;</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+    <span class="p">},</span><span class="mi">10</span><span class="p">,</span><span class="n">token</span><span class="p">};</span>
+
+    <span class="c1">// lets ask to stop the thread t
+</span><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">stSrc</span><span class="p">.</span><span class="n">request_stop</span><span class="p">();</span>
+
+    <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Stop requested from main&#34;</span><span class="p">);</span>
+    
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p>In the above example, the thead is stopped in a event driven manner, instead of a polling mechanism shown in Example1.</p>
+<p>More examples:
+The following example shows how we can pass the token around and stop multiple threads.</p>
+<h6 id="example3">Example3:</h6>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stop_token&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;future&gt;</span><span class="cp">
+</span><span class="cp">#define Debug(arg) std::cout &lt;&lt;&#34;Tid[&#34; \
+</span><span class="cp">    &lt;&lt;std::this_thread::get_id()&lt;&lt;&#34;]&#34; \
+</span><span class="cp">    &lt;&lt;&#34; &#34;&lt;&lt;arg &lt;&lt;std::endl;
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stop_source</span> <span class="n">stSrc</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">token</span> <span class="o">=</span> <span class="n">stSrc</span><span class="p">.</span><span class="n">get_token</span><span class="p">();</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">{[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">stop_token</span> <span class="n">token</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">;</span>        
+        <span class="k">auto</span> <span class="n">fu</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">get_future</span><span class="p">();</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">stop_callback</span> <span class="n">cb</span><span class="p">{</span><span class="n">token</span><span class="p">,[</span><span class="o">&amp;</span><span class="p">]()</span> <span class="p">{</span>
+            <span class="c1">// either runs in the main&#39;s context or this thread context
+</span><span class="c1"></span>            <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Promise Value Set&#34;</span><span class="p">);</span>
+            <span class="n">p</span><span class="p">.</span><span class="n">set_value</span><span class="p">();</span>
+        <span class="p">}};</span>
+        
+        <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Sleeping...&#34;</span><span class="p">);</span>
+
+        <span class="n">fu</span><span class="p">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">token</span><span class="p">.</span><span class="n">stop_requested</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+    <span class="p">},</span><span class="mi">10</span><span class="p">,</span><span class="n">token</span><span class="p">};</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t1</span><span class="p">{[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">stop_token</span> <span class="n">token</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">;</span>        
+        <span class="k">auto</span> <span class="n">fu</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">get_future</span><span class="p">();</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">stop_callback</span> <span class="n">cb</span><span class="p">{</span><span class="n">token</span><span class="p">,[</span><span class="o">&amp;</span><span class="p">]()</span> <span class="p">{</span>
+            <span class="c1">// either runs in the main&#39;s context or this thread context
+</span><span class="c1"></span>            <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Promise Value Set&#34;</span><span class="p">);</span>
+            <span class="n">p</span><span class="p">.</span><span class="n">set_value</span><span class="p">();</span>
+        <span class="p">}};</span>
+        
+        <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Sleeping...&#34;</span><span class="p">);</span>
+
+        <span class="n">fu</span><span class="p">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">10</span><span class="p">));</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">token</span><span class="p">.</span><span class="n">stop_requested</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+
+    <span class="p">},</span><span class="mi">10</span><span class="p">,</span><span class="n">token</span><span class="p">};</span>
+
+    <span class="c1">// lets ask to stop the thread t
+</span><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">stSrc</span><span class="p">.</span><span class="n">request_stop</span><span class="p">();</span>
+
+    <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Stop requested from main&#34;</span><span class="p">);</span>
+    
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+    <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="cm">/*output:
+</span><span class="cm">Tid[139898110605056] Sleeping...
+</span><span class="cm">Tid[139898102212352] Sleeping...
+</span><span class="cm">Tid[139898198559872] Promise Value Set
+</span><span class="cm">Tid[139898198559872] Promise Value Set
+</span><span class="cm">Tid[139898198559872] Stop requested from main
+</span><span class="cm">*/</span>
+</code></pre></div><p>In C++20 a new set of wait apis has been added to <a href="https://en.cppreference.com/w/cpp/thread/condition_variable_any"><code>std::condition_variable_any</code></a> class which can respond to <code>stop_tokens</code>. In the following example, <code>wait_for()</code> api is used on <code>std::condition_variable_any</code>. This program has the similar effect as that of the previous programs.</p>
+<h6 id="example4">Example4.</h6>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stop_token&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;condition_variable&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cp">#define Debug(arg) std::cout &lt;&lt;&#34;Tid[&#34; \
+</span><span class="cp">    &lt;&lt;std::this_thread::get_id()&lt;&lt;&#34;]&#34; \
+</span><span class="cp">    &lt;&lt;&#34; &#34;&lt;&lt;arg &lt;&lt;std::endl;
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stop_source</span> <span class="n">stSrc</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">token</span> <span class="o">=</span> <span class="n">stSrc</span><span class="p">.</span><span class="n">get_token</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="kr">thread</span> <span class="n">t</span><span class="p">{[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">stop_token</span> <span class="n">token</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">m</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">condition_variable_any</span> <span class="n">cv</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">unique_lock</span> <span class="n">lock</span><span class="p">{</span><span class="n">m</span><span class="p">};</span>
+        <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Sleeping...&#34;</span><span class="p">);</span>
+        
+        <span class="cm">/*a new wait_for() api which can respond to stop_token
+</span><span class="cm">        * Therefore, this thread will sleep for either
+</span><span class="cm">        * 10 seconds or untill stop_request been received. 
+</span><span class="cm">        */</span>
+        <span class="n">cv</span><span class="p">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">lock</span><span class="p">,</span><span class="n">token</span><span class="p">,</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">10</span><span class="p">),[]{</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">});</span>
+        
+        <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Returning ...&#34;</span><span class="p">);</span>
+
+    <span class="p">},</span><span class="mi">10</span><span class="p">,</span><span class="n">token</span><span class="p">};</span>
+    
+    
+    <span class="c1">// lets ask to stop the thread t
+</span><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">stSrc</span><span class="p">.</span><span class="n">request_stop</span><span class="p">();</span>
+
+    <span class="n">Debug</span><span class="p">(</span><span class="s">&#34;Stop requested from main&#34;</span><span class="p">);</span>    
+    <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><hr>
+<p>Lets talk about the <code>std::jthread</code> again. As we can see, in all of the above examples on <code>stop_token</code>, only <code>std::thread</code> has been used. Therefore we have to explicitely create a <code>stop_source</code> and extract tokens out of it and pass them to thread functions.</p>
+<p>In the case of <code>std::jthread</code>, we dont need (necessarily) to create explicit <code>stop_source</code>. the <code>std::jthread</code> class has a member <code>stop_source</code> object.
+The <code>std::jthread</code> class also has the <code>request_stop()</code> api.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stop_token&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="cm">/*An co-operative interruptible thread*/</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">jthread</span> <span class="n">t</span><span class="p">{[](</span><span class="n">std</span><span class="o">::</span><span class="n">stop_token</span> <span class="n">token</span><span class="p">,</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">done</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">done</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[&#34;</span><span class="o">&lt;&lt;</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="s">&#34;] Hello from inside of the std::thread &#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            
+            <span class="k">if</span><span class="p">(</span><span class="n">token</span><span class="p">.</span><span class="n">stop_requested</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;This thread work is done!&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+        <span class="p">}</span>
+
+    <span class="p">},</span><span class="mi">10</span><span class="p">};</span>
+ 
+   <span class="cm">/* we dont need to pass the token, jthread constructor
+</span><span class="cm">    * will take care of it.
+</span><span class="cm">    * We can omit the token params also, if we dont want the thread function
+</span><span class="cm">    * to be interruptible
+</span><span class="cm">    */</span>
+    
+    <span class="cm">/*In the following thread function, token argument is skipped 
+</span><span class="cm">    * Reason being, t2 need not be interrupted from the application point of view
+</span><span class="cm">    */</span>
+    
+    <span class="n">std</span><span class="o">::</span><span class="n">jthread</span> <span class="n">t2</span><span class="p">{[](</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">bool</span> <span class="n">done</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">done</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[&#34;</span><span class="o">&lt;&lt;</span><span class="n">x</span><span class="o">&lt;&lt;</span><span class="s">&#34;] Hello from inside of the std::thread2 &#34;</span><span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">seconds</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
+        <span class="p">}</span>
+
+    <span class="p">},</span><span class="mi">10</span><span class="p">};</span>
+
+    <span class="n">t</span><span class="p">.</span><span class="n">request_stop</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="cm">/*output:
+</span><span class="cm">[10] Hello from inside of the std::thread 
+</span><span class="cm">[10] Hello from inside of the std::thread2 
+</span><span class="cm">[10] Hello from inside of the std::thread 
+</span><span class="cm">This thread work is done!
+</span><span class="cm">[10] Hello from inside of the std::thread2 
+</span><span class="cm">[10] Hello from inside of the std::thread2 
+</span><span class="cm">[10] Hello from inside of the std::thread2 
+</span><span class="cm">[10] Hello from inside of the std::thread2
+</span><span class="cm">....
+</span><span class="cm">*/</span>
+</code></pre></div><p>In the above example, thead1 <code>t</code> will ebe stopped due to stop_token injection into the thread function whereas in the second thread <code>t2</code> does not stop.</p>
+<p>Therefore <code>std::jthread</code> class is not only capable of auto join but also co-operative interruption enabled.</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://ddeka0.github.io//tags/c&#43;&#43;/">c&#43;&#43;</a>&nbsp;
+            
+              <a href="https://ddeka0.github.io//tags/thread/">thread</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-07-23-cpp-chronicle-1%2f&amp;text=Cpp%20chronicle%20%231&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-07-23-cpp-chronicle-1%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-07-23-cpp-chronicle-1%2f&amp;title=Cpp%20chronicle%20%231" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-07-23-cpp-chronicle-1%2f&amp;title=Cpp%20chronicle%20%231" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-07-23-cpp-chronicle-1%2f&amp;title=Cpp%20chronicle%20%231" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-07-23-cpp-chronicle-1%2f&amp;description=Cpp%20chronicle%20%231" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/" data-toggle="tooltip" data-placement="top" title="Cellular Network">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:debashishdekanits2015@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/username" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/ddeka0" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/deka-debashish" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/users/4044050/debashish" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.youtube.com/channel/UCXhljYypuZkCoo__Y0fNz9w" title="Youtube">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-youtube fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Debashish Deka
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2020
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ddeka0.github.io/">Ethereal</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.74.3</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://ddeka0.github.io/js/main.js"></script>
+<script src="https://ddeka0.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ddeka0.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+
