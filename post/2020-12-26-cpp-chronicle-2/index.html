@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Cpp chronicle #2 - Ethereal</title>
+  <meta name="description" content="C&#43;&#43; template basics - 1">
+  <meta name="author" content="Debashish Deka"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Ethereal",
+    
+    "url": "https:\/\/ddeka0.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ddeka0.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ddeka0.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ddeka0.github.io\/post\/2020-12-26-cpp-chronicle-2\/",
+          "name": "Cpp chronicle #2"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Debashish Deka"
+  },
+  "headline": "Cpp chronicle #2",
+  "description" : "Template is a great C\u002b\u002b language feature, with which we can make classes and functions operate on generic types without actually writing code for all possible valid types.\nFor example std::vector container in C\u002b\u002b11 is a template class. We can use it for with different value types, with the following syntax.\nstd::vector\u0026lt;int\u0026gt; v1; std::vector\u0026lt;char\u0026gt; v2; Here, v1 can hold values of type int and v2 can hold values of type char.",
+  "inLanguage" : "en",
+  "wordCount":  1206 ,
+  "datePublished" : "2020-12-26T00:00:00",
+  "dateModified" : "2020-12-26T00:00:00",
+  "image" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "c\u002b\u002b, template" ],
+  "mainEntityOfPage" : "https:\/\/ddeka0.github.io\/post\/2020-12-26-cpp-chronicle-2\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ddeka0.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Cpp chronicle #2" />
+<meta property="og:description" content="C&#43;&#43; template basics - 1">
+<meta property="og:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ddeka0.github.io/post/2020-12-26-cpp-chronicle-2/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Ethereal" />
+
+  <meta name="twitter:title" content="Cpp chronicle #2" />
+  <meta name="twitter:description" content="C&#43;&#43; template basics - 1">
+  <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary" />
+  <link href='https://ddeka0.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.79.1" />
+  <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ddeka0.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ddeka0.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ddeka0.github.io/">Ethereal</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Ethereal" href="https://ddeka0.github.io/">
+            <img class="avatar-img" src="https://ddeka0.github.io/img/avatar-icon.png" alt="Ethereal" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Cpp chronicle #2</h1>
+              
+              
+              
+                
+                  <h2 class="post-subheading">C&#43;&#43; template basics - 1</h2>
+                
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;6&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1206&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Debashish Deka
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>Template is a great C++ language feature, with which we can make classes and functions operate on generic types without actually writing code for all possible valid types.</p>
+<p>For example <code>std::vector</code> container in <code>C++11</code> is a template class. We can use it for with different value types, with the following syntax.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v1</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">v2</span><span class="p">;</span>
+</code></pre></div><p>Here, <code>v1</code> can hold values of type <code>int</code> and v2 can hold values of type <code>char</code>.</p>
+<p>In this blog we will be discussing basic template usage in <code>C++</code>. So, let&rsquo;s get started.</p>
+<hr>
+<p>All the examples in this blog will consider <code>function templates</code>, i.e. functions with template parameters. However most of the ideas can be applied to a class template also. Let`s look at the following example.</p>
+<p>[Example 1]</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&#34;PrintHelper.hpp&#34; // is a helper utility header for printing</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="n">PrinF</span><span class="p">;</span>       <span class="c1">// prints signature of this function
+</span><span class="c1"></span>
+    <span class="c1">// do something with x
+</span><span class="c1"></span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="n">func</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>        <span class="c1">// auto deduce
+</span><span class="c1"></span>    
+    <span class="n">BreakLine</span><span class="p">;</span>      <span class="c1">// prints a newline
+</span><span class="c1"></span>    
+    <span class="n">func</span><span class="p">(</span><span class="s">&#34;string&#34;</span><span class="p">);</span> <span class="c1">// auto deduce
+</span><span class="c1"></span>
+<span class="p">}</span>
+
+</code></pre></div><p>Let`s view the output of the above program.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">int</span><span class="p">]</span>
+
+
+<span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">]</span>
+</code></pre></div><p>Not to confuse, <code>8</code> is just the line number here, printed using <code>PrintF</code> utility function.</p>
+<p>In this example, <code>func</code> is a function templated with <code>type paramter T</code>, and <code>func</code> takes an argument of type <code>T</code>.</p>
+<p>From the <code>main function</code> we can pass any kind of values to the function <code>func</code> and the type of <code>T</code> will be deduced.</p>
+<p>Lets try to print the type of <code>x</code> using our print utility functions. (ignore the type_name utility for now. It just prints the required type )</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="n">PrinF</span><span class="p">;</span>
+
+    <span class="c1">// prints the type of x
+</span><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Type(x) : &#34;</span><span class="o">&lt;&lt;</span> <span class="n">type_name</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// prints the type of T
+</span><span class="c1"></span>    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Type(T) : &#34;</span><span class="o">&lt;&lt;</span> <span class="n">type_name</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// do something with x
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>Here is the output:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">int</span><span class="p">]</span>
+<span class="n">Type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="kt">int</span>
+<span class="n">Type</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">:</span> <span class="kt">int</span>
+
+
+<span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">]</span>
+<span class="n">Type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="kt">char</span> <span class="k">const</span><span class="o">*</span>
+<span class="n">Type</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">:</span> <span class="kt">char</span> <span class="k">const</span><span class="o">*</span>
+
+
+</code></pre></div><p>It seems that type of <code>T</code> and type of <code>x</code> is same, which is very intuitive also in this particular example. But that might not be always true as we will see below.</p>
+<p>Whenever we write <code>func(some_value)</code> compiler tries to <code>find</code> Or <code>resolve</code> the type of <code>T</code> as well as type of <code>x</code>. This type <code>resolving task</code> is also called as <code>template type deduction</code>. With these rules of <code>template type deduction</code> the deduction happens in two folds.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">step</span> <span class="mf">1.</span> <span class="n">Deduction</span> <span class="n">of</span> <span class="n">T</span>
+<span class="n">step</span> <span class="mf">2.</span> <span class="n">Deduction</span> <span class="n">of</span> <span class="n">type</span> <span class="n">of</span> <span class="n">argument</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div><p>The iteresting thing is that, <code>step 1</code> depends on how we declare the function arguments.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+
+</code></pre></div><p>In our current example, we declare the arguments as <code>T x</code>. With type deduction rules, the type of <code>x</code> and <code>T</code> will be same in this case.</p>
+<p>Lets try to change the argument declaration to <code>const T&amp; x</code> (why <code>const</code> ?? it has to do with lvalue or rvalue binding. we will not discuss that now)</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&#34;PrintHelper.hpp&#34;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">PrinF</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Type(x) : &#34;</span><span class="o">&lt;&lt;</span> <span class="n">type_name</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Type(T) : &#34;</span><span class="o">&lt;&lt;</span> <span class="n">type_name</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="n">func</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>        <span class="c1">// auto deduce
+</span><span class="c1"></span>    
+    <span class="n">BreakLine</span><span class="p">;</span>
+    
+    <span class="n">func</span><span class="p">(</span><span class="s">&#34;string&#34;</span><span class="p">);</span> <span class="c1">// auto deduce
+</span><span class="c1"></span>
+<span class="p">}</span>
+
+</code></pre></div><p>Output:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">int</span><span class="p">]</span>
+<span class="n">Type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="k">const</span><span class="o">&amp;</span>
+<span class="n">Type</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">:</span> <span class="kt">int</span>
+
+
+<span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">char</span> <span class="p">[</span><span class="mi">7</span><span class="p">]]</span>
+<span class="n">Type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="kt">char</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="k">const</span><span class="o">&amp;</span>
+<span class="n">Type</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">:</span> <span class="kt">char</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+
+</code></pre></div><p>As we can see that, in the instantiation of <code>func(&quot;string&quot;)</code> : <code>T</code> becomes <code>char [7]</code> (array of 7 characters) and type of <code>x</code> becomes  <code>char [7] const&amp;</code> which is <code>reference to an array of const char of length 7</code></p>
+<p>The two fold step becomes evident with <code>rvlaue references</code> with argument declaration as <code>T&amp;&amp; x</code>. We will dicusss this in the next blog.</p>
+<p>OK. Enought of type deduction. But type deduction rules are very important. To know more about the rules of C++ template type deduction, there is a whole talk on it by Scott Meyers. Here is the <a href="https://www.youtube.com/watch?v=wQxj20X-tIU&amp;ab_channel=CppCon">link</a> from cppcon 2014.</p>
+<p>So, in a non template world, we would have written two different function to handle <code>int</code> and <code>strings</code>.
+Therefore the basic question is how a single definition of <code>func</code> handling different types ?</p>
+<p>The answer is : <code>&quot;Compiler generates required functions for us&quot;</code>. So in the above example,
+we have two instances of calling <code>func(....)</code>, one with <code>int</code> and the other one with <code>const char*</code>.
+Compiler sees this and generates two function definitions for us. We can check this in gdb.</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// compile the code
+</span><span class="c1"></span><span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">ggdb</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span> <span class="n">p01</span><span class="p">.</span><span class="n">cpp</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">address</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">leak</span>
+<span class="c1">// run gdb
+</span><span class="c1"></span><span class="n">gdb</span> <span class="p">.</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">info</span> <span class="n">functions</span> <span class="n">func</span>
+<span class="n">All</span> <span class="n">functions</span> <span class="n">matching</span> <span class="n">regular</span> <span class="n">expression</span> <span class="s">&#34;func&#34;</span><span class="o">:</span>
+
+<span class="n">File</span> <span class="n">p01</span><span class="p">.</span><span class="nl">cpp</span><span class="p">:</span>
+<span class="kt">void</span> <span class="n">func</span><span class="o">&lt;</span><span class="kt">char</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">&gt;</span><span class="p">(</span><span class="kt">char</span> <span class="k">const</span> <span class="p">(</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">[</span><span class="mi">7</span><span class="p">]);</span>
+<span class="kt">void</span> <span class="n">func</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="kt">int</span> <span class="k">const</span><span class="o">&amp;</span><span class="p">);</span>
+
+</code></pre></div><hr>
+<p>Moving on, there can be three different types of template parameters:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span> <span class="n">parameter</span><span class="o">-</span><span class="n">list</span> <span class="o">&gt;</span> 
+<span class="n">declaration</span>
+</code></pre></div><p>Each parameter in parameter-list may be:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mf">1.</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">type</span> <span class="k">template</span> <span class="n">parameter</span>
+<span class="mf">2.</span> <span class="n">a</span> <span class="n">type</span> <span class="k">template</span> <span class="n">parameter</span>
+<span class="mf">3.</span> <span class="n">a</span> <span class="k">template</span> <span class="k">template</span> <span class="n">parameter</span><span class="p">.</span>
+</code></pre></div><p>We have only discusseed <code>2. a type template parameter</code> in the above examples.</p>
+<p>Lets know about <code>1. a non-type template parameter</code></p>
+<p>A <code>non-type template parameter</code> is an expression whose value can be determined at compiler time such as constant expression and address of function etc. More on <a href="https://en.cppreference.com/w/cpp/language/template_parameters#Non-type_template_parameter">this</a>.</p>
+<p>Here is an example: [Example 2]</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&#34;PrintHelper.hpp&#34;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+
+<span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">indx</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// determine the size of the buffer using non-type template parameter
+</span><span class="c1"></span>    <span class="k">static</span> <span class="kt">char</span> <span class="n">x</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>
+    
+    <span class="c1">// just doing some opration with the array
+</span><span class="c1"></span>    <span class="k">if</span><span class="p">(</span><span class="n">indx</span> <span class="o">&lt;</span> <span class="n">N</span> <span class="o">&amp;&amp;</span> <span class="n">indx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span> <span class="o">=</span> <span class="n">indx</span><span class="o">*</span><span class="n">indx</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// print the array
+</span><span class="c1"></span>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;x[%d] = 0x%x &#34;</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="n">func</span><span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">func</span><span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">func</span><span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="n">func</span><span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+
+<span class="p">}</span>
+
+</code></pre></div><p>Before viewing the output, lets check the template intantiation syntax in the above example.</p>
+<p><code>func&lt;6&gt;(args ...)</code> this is one more way specifying the template parameter.</p>
+<p>If we consider the earlier example, we could have instantiate <code>func</code> template function as follows:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">func</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="n">func</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&#34;abc&#34;</span><span class="p">));</span>
+<span class="n">func</span><span class="o">&lt;</span><span class="n">some_type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value_of_that_type</span><span class="p">)</span>
+
+</code></pre></div><p>Back to the example 2, <code>func&lt;6&gt;(args ...)</code> is going to fix the template parameter N = 6 and the compiler is going to create a character array of size 6.</p>
+<p>Here is the output:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> 
+<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x1</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> 
+<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x1</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x4</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> 
+<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x1</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x4</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x9</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span>
+</code></pre></div><p>GDB output also using <code>info functions</code> command:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">info</span> <span class="n">functions</span> <span class="n">func</span>
+<span class="n">All</span> <span class="n">functions</span> <span class="n">matching</span> <span class="n">regular</span> <span class="n">expression</span> <span class="s">&#34;func&#34;</span><span class="o">:</span>
+
+<span class="n">File</span> <span class="n">p02</span><span class="p">.</span><span class="nl">cpp</span><span class="p">:</span>
+<span class="kt">void</span> <span class="n">func</span><span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</code></pre></div><p>Although this example of <code>non type template argument</code> does not give much usefullness, but we will see better examples in the upcoming blog.</p>
+<p>What next ?</p>
+<p>So, in the next blog, we will discuss on <code>template template parameter</code> (the 3rd type of template parameters) and <code>template specialization</code>. We will also discuss templated class or structs. Till then why not check this awesome talk on <a href="https://www.youtube.com/watch?v=QGcVXgEVMJg&amp;ab_channel=NDCConferences">Runtime Polymorphism</a> by Sean Parent.</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://ddeka0.github.io//tags/c&#43;&#43;/">c&#43;&#43;</a>&nbsp;
+            
+              <a href="https://ddeka0.github.io//tags/template/">template</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-12-26-cpp-chronicle-2%2f&amp;text=Cpp%20chronicle%20%232&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-12-26-cpp-chronicle-2%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-12-26-cpp-chronicle-2%2f&amp;title=Cpp%20chronicle%20%232" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-12-26-cpp-chronicle-2%2f&amp;title=Cpp%20chronicle%20%232" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-12-26-cpp-chronicle-2%2f&amp;title=Cpp%20chronicle%20%232" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2020-12-26-cpp-chronicle-2%2f&amp;description=Cpp%20chronicle%20%232" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/2020-07-23-cpp-chronicle-1/">Cpp chronicle #1</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ddeka0.github.io/post/2020-07-23-cpp-chronicle-1/" data-toggle="tooltip" data-placement="top" title="Cpp chronicle #1">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:debashishdekanits2015@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/username" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/ddeka0" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/deka-debashish" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/users/4044050/debashish" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.youtube.com/channel/UCXhljYypuZkCoo__Y0fNz9w" title="Youtube">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-youtube fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Debashish Deka
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2020
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ddeka0.github.io/">Ethereal</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.79.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://ddeka0.github.io/js/main.js"></script>
+<script src="https://ddeka0.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ddeka0.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

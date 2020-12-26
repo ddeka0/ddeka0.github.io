@@ -7,10 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
-    <lastBuildDate>Sat, 22 Aug 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://ddeka0.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 26 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cpp chronicle #2</title>
+      <link>https://ddeka0.github.io/post/2020-12-26-cpp-chronicle-2/</link>
+      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
+      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/post/2020-12-26-cpp-chronicle-2/</guid>
+      <description>Template is a great C++ language feature, with which we can make classes and functions operate on generic types without actually writing code for all possible valid types.
+For example std::vector container in C++11 is a template class. We can use it for with different value types, with the following syntax.
+std::vector&amp;lt;int&amp;gt; v1; std::vector&amp;lt;char&amp;gt; v2; Here, v1 can hold values of type int and v2 can hold values of type char.</description>
+    </item>
     
     <item>
       <title>Cpp chronicle #1</title>

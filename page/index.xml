@@ -6,11 +6,7 @@
     <description>Recent content in Pages on Ethereal</description>
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
-    <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
-    
-	<atom:link href="https://ddeka0.github.io/page/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster><atom:link href="https://ddeka0.github.io/page/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About me</title>
       <link>https://ddeka0.github.io/page/about/</link>
