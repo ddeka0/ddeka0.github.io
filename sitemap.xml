@@ -77,11 +77,23 @@
   </url>
   
   <url>
+    <loc>https://ddeka0.github.io/tags/assembly/</loc>
+  </url>
+  
+  <url>
     <loc>https://ddeka0.github.io/categories/</loc>
   </url>
   
   <url>
     <loc>https://ddeka0.github.io/page/</loc>
+  </url>
+  
+  <url>
+    <loc>https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/</loc>
+  </url>
+  
+  <url>
+    <loc>https://ddeka0.github.io/tags/x86_64/</loc>
   </url>
   
 </urlset>

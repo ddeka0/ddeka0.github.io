@@ -50,5 +50,14 @@ The following program will cause core dump.
 First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh makes your terminal work really simplified.</description>
     </item>
     
+    <item>
+      <title>Tour of Registers</title>
+      <link>https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/</guid>
+      <description>This is a series of blogs exploring the implementation of User Space Thread in C++. A user-space thread is managed by the userspace code with very minimal involvement of the Kernel APIs. This blog will not discuss the pros and cons of User Space Thread, nevertheless, you might want to check this. I believe that knowing the machinery of User Space Thread implementation will help us to understand the new Coroutine feature released in C++20 (Talk from cppcon 2015).</description>
+    </item>
+    
   </channel>
 </rss>
