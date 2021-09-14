@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Custom Static Reflection in C&#43;&#43; (Part-1) - Ethereal</title>
+  <meta name="description" content="Static reflection using Template Meta Programming and Macros">
+  <meta name="author" content="Debashish Deka"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Ethereal",
+    
+    "url": "https:\/\/ddeka0.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ddeka0.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ddeka0.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ddeka0.github.io\/post\/2021-08-29-static-reflection-using-templates-and-macros\/",
+          "name": "Custom static reflection in c ( part 1)"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Debashish Deka"
+  },
+  "headline": "Custom Static Reflection in C\u002b\u002b (Part-1)",
+  "description" : "In this blog we would implement a generic Print(user defined struct) utility function capable of printing all the public members of any user defined POD struct. For example:\n\/\/ We would like to Print MessageA \/\/ which has messageB as member item struct messageA { int a; messageB b; }; \/\/ messageB has messageD as member struct messageB { int p; messageD d[3]; }; \/\/ struct layout struct messageD { double t; int v; }; and we expect the output as shown below after executing the following program:",
+  "inLanguage" : "en",
+  "wordCount":  2290 ,
+  "datePublished" : "2021-08-29T00:00:00",
+  "dateModified" : "2021-08-29T00:00:00",
+  "image" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "C\u002b\u002b, Template, Macro, Meta Programming" ],
+  "mainEntityOfPage" : "https:\/\/ddeka0.github.io\/post\/2021-08-29-static-reflection-using-templates-and-macros\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ddeka0.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Custom Static Reflection in C&#43;&#43; (Part-1)" />
+<meta property="og:description" content="Static reflection using Template Meta Programming and Macros">
+<meta property="og:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Ethereal" />
+
+  <meta name="twitter:title" content="Custom Static Reflection in C&#43;&#43; (Part-1)" />
+  <meta name="twitter:description" content="Static reflection using Template Meta Programming and Macros">
+  <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary" />
+  <link href='https://ddeka0.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.88.1" />
+  <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ddeka0.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ddeka0.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ddeka0.github.io/">Ethereal</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Ethereal" href="https://ddeka0.github.io/">
+            <img class="avatar-img" src="https://ddeka0.github.io/img/avatar-icon.png" alt="Ethereal" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Custom Static Reflection in C&#43;&#43; (Part-1)</h1>
+              
+              
+              
+                
+                  <h2 class="post-subheading">Static reflection using Template Meta Programming and Macros</h2>
+                
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;11&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2290&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Debashish Deka
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>In this blog we would implement a generic <code>Print(user defined struct)</code> utility function capable of printing all the public members of any user defined <a href="https://en.cppreference.com/w/cpp/named_req/PODType">POD</a> struct. For example:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// We would like to Print MessageA
+</span><span class="c1">// which has messageB as member item
+</span><span class="c1"></span><span class="k">struct</span> <span class="nc">messageA</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+	<span class="n">messageB</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="c1">// messageB has messageD as member
+</span><span class="c1"></span><span class="k">struct</span> <span class="nc">messageB</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">p</span><span class="p">;</span>
+	<span class="n">messageD</span> <span class="n">d</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+<span class="p">};</span>
+<span class="c1">// struct layout
+</span><span class="c1"></span><span class="k">struct</span> <span class="nc">messageD</span> <span class="p">{</span>
+	<span class="kt">double</span> <span class="n">t</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div><p>and we expect the output as shown below after executing the following program:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// aggregate initialisation of struct
+</span><span class="c1"></span>	<span class="n">messageA</span> <span class="n">ma</span> <span class="o">=</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span>
+		<span class="p">{</span><span class="mi">12</span><span class="p">,</span>
+			<span class="p">{</span>
+				<span class="p">{</span><span class="mf">1.2</span><span class="p">,</span><span class="mi">12</span><span class="p">},</span>
+				<span class="p">{</span><span class="mf">1.3</span><span class="p">,</span><span class="mi">13</span><span class="p">},</span>
+				<span class="p">{</span><span class="mf">1.4</span><span class="p">,</span><span class="mi">14</span><span class="p">}</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">};</span>
+	
+	<span class="n">Print</span><span class="p">(</span><span class="n">ma</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Expected output
+</span><span class="c1"></span><span class="nl">a</span> <span class="p">:</span> <span class="mi">10</span>
+  <span class="nl">p</span> <span class="p">:</span> <span class="mi">12</span>
+  <span class="nl">d</span> <span class="p">:</span> <span class="p">[</span>
+      <span class="nl">t</span> <span class="p">:</span> <span class="mf">1.2</span>
+      <span class="nl">v</span> <span class="p">:</span> <span class="mi">12</span>
+     <span class="p">,</span>
+      <span class="nl">t</span> <span class="p">:</span> <span class="mf">1.3</span>
+      <span class="nl">v</span> <span class="p">:</span> <span class="mi">13</span>
+     <span class="p">,</span>
+      <span class="nl">t</span> <span class="p">:</span> <span class="mf">1.4</span>
+      <span class="nl">v</span> <span class="p">:</span> <span class="mi">14</span>
+  <span class="p">]</span>
+
+</code></pre></div><p><code>C++</code> does not support such utility function by default. In the remaining sections of this blog, we will explore the <code>Print</code> function.</p>
+<hr>
+<p>How do we usualy print the <a href="https://en.cppreference.com/w/cpp/language/access#Public_member_access">public members</a> of an <code>object</code> in <code>C++</code> ? We simply write code to print each members:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">member1</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">member2</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">member3</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">member4</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="n">and</span> <span class="n">so</span> <span class="n">on</span><span class="p">...</span>
+</code></pre></div><p>Therefore, these <code>cout</code> statements perform the actual printing. So, we can not get rid of them. But, we can automatically generate these <code>cout</code> statements with the help of <code>C++ templates</code>, so that we don&rsquo;t need to write <code>cout</code> statements by hand. If you are new to <code>C++ template</code> you may want to check this <a href="https://www.youtube.com/watch?v=vUI5GvWexsM&amp;ab_channel=CppNuts">introduction video</a> by <a href="https://www.youtube.com/channel/UCs6sf4iRhhE875T1QjG3wPQ">CppNuts</a>.</p>
+<p>So, we are going to generate code using <code>C++ template</code>. Let us see a simple example showing code generation using templates. In the following program, we are trying to generate code to add numbers from <code>1</code> to <code>N</code> by adding one number at a time in a function. It is like a recursive function call, but instead of calling the same function in the usual recursion, we invoke a different function every time, in the following example. The <a href="https://en.cppreference.com/w/cpp/language/template_parameters#Non-type_template_parameter">non type template parameter</a> <code>N</code> makes the function signatures different.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// p1.cpp
+</span><span class="c1">// code generation for adding 1 + 2 + 3 + 4 .. + N
+</span><span class="c1"></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
+<span class="kt">int</span> <span class="n">add</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">N</span> <span class="o">+</span> <span class="n">add</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>Using <code>gdb</code> to view the generated functions, we see that, 4 different versions of the <code>add</code> function are generated by the compiler. The recursive nature of the <code>add</code> function instantiates new <code>add</code> functions. Naturally, terminating condition is required to stop a recursion, and template recursion is no exception. We <code>fully specialize</code> the add template function with <code>N = 0</code> and this will act as base condition of code generation. (more about <code>Template Specialization</code> <a href="https://en.cppreference.com/w/cpp/language/template_specialization">here</a>).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">gdb</span> <span class="p">.</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">info</span> <span class="n">functions</span> 
+<span class="n">All</span> <span class="n">defined</span> <span class="nl">functions</span><span class="p">:</span>
+
+<span class="n">File</span> <span class="n">p1</span><span class="p">.</span><span class="nl">cpp</span><span class="p">:</span>
+<span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">();</span>
+
+</code></pre></div><p>Clang compiler also helps to view the compiler generated code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// clang++ -Xclang -ast-print -fsyntax-only p1.cpp
+</span><span class="c1">// important parts of the generated code
+</span><span class="c1"></span><span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">int</span> <span class="n">add</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>Therefore, with the help of template and recursion, the compiler can generate code repeatedly in a specific pattern, <em>i.e.</em> <code>N + add&lt;N-1&gt;()</code> in the above example. Let&rsquo;s try to generate a few <code>cout</code> statements with the help a similar program structure.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// p2.cpp
+</span><span class="c1">// code generation for printing N,N-1,N-2,.....1
+</span><span class="c1"></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">N</span> <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+	<span class="n">print</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">print</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="o">---</span>
+
+<span class="c1">// Clang AST output:
+</span><span class="c1">// clang++ -Xclang -ast-print -fsyntax-only p2.cpp
+</span><span class="c1"></span><span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">print</span><span class="o">&lt;</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">print</span><span class="o">&lt;</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">print</span><span class="o">&lt;</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+<span class="p">}</span>
+
+</code></pre></div><p>Now at this point, we can easily print the contents of a <code>vector</code> of known size by following the similar patten of recursive template instantiation. The important point though, is a <code>non type template</code> parameter (<code>N</code>) which can index a particular entry in a <code>vector</code>. In other words, <strong>template function carries</strong> index value in its own function signature.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// p3.cpp
+</span><span class="c1">// code generation for printing contents of a Vector of size N
+</span><span class="c1"></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">N</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">v</span><span class="p">[</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+	<span class="n">print</span><span class="o">&lt;</span><span class="n">N</span><span class="o">-</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">for</span><span class="p">(</span><span class="k">auto</span> <span class="nl">i</span> <span class="p">:</span> <span class="p">{</span><span class="mi">23</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">30</span><span class="p">})</span> <span class="n">v</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+	<span class="n">print</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="c1">// outoput of g++ p3.cpp
+</span><span class="c1"></span><span class="mi">30</span>
+<span class="mi">12</span>
+<span class="mi">23</span>
+
+<span class="c1">// Clang AST output:
+</span><span class="c1">// clang++ -Xclang -ast-print -fsyntax-only p3.cpp
+</span><span class="c1"></span><span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">v</span><span class="p">[</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">print</span><span class="o">&lt;</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">v</span><span class="p">[</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">print</span><span class="o">&lt;</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">print</span><span class="o">&lt;</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">template</span><span class="o">&lt;&gt;</span> <span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">()</span> <span class="p">{</span>
+<span class="p">}</span>
+
+</code></pre></div><p>We will use the similar mechanism to print struct members. <strong>So, this leads to the question :</strong> What kinds of indices (or things) the template functions should carry so that they can print a specific struct member (offset of members may be) ?</p>
+<p>To answer the above question, we will start with a small program:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/**
+</span><span class="cm"> * @file p4.cpp
+</span><span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">print_x</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">print_y</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>	
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">A</span> <span class="n">a</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.4</span><span class="p">};</span>
+	<span class="n">print_x</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+	<span class="n">print_y</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>In this program, we have a structure, <code>A</code> which has two members. The action of printing these two members are hardcoded in two different functions. Therefore the information of each of the members (<em>i.e.</em> <code>.x</code> and <code>.y</code>) are encoded in each of the respective function. But it seems that, we can not include this information as part of template, because <code>.x</code> and <code>.y</code> don&rsquo;t have any identity on its own.</p>
+<p>In <code>C++</code> we also have <code>Pointers to data members</code><a href="https://en.cppreference.com/w/cpp/language/pointer#Pointers_to_members">(link)</a>. For example, <code>&amp;A::x</code> and <code>&amp;A::y</code> are <code>Pointers to data members</code>. These pointers can be used with the help of <code>Built-in pointer-to-member access operator (.*)</code> <a href="https://en.cppreference.com/w/cpp/language/operator_member_access#Built-in_pointer-to-member_access_operators">(link)</a>. The following program explains the usage:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/**
+</span><span class="cm"> * @file p5.cpp
+</span><span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// decltype(&amp;A::x) gives type of &amp;A::x which is -&gt; int A::*
+</span><span class="c1"></span><span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="p">)</span> <span class="n">mp</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">mp</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// decltype(&amp;A::y) gives type of &amp;A::y which is -&gt; double A::*
+</span><span class="c1"></span><span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span> <span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="p">)</span> <span class="n">mp</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">mp</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="cm">/*   .* is a member access operator   */</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">A</span> <span class="n">a</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.4</span><span class="p">};</span>
+	<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="p">);</span>
+	<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>In the above program, we have overloaded the <code>print</code> function by changing the type of the second argument. Here <code>mp</code> is a pointer to a data member and it has a specific type and we have used <a href="https://en.cppreference.com/w/cpp/language/decltype">decltype</a> to determine the type by the compiler.</p>
+<p><a href="https://en.cppreference.com/w/cpp/language/template_parameters#Non-type_template_parameter">Non type template parameter</a> supports <code>pointer to member type</code><a href="https://en.cppreference.com/w/cpp/language/template_parameters#Non-type_template_parameter">(link)</a>. Therefore, we can modify the second approach and create a templated <code>print</code> function.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/**
+</span><span class="cm"> * @file p6.cpp
+</span><span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">mp</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">mp</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">A</span> <span class="n">a</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.4</span><span class="p">};</span>
+	<span class="n">print</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="p">),</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+	<span class="n">print</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="p">),</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>In the above program, we have passed <code>&amp;A::x</code> and <code>&amp;A::y</code> as the second template parameter. These are non-type template parameters of type <code>T</code> deduced using <code>decltype</code>. We use <code>mp</code> along with our struct <code>a</code> using the <code>.*</code> operator.</p>
+<p>In <code>p6.cpp</code>, the template arguments to the print function are not easy to use from a usability point of view. We can improve it slightly in the following version:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/**
+</span><span class="cm"> * @file p7.cpp
+</span><span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">mp</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">Meta</span><span class="p">{};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">mp</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span><span class="n">Meta</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="n">mp</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">mp</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">A</span> <span class="n">a</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.4</span><span class="p">};</span>
+	<span class="k">using</span> <span class="n">X</span> <span class="o">=</span> <span class="n">Meta</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="p">),</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="o">&gt;</span><span class="p">;</span>
+	<span class="k">using</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">Meta</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="p">),</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="o">&gt;</span><span class="p">;</span>
+
+	<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">,(</span><span class="n">X</span><span class="o">*</span><span class="p">)</span><span class="k">nullptr</span><span class="p">);</span>
+	<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">,(</span><span class="n">Y</span><span class="o">*</span><span class="p">)</span><span class="k">nullptr</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>Here we have used the empty <code>struct Meta</code> only to encode type information in the template parameter. We create <code>X</code> and <code>Y</code> meta types to avoid using the long type information while calling the print function.</p>
+<p>So, it seems we have partially accomplished our goal of printing struct members.
+There are two problems to handle at this point.</p>
+<ol>
+<li>Use a single Print function to print all the data members.</li>
+<li>Avoid writing the Meta structs by hand.</li>
+</ol>
+<p>Let us solve the (1) first.</p>
+<p>To solve the first problem, we need to create a single list of <code>Meta</code> structs and then use recursion to iterate over each item of that list. For this purpose, we introduce one more empty struct called <code>ListOfMeta</code> which can hold variable number of template parameters. We can encode all the <code>Meta</code> structs as template parameters into <code>ListOfMeta</code> and pass it to the <code>print</code> function.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/**
+</span><span class="cm"> * @file p8.cpp
+</span><span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">mp</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">Meta</span><span class="p">{};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">ListOfMeta</span><span class="p">{};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">mp</span><span class="p">,</span><span class="k">typename</span> <span class="p">...</span><span class="n">Rest</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span><span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">Meta</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="n">mp</span><span class="o">&gt;</span><span class="p">,</span><span class="n">Rest</span> <span class="p">...</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">mp</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">A</span> <span class="n">a</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.4</span><span class="p">};</span>
+	<span class="k">using</span> <span class="n">X</span> <span class="o">=</span> <span class="n">Meta</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="p">),</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="o">&gt;</span><span class="p">;</span>
+	<span class="k">using</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">Meta</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="p">),</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="o">&gt;</span><span class="p">;</span>
+	<span class="k">using</span> <span class="n">L</span> <span class="o">=</span> <span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="o">&gt;</span><span class="p">;</span>
+
+	<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">,(</span><span class="n">L</span><span class="o">*</span><span class="p">)</span><span class="k">nullptr</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>But we are still not performing the recursion to loop over all the Meta information stored in <code>L</code>. To iterate over all the items, we can call <code>print</code> again inside the <code>print</code> function with the <code>ListOfMeta&lt;Rest ...&gt;</code> parameter which holds the remaining of the meta information about the members. Of course, we also have to write a base case to stop recursive template instantiation.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/**
+</span><span class="cm"> * @file p9.cpp
+</span><span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">mp</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">Meta</span><span class="p">{};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">ListOfMeta</span><span class="p">{};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">mp</span><span class="p">,</span><span class="k">typename</span> <span class="p">...</span><span class="n">Rest</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span><span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">Meta</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="n">mp</span><span class="o">&gt;</span><span class="p">,</span><span class="n">Rest</span> <span class="p">...</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">mp</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+	<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">,(</span><span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">Rest</span> <span class="p">...</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="k">nullptr</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// the following overloaded deinition of print is to 
+</span><span class="c1">// handle the base of recursion with single template item inside
+</span><span class="c1">// ListOfMeta
+</span><span class="c1"></span><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span><span class="n">T</span> <span class="n">mp</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span><span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">Meta</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="n">mp</span><span class="o">&gt;&gt;</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">mp</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">A</span> <span class="n">a</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.4</span><span class="p">};</span>
+	<span class="k">using</span> <span class="n">X</span> <span class="o">=</span> <span class="n">Meta</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="p">),</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="o">&gt;</span><span class="p">;</span>
+	<span class="k">using</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">Meta</span><span class="o">&lt;</span><span class="k">decltype</span><span class="p">(</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="p">),</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="o">&gt;</span><span class="p">;</span>
+	<span class="k">using</span> <span class="n">L</span> <span class="o">=</span> <span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="o">&gt;</span><span class="p">;</span>
+
+	<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">,(</span><span class="n">L</span><span class="o">*</span><span class="p">)</span><span class="k">nullptr</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>Using <code>gdb</code> we will be able to see the following generated functions. There are two of the <code>print</code> functions, as we have only two members in the struct <code>A</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">info</span> <span class="n">functions</span> 
+<span class="n">All</span> <span class="n">defined</span> <span class="nl">functions</span><span class="p">:</span>
+
+<span class="n">File</span> <span class="n">p9</span><span class="p">.</span><span class="nl">cpp</span><span class="p">:</span>
+<span class="kt">int</span> <span class="n">main</span><span class="p">();</span>
+<span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="kt">double</span> <span class="n">A</span><span class="o">::*</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="o">&gt;</span><span class="p">(</span><span class="n">A</span> <span class="k">const</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">Meta</span><span class="o">&lt;</span><span class="kt">double</span> <span class="n">A</span><span class="o">::*</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">&gt;*</span><span class="p">);</span>
+<span class="kt">void</span> <span class="n">print</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">A</span><span class="o">::*</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="p">,</span> <span class="n">Meta</span><span class="o">&lt;</span><span class="kt">double</span> <span class="n">A</span><span class="o">::*</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">&gt;</span><span class="p">(</span><span class="n">A</span> <span class="k">const</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">Meta</span><span class="o">&lt;</span><span class="kt">int</span> <span class="n">A</span><span class="o">::*</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">Meta</span><span class="o">&lt;</span><span class="kt">double</span> <span class="n">A</span><span class="o">::*</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">&gt;*</span><span class="p">);</span>
+</code></pre></div><p>Once we have solved the iteration issue, we need to solve the issue of writing the <code>Meta</code> structs and <code>ListOfMeta</code> by hand. To solve this, we will take help of some macros.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#define MACRO_CONCAT(A,B) A##_##B
+</span><span class="cp">#define MACRO_EXPAND(x) x
+</span><span class="cp"></span>
+<span class="cp">#define MAKE_META_LIST_1(arg, ...)   Meta&lt;decltype(arg),arg&gt;
+</span><span class="cp">#define MAKE_META_LIST_2(arg, ...)   Meta&lt;decltype(arg),arg&gt;, MACRO_EXPAND(MAKE_META_LIST_1(__VA_ARGS__))
+</span><span class="cp">#define MAKE_META_LIST_3(arg, ...)   Meta&lt;decltype(arg),arg&gt;, MACRO_EXPAND(MAKE_META_LIST_2(__VA_ARGS__))
+</span><span class="cp"></span>
+<span class="cp">#define MAKE_META_LIST(N, arg, ...) \
+</span><span class="cp">		MACRO_CONCAT(MAKE_META_LIST,N)(arg,__VA_ARGS__)
+</span><span class="cp"></span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">MetaClass</span><span class="p">{};</span>
+
+<span class="cp">#define CreateMetaInfo(STRUCT_NAME, N,...) \
+</span><span class="cp">		template&lt;&gt;	\
+</span><span class="cp">		struct MetaClass&lt;STRUCT_NAME&gt; { \
+</span><span class="cp">			using type = ListOfMeta&lt;MAKE_META_LIST(N,__VA_ARGS__)&gt;;	\
+</span><span class="cp">		};
+</span></code></pre></div><p><code>MACRO_CONCAT</code> is a macro to concatanate two items. The most important one is the  <code>MAKE_META_LIST</code> macro. With this macro, we create the <code>List of Meta</code> structs.
+To understand the formation of the list, lets consider the line:</p>
+<p><code>MACRO_CONCAT(MAKE_META_LIST,N)(arg,__VA_ARGS__)</code></p>
+<p>Here <code>N = No of Meta items</code>. Assume <code>N = 2</code>, which will use the macro <code>MAKE_META_LIST_2</code>, and which in turn uses <code>MAKE_META_LIST_1</code> macro and we end up with a comma separated list of two <code>Meta&lt;decltype(arg),arg&gt;</code> Meta structs. We need to make this <code>list type</code> associate of the parent struct <code>A</code>. To do this, we used <code>MetaClass</code> struct and <code>CreateMetaInfo</code> macro. The newly introduced <code>MetaClass</code> has the following definition and it takes <code>1</code> template parameter.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">MetaClass</span><span class="p">{};</span>
+
+<span class="c1">// usage of this MetaClass
+</span><span class="c1">// We spcialize with a user defined struct type
+</span><span class="c1"></span>
+<span class="k">template</span><span class="o">&lt;&gt;</span>	\
+<span class="k">struct</span> <span class="nc">MetaClass</span><span class="o">&lt;</span><span class="n">STRUCT_NAME</span><span class="o">&gt;</span> <span class="p">{</span> \
+    <span class="k">using</span> <span class="n">type</span> <span class="o">=</span> <span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">MAKE_META_LIST</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">__VA_ARGS__</span><span class="p">)</span><span class="o">&gt;</span><span class="p">;</span>	\
+<span class="p">};</span>
+</code></pre></div><p>Here we have used the <code>using</code> directive to declare a type inside the specialization of <code>MetaClass</code> for our struct <code>A</code>.</p>
+<p>So, thats it, let&rsquo;s see the final verison:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/**
+</span><span class="cm"> * @file p9.cpp
+</span><span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="k">struct</span> <span class="nc">A</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">mp</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">Meta</span><span class="p">{};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="p">...</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">ListOfMeta</span><span class="p">{};</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="n">T</span> <span class="n">mp</span><span class="p">,</span><span class="k">typename</span> <span class="p">...</span><span class="n">Rest</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span><span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">Meta</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="n">mp</span><span class="o">&gt;</span><span class="p">,</span><span class="n">Rest</span> <span class="p">...</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">mp</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+	<span class="n">print</span><span class="p">(</span><span class="n">a</span><span class="p">,(</span><span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">Rest</span> <span class="p">...</span><span class="o">&gt;</span> <span class="o">*</span><span class="p">)</span><span class="k">nullptr</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span><span class="n">T</span> <span class="n">mp</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">print</span><span class="p">(</span><span class="k">const</span> <span class="n">A</span><span class="o">&amp;</span> <span class="n">a</span><span class="p">,</span><span class="n">ListOfMeta</span><span class="o">&lt;</span><span class="n">Meta</span><span class="o">&lt;</span><span class="n">T</span><span class="p">,</span><span class="n">mp</span><span class="o">&gt;&gt;</span> <span class="o">*</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="o">*</span><span class="n">mp</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cp">#define MACRO_CONCAT(A,B) A##_##B
+</span><span class="cp">#define MACRO_EXPAND(x) x
+</span><span class="cp"></span>
+<span class="cp">#define MAKE_META_LIST_1(arg, ...)   Meta&lt;decltype(arg),arg&gt;
+</span><span class="cp">#define MAKE_META_LIST_2(arg, ...)   Meta&lt;decltype(arg),arg&gt;, MACRO_EXPAND(MAKE_META_LIST_1(__VA_ARGS__))
+</span><span class="cp">#define MAKE_META_LIST_3(arg, ...)   Meta&lt;decltype(arg),arg&gt;, MACRO_EXPAND(MAKE_META_LIST_2(__VA_ARGS__))
+</span><span class="cp"></span>
+<span class="cp">#define MAKE_META_LIST(N, arg, ...) \
+</span><span class="cp">		MACRO_CONCAT(MAKE_META_LIST,N)(arg,__VA_ARGS__)
+</span><span class="cp"></span>
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nc">MetaClass</span><span class="p">{};</span>
+
+<span class="cp">#define CreateMetaInfo(STRUCT_NAME, N,...) \
+</span><span class="cp">		template&lt;&gt;	\
+</span><span class="cp">		struct MetaClass&lt;STRUCT_NAME&gt; { \
+</span><span class="cp">			using type = ListOfMeta&lt;MAKE_META_LIST(N,__VA_ARGS__)&gt;;	\
+</span><span class="cp">		};	
+</span><span class="cp"></span>
+<span class="n">CreateMetaInfo</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">x</span><span class="p">,</span><span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">y</span><span class="p">);</span>
+
+<span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<span class="kt">void</span> <span class="n">Print</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">obj</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">using</span> <span class="n">L</span> <span class="o">=</span> <span class="k">typename</span> <span class="n">MetaClass</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">type</span><span class="p">;</span>
+	<span class="n">print</span><span class="p">(</span><span class="n">obj</span><span class="p">,(</span><span class="n">L</span><span class="o">*</span><span class="p">)</span><span class="k">nullptr</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">A</span> <span class="n">a</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span><span class="mf">3.4</span><span class="p">};</span>
+	<span class="n">Print</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>As we can see <code>CreateMetaInfo(A,2,&amp;A::x,&amp;A::y)</code> macro is used one time, to generate the <code>MetaClass</code> and the <code>ListOfMeta</code> needed for the print function to work. In the helper <code>Print</code> function we have used <code>using L = typename MetaClass&lt;T&gt;::type;</code> to extract out the <code>ListOfMeta</code> information and subsequently to pass to the recursive <code>print</code> function which does the actual printing work.</p>
+<p>For the purpose of this blog, I have reduced some of the details, required to handle nested struct, enums, or arrays. I have implemented these features in this <a href="https://github.com/ddeka0/cppLearn/tree/master/struct_serialization/final">(link)</a>.</p>
+<p>Continuing on the topic of templates and static reflection, we will see how we can achieve this with purely using templates.</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://ddeka0.github.io//tags/c&#43;&#43;/">C&#43;&#43;</a>&nbsp;
+            
+              <a href="https://ddeka0.github.io//tags/template/">Template</a>&nbsp;
+            
+              <a href="https://ddeka0.github.io//tags/macro/">Macro</a>&nbsp;
+            
+              <a href="https://ddeka0.github.io//tags/meta-programming/">Meta Programming</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;text=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;title=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;title=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;title=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;description=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/2021-01-16-tour-of-registers-1/">Tour of Registers</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/" data-toggle="tooltip" data-placement="top" title="Tour of Registers">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:debashishdekanits2015@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.facebook.com/username" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/ddeka0" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/deka-debashish" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://stackoverflow.com/users/4044050/debashish" title="StackOverflow">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.youtube.com/channel/UCXhljYypuZkCoo__Y0fNz9w" title="Youtube">
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-youtube fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Debashish Deka
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2021
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ddeka0.github.io/">Ethereal</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.88.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script src="https://ddeka0.github.io/js/main.js"></script>
+<script src="https://ddeka0.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ddeka0.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

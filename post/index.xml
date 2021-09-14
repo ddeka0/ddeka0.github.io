@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
-    <lastBuildDate>Fri, 15 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Custom Static Reflection in C&#43;&#43; (Part-1)</title>
+      <link>https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/</link>
+      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
+      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/</guid>
+      <description>In this blog we would implement a generic Print(user defined struct) utility function capable of printing all the public members of any user defined POD struct. For example:
+// We would like to Print MessageA // which has messageB as member item struct messageA { int a; messageB b; }; // messageB has messageD as member struct messageB { int p; messageD d[3]; }; // struct layout struct messageD { double t; int v; }; and we expect the output as shown below after executing the following program:</description>
+    </item>
+    
     <item>
       <title>Tour of Registers</title>
       <link>https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/</link>

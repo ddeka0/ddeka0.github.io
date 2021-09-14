@@ -1,102 +1,71 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <url>
-    <loc>https://ddeka0.github.io/tags/assembly/</loc>
-    <lastmod>2021-01-15T00:00:00+00:00</lastmod>
-  </url>
-  
   <url>
     <loc>https://ddeka0.github.io/tags/c&#43;&#43;/</loc>
-    <lastmod>2021-01-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/</loc>
+    <lastmod>2021-08-29T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://ddeka0.github.io/</loc>
-    <lastmod>2021-01-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ddeka0.github.io/tags/macro/</loc>
+    <lastmod>2021-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ddeka0.github.io/tags/meta-programming/</loc>
+    <lastmod>2021-08-29T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://ddeka0.github.io/post/</loc>
-    <lastmod>2021-01-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+    <lastmod>2021-08-29T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://ddeka0.github.io/tags/</loc>
+    <lastmod>2021-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ddeka0.github.io/tags/template/</loc>
+    <lastmod>2021-08-29T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://ddeka0.github.io/tags/assembly/</loc>
     <lastmod>2021-01-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/tags/thread/</loc>
     <lastmod>2021-01-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/</loc>
     <lastmod>2021-01-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/tags/x86_64/</loc>
     <lastmod>2021-01-15T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/post/2020-12-26-cpp-chronicle-2/</loc>
     <lastmod>2020-12-26T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://ddeka0.github.io/tags/template/</loc>
-    <lastmod>2020-12-26T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/post/2020-07-23-cpp-chronicle-1/</loc>
     <lastmod>2020-08-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/tags/3gpp/</loc>
     <lastmod>2020-05-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/</loc>
     <lastmod>2020-05-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/tags/mm/</loc>
     <lastmod>2020-05-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/tags/ubuntu/</loc>
     <lastmod>2019-11-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</loc>
     <lastmod>2019-11-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/tags/zsh/</loc>
     <lastmod>2019-11-30T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/page/about/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/categories/</loc>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>https://ddeka0.github.io/page/</loc>
   </url>
-  
 </urlset>

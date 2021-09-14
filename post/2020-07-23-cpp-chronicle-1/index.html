@@ -90,7 +90,7 @@
   <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
   <meta name="twitter:card" content="summary" />
   <link href='https://ddeka0.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.80.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
   <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -271,7 +271,7 @@
       <article role="main" class="blog-post">
         <p>What are some of the problems with the <code>std::thread</code> ?</p>
 <p>The following program will cause <code>core dump</code>.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/* 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/* 
 </span><span class="cm">gcc version 10.0.1 20200314 (experimental) (GCC)
 </span><span class="cm">Ubuntu 18.04.5 LTS
 </span><span class="cm">x86_64 GNU/Linux 5.6.2
@@ -286,7 +286,7 @@
 <span class="p">}</span>
 </code></pre></div><p><img src="/img/core_dump.png#floatleft" alt="core_dump"></p>
 <p>The reason for the core dump is <code>std::terminate()</code> called by the destructor of the <code>std::thread</code> object <code>t</code>.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// from std::thread header
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// from std::thread header
 </span><span class="c1"></span><span class="o">~</span><span class="kr">thread</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">joinable</span><span class="p">())</span>
@@ -294,7 +294,7 @@
 <span class="p">}</span>
 </code></pre></div><p>The default terminate handler calls <code>abort</code>. More on this <a href="https://en.cppreference.com/w/cpp/error/terminate">link</a>.</p>
 <p>Therefore the above code can be fixed by calling <code>join()</code> or <code>detach()</code> on the <code>std::thread</code> object <code>t</code>.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
@@ -311,7 +311,7 @@
 </span><span class="cm">joined already
 </span><span class="cm">*/</span>
 </code></pre></div><p>Thats looks fine. But there is still a problem. The problem is due to possible uncaught exceptions that might occur before <code>t.join()</code>. For example,</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
@@ -332,7 +332,7 @@
 </span><span class="cm">*/</span>
 </code></pre></div><p>In the above example, the generated exception is not caught which will cause <code>std::terminate</code>.
 We can also fix this with <code>try catch</code> block.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
@@ -375,7 +375,7 @@ We can also fix this with <code>try catch</code> block.</p>
 The <code>std::thread</code> does not provide a direct method of stopping or interrupting a running thread. A programmer has to create his/her own signaling mechanism (for example using <code>std::future/std::promise</code>) to achieve thread interruption.</p>
 <h4 id="stdjthread">std::jthread</h4>
 <p>The <code>std::jthread</code> (C++20) solves the problem of <code>std::terminate</code> and calls <code>join()</code> on <code>~jthread()</code>. We dont need to worry about the joining of a <code>std::jthread</code>. Following is a basic example using <code>std::jthread</code>.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
@@ -422,7 +422,7 @@ The <code>std::thread</code> does not provide a direct method of stopping or int
 </ol>
 <p>Let us see, how to use these three in the following example.</p>
 <h6 id="example1">Example1.</h6>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
@@ -476,7 +476,7 @@ The <code>std::thread</code> does not provide a direct method of stopping or int
 <span class="p">}</span>
 </code></pre></div><p>This is co-operative cancellation, because <code>thread</code> <code>t</code> need not necessarily check <code>stop_requested()</code>, or even if it does take actions on <code>stop_request()</code>, the actions are completely upto thread <code>t</code>&rsquo;s wish. In the above example, we are just returning from the function, we could have done something else.</p>
 <p>We can pass <code>token</code> to any number of threads/jthreads and call <code>request_stop()</code> on the source object. A <code>stop_token</code> follows <a href="https://isocpp.org/wiki/faq/value-vs-ref-semantics">value semantics</a>, it means, we can simply pass the token by value and still send <code>stop_request</code> to the copied token. The <a href="https://stackoverflow.com/questions/3106110/what-is-move-semantics">move semantics</a> are also enabled for <code>stop_token</code>, therefore if we call <a href="https://en.cppreference.com/w/cpp/utility/move"><code>std::move(token)</code></a> before passing the token to a thread, the thread will not receive any <code>stop_request</code> called on the associated <code>stop_source</code> object. For example,</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">stop_source</span> <span class="n">stSrc</span><span class="p">;</span>
     <span class="k">auto</span> <span class="n">token</span> <span class="o">=</span> <span class="n">stSrc</span><span class="p">.</span><span class="n">get_token</span><span class="p">();</span>
     <span class="k">auto</span> <span class="n">token2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">token</span><span class="p">);</span> <span class="c1">// moved
@@ -504,7 +504,7 @@ The <code>std::thread</code> does not provide a direct method of stopping or int
 <span class="p">}</span>
 </code></pre></div><p>The above program will print <code>Hello from inside of the std::thread</code> infinitely.</p>
 <p>All the copy and move operations are enabled for <code>std::stop_token</code> class.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// from stop_token header
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// from stop_token header
 </span><span class="c1"></span><span class="cm">/*copy constructor*/</span>
 <span class="n">stop_token</span><span class="p">(</span><span class="k">const</span> <span class="n">stop_token</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
 <span class="cm">/*move constructor*/</span>
@@ -517,7 +517,7 @@ The <code>std::thread</code> does not provide a direct method of stopping or int
 <p>Before going back to <code>std::jthread</code>, lets discuss about the <code>stop_callback</code> feature also.</p>
 <p>We can register <a href="https://stackoverflow.com/questions/2298242/callback-functions-in-c">callback function</a> on a <code>stop_token</code>. When <code>request_stop()</code> is called on the
 associated <code>stop_source</code> object, all the callbacks registered on associated tokens of this source will be invoked. For example,</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;stop_token&gt;</span><span class="cp">
 </span><span class="cp"></span>
@@ -553,7 +553,7 @@ is called or in the context where callback constructor is called. <a href="https
 shows only one Thread Id value.</p>
 <p>Lets take few other examples of the use cases of <code>stop_token</code> and <code>stop_callback</code>.</p>
 <h6 id="example2">Example2:</h6>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;future&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
@@ -606,7 +606,7 @@ shows only one Thread Id value.</p>
 <p>More examples:
 The following example shows how we can pass the token around and stop multiple threads.</p>
 <h6 id="example3">Example3:</h6>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;stop_token&gt;</span><span class="cp">
@@ -677,7 +677,7 @@ The following example shows how we can pass the token around and stop multiple t
 </span><span class="cm">*/</span>
 </code></pre></div><p>In C++20 a new set of wait apis has been added to <a href="https://en.cppreference.com/w/cpp/thread/condition_variable_any"><code>std::condition_variable_any</code></a> class which can respond to <code>stop_tokens</code>. In the following example, <code>wait_for()</code> api is used on <code>std::condition_variable_any</code>. This program has the similar effect as that of the previous programs.</p>
 <h6 id="example4">Example4.</h6>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;mutex&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
@@ -721,7 +721,7 @@ The following example shows how we can pass the token around and stop multiple t
 <p>Lets talk about the <code>std::jthread</code> again. As we can see, in all of the above examples on <code>stop_token</code>, only <code>std::thread</code> has been used. Therefore we have to explicitely create a <code>stop_source</code> and extract tokens out of it and pass them to thread functions.</p>
 <p>In the case of <code>std::jthread</code>, we dont need (necessarily) to create explicit <code>stop_source</code>. the <code>std::jthread</code> class has a member <code>stop_source</code> object.
 The <code>std::jthread</code> class also has the <code>request_stop()</code> api.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;chrono&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;stop_token&gt;</span><span class="cp">
@@ -966,7 +966,7 @@ The <code>std::jthread</code> class also has the <code>request_stop()</code> api
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.80.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.88.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>

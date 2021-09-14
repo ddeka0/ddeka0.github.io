@@ -7,22 +7,49 @@
     <generator>Hugo -- gohugo.io</generator>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
-    <lastBuildDate>Fri, 15 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 29 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>c&#43;&#43;</title>
+      <link>https://ddeka0.github.io/tags/c&#43;&#43;/</link>
+      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
+      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/tags/c&#43;&#43;/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Macro</title>
+      <link>https://ddeka0.github.io/tags/macro/</link>
+      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
+      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/tags/macro/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Meta Programming</title>
+      <link>https://ddeka0.github.io/tags/meta-programming/</link>
+      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
+      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/tags/meta-programming/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>template</title>
+      <link>https://ddeka0.github.io/tags/template/</link>
+      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
+      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/tags/template/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>assembly</title>
       <link>https://ddeka0.github.io/tags/assembly/</link>
       <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
       <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/assembly/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>c&#43;&#43;</title>
-      <link>https://ddeka0.github.io/tags/c&#43;&#43;/</link>
-      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
-      <guid>https://ddeka0.github.io/tags/c&#43;&#43;/</guid>
       <description></description>
     </item>
     
@@ -41,15 +68,6 @@
       <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
       <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/x86_64/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>template</title>
-      <link>https://ddeka0.github.io/tags/template/</link>
-      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
-      <guid>https://ddeka0.github.io/tags/template/</guid>
       <description></description>
     </item>
     

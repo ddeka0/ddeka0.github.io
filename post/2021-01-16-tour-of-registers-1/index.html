@@ -90,7 +90,7 @@
   <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
   <meta name="twitter:card" content="summary" />
   <link href='https://ddeka0.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.80.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
   <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -325,7 +325,7 @@
 <p>We will spend most of the time explaining Point <code>2</code>. But before that we will see Point <code>1</code></p>
 <p>Let&rsquo;s see how we can use <code>jmp</code> or <code>call</code> instruction to make <code>%rip</code> point to the starting instruction of <code>G</code>.</p>
 <p>In the following code, we used inline assembly to setup the user thread context, mainly stack pointer.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp"></span>
 <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">stackSize</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">;</span>
 
@@ -395,7 +395,7 @@
 
 </code></pre></div><p>The instruction <code>movq %[_rsp], %%r9</code> loads the newly allocated stack pointer to <em><code>%r9</code></em> register and then finally it is being loaded to <em><code>%rsp</code></em> register.</p>
 <p>We can verify the new stack address using gdb:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">print</span><span class="o">/</span><span class="n">x</span> <span class="n">Stack</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">print</span><span class="o">/</span><span class="n">x</span> <span class="n">Stack</span>
 <span class="err">$</span><span class="mi">2</span> <span class="o">=</span> <span class="mh">0x7ffff7fd1010</span>
 
 <span class="nl">func</span><span class="p">:</span>
@@ -413,7 +413,7 @@
 </code></pre></div><p>The <code>jmp</code> instruction loads the <code>%rip</code> register with the next instruction address, which is in this case is the start address of <code>G</code>.</p>
 <p>Once the <code>jmp *%%r8</code> instruction is executed, CPU starts executing the instructions of <code>G</code> and uses the newly allocated stack area. We just spawned a <em><strong><code>child thread</code></strong></em> !!.</p>
 <p>Here is the output:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Initial</span> <span class="n">Stack</span> <span class="n">top</span> <span class="n">addr</span> <span class="o">=</span> <span class="mh">0x7ffff7fd1010</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Initial</span> <span class="n">Stack</span> <span class="n">top</span> <span class="n">addr</span> <span class="o">=</span> <span class="mh">0x7ffff7fd1010</span>
 <span class="n">func</span><span class="p">()</span> <span class="n">called</span>
 </code></pre></div><hr>
 <p>We did not address the issue of returning to the main function till now and <code>exit(0)</code> is used in the <code>func</code> function. You may try to change the <code>exit(0)</code> to <code>return</code>, but the program will crash.</p>
@@ -424,7 +424,7 @@
 <p><em>Call and Ret instruction when calling a function from another function</em></p>
 <p>When the compiler uses these two instructions? We will see below with the help of a simple program and its associated assembly.</p>
 <p>Let&rsquo;s suppose we are inside <code>main</code> and about to call <code>func</code> directly using <code>func()</code>.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp"></span><span class="kt">void</span> <span class="nf">func</span><span class="p">()</span> <span class="p">{</span>
     <span class="kt">int</span> <span class="n">x</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span> 
     <span class="k">return</span><span class="p">;</span>
@@ -433,20 +433,20 @@
     <span class="n">func</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div><p>The compiler in <em><strong>x86_64</strong></em> architecture will emit the following instructions for <em><code>main</code></em> function.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">   <span class="mh">0x0000000000000f59</span> <span class="o">&lt;+</span><span class="mi">0</span><span class="o">&gt;:</span> <span class="n">push</span>   <span class="o">%</span><span class="n">rbp</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">   <span class="mh">0x0000000000000f59</span> <span class="o">&lt;+</span><span class="mi">0</span><span class="o">&gt;:</span> <span class="n">push</span>   <span class="o">%</span><span class="n">rbp</span>
    <span class="mh">0x0000000000000f5a</span> <span class="o">&lt;+</span><span class="mi">1</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="o">%</span><span class="n">rsp</span><span class="p">,</span><span class="o">%</span><span class="n">rbp</span>
    <span class="mh">0x0000000000000f5d</span> <span class="o">&lt;+</span><span class="mi">4</span><span class="o">&gt;:</span> <span class="n">callq</span>  <span class="mh">0xe4a</span> <span class="o">&lt;</span><span class="n">func</span><span class="p">()</span><span class="o">&gt;</span>
    <span class="mh">0x0000000000000f62</span> <span class="o">&lt;+</span><span class="mi">9</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="err">$</span><span class="mh">0x0</span><span class="p">,</span><span class="o">%</span><span class="n">eax</span>
    <span class="mh">0x0000000000000f67</span> <span class="o">&lt;+</span><span class="mi">14</span><span class="o">&gt;:</span>    <span class="n">pop</span>    <span class="o">%</span><span class="n">rbp</span>
    <span class="mh">0x0000000000000f68</span> <span class="o">&lt;+</span><span class="mi">15</span><span class="o">&gt;:</span>    <span class="n">retq</span>
 </code></pre></div><p>Notice the <code>callq</code> instruction makes the instruction pointer jumps to <em><code>func()</code></em>. It is the <code>64</code> bit version of the <code>call</code> instruction. But the <code>call</code> instruction involves two implicit steps. First, the return address (for this function) is pushed, and then the actual jump to the required function location/address.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">     <span class="c1">// the return address is pushed onto the stack and 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">     <span class="c1">// the return address is pushed onto the stack and 
 </span><span class="c1"></span>     <span class="n">push</span> <span class="n">ret_address</span>  <span class="c1">// ret_address -&gt; 0x0000000000000f62
 </span><span class="c1"></span>     <span class="c1">// Assume that the value of %rsp at this point is 0xAB
 </span><span class="c1"></span>     <span class="n">jmp</span> <span class="n">func</span>
 </code></pre></div><p>The callee function is going to use the stack after completion of the above two steps. When the func() almost completes its execution, the <code>CPU</code> will make sure that the stack pointer is restored (<code>%rsp</code> becomes <code>0xAB</code>, this is done using <code>leaveq</code> instruction, check more <a href="https://stackoverflow.com/questions/29790175/assembly-x86-leave-instruction">here</a>).</p>
 <p>Lets see the dissassembly of <em><code>func()</code></em> also:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">disassemble</span> <span class="n">func</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">disassemble</span> <span class="n">func</span>
 <span class="n">Dump</span> <span class="n">of</span> <span class="n">assembler</span> <span class="n">code</span> <span class="k">for</span> <span class="n">function</span> <span class="n">func</span><span class="p">()</span><span class="o">:</span>
    <span class="mh">0x00000000000007aa</span> <span class="o">&lt;+</span><span class="mi">0</span><span class="o">&gt;:</span> <span class="n">push</span>   <span class="o">%</span><span class="n">rbp</span>
    <span class="mh">0x00000000000007ab</span> <span class="o">&lt;+</span><span class="mi">1</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="o">%</span><span class="n">rsp</span><span class="p">,</span><span class="o">%</span><span class="n">rbp</span>
@@ -504,7 +504,7 @@
 <!-- raw HTML omitted -->
 <p>Also, we have not properly defined the term <code>context</code>. We assumed that <em><code>%rsp</code></em> value is the only context required across function calls. Well, that is not the case for <strong><code>x86_64</code></strong> architecture. The <strong><code>x86_64</code></strong> has a set of registers which values must be preserved across function calls. In other words, a function <code>A</code> calling another function <code>B</code> can expect those registers to contain the same values after function <code>B</code> returns as they had when function <code>B</code> was called because the callee (<code>B</code>) saves and restore those values.</p>
 <p>Those registers are <em><code>%rsp</code></em>,<em><code>%rbp</code></em>, <em><code>%rbx</code></em>, <em><code>%r12</code></em>, <em><code>%r13</code></em>, <em><code>%r14</code></em> and <em><code>%r15</code></em>.  We will define a struct to contain all the above registers and will call it the context for our user thread.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nc">Context</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nc">Context</span> <span class="p">{</span>
     <span class="kt">uint64_t</span> <span class="n">rsp</span><span class="p">;</span>
     <span class="kt">uint64_t</span> <span class="n">r15</span><span class="p">;</span>
     <span class="kt">uint64_t</span> <span class="n">r14</span><span class="p">;</span>
@@ -515,7 +515,7 @@
 <span class="p">};</span>
 </code></pre></div><p>If we have two user-level threads, we need to have two <code>Context</code> variables to save their contexts.</p>
 <p>Let&rsquo;s code the entire discussion in two files, <code>main.cpp</code> and <code>ContextSwitch.S</code>. The objective of the program is to switch to a different user level thread from the main thread and then return to main safely.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/* Ubuntu 18.04 x86_64 */</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/* Ubuntu 18.04 x86_64 */</span>
 <span class="cm">/* Compiler gcc version 7.5.0 */</span>
 <span class="cm">/* Linux 5.6.2 */</span>
 <span class="cm">/* g++ -g -std=c++11 main.cpp ContextSwitch.S */</span>
@@ -585,7 +585,7 @@
     <span class="k">delete</span><span class="p">[]</span> <span class="n">childStack</span><span class="p">;</span>
 <span class="p">}</span>
 
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-nasm" data-lang="nasm"><span class="nf">.globl</span> <span class="nv">ContextSwitch</span>    <span class="o">//</span> <span class="nv">make</span> <span class="nv">the</span> <span class="nv">Symbol</span> <span class="nv">ContextSwitch</span> <span class="nv">available</span> <span class="nv">in</span> <span class="nv">link</span> <span class="nv">time</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="nf">.globl</span> <span class="nv">ContextSwitch</span>    <span class="o">//</span> <span class="nv">make</span> <span class="nv">the</span> <span class="nv">Symbol</span> <span class="nv">ContextSwitch</span> <span class="nv">available</span> <span class="nv">in</span> <span class="nv">link</span> <span class="nv">time</span>
 <span class="nl">ContextSwitch:</span>
 
         <span class="err">//</span> <span class="nf">According</span> <span class="nv">to</span> <span class="nv">x86_64</span> <span class="nv">calling</span> <span class="nv">convention</span>
@@ -615,7 +615,7 @@
         <span class="nf">ret</span>      <span class="o">//</span> <span class="nv">rip</span> <span class="nv">is</span> <span class="nv">loaded</span> <span class="nv">with</span> <span class="p">[</span><span class="nb">rsp</span><span class="p">,</span><span class="nb">rsp</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]</span>
 </code></pre></div><p>The line <code>*(uint64_t *)&amp;childStack[stackSize -  8] = (uint64_t)func;</code> is important. The thread from which the child thread is created has to perform this operation to store the required function pointer on the callee thread&rsquo;s stack. Because the program control is not starting from the child thread.</p>
 <p>Other details are trivial and commented. Output of the above code:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// Compile it
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// Compile it
 </span><span class="c1"></span><span class="o">&gt;&gt;</span> <span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span> <span class="n">main</span><span class="p">.</span><span class="n">cpp</span> <span class="n">ContextSwitch</span><span class="p">.</span><span class="n">S</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">address</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">leak</span>
 
 <span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="n">Child</span> <span class="n">user</span> <span class="kr">thread</span> <span class="n">context</span> <span class="n">ready</span><span class="o">!</span>
@@ -716,6 +716,8 @@
                   <ul>
                 
                 
+                    <li><a href="/post/2021-08-29-static-reflection-using-templates-and-macros/">Custom Static Reflection in C&#43;&#43; (Part-1)</a></li>
+                
                     <li><a href="/post/2020-07-23-cpp-chronicle-1/">Cpp chronicle #1</a></li>
                 
               </ul>
@@ -731,6 +733,10 @@
               <a href="https://ddeka0.github.io/post/2020-12-26-cpp-chronicle-2/" data-toggle="tooltip" data-placement="top" title="Cpp chronicle #2">&larr; Previous Post</a>
             </li>
           
+          
+            <li class="next">
+              <a href="https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/" data-toggle="tooltip" data-placement="top" title="Custom Static Reflection in C&#43;&#43; (Part-1)">Next Post &rarr;</a>
+            </li>
           
         </ul>
       
@@ -821,7 +827,7 @@
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.80.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.88.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>

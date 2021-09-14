@@ -90,7 +90,7 @@
   <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
   <meta name="twitter:card" content="summary" />
   <link href='https://ddeka0.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.80.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
   <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
@@ -271,14 +271,14 @@
       <article role="main" class="blog-post">
         <p>Template is a great C++ language feature, with which we can make classes and functions operate on generic types without actually writing code for all possible valid types.</p>
 <p>For example <code>std::vector</code> container in <code>C++11</code> is a template class. We can use it for with different value types, with the following syntax.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v1</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v1</span><span class="p">;</span>
 <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="n">v2</span><span class="p">;</span>
 </code></pre></div><p>Here, <code>v1</code> can hold values of type <code>int</code> and v2 can hold values of type <code>char</code>.</p>
 <p>In this blog we will be discussing basic template usage in <code>C++</code>. So, let&rsquo;s get started.</p>
 <hr>
 <p>All the examples in this blog will consider <code>function templates</code>, i.e. functions with template parameters. However most of the ideas can be applied to a class template also. Let`s look at the following example.</p>
 <p>[Example 1]</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&#34;PrintHelper.hpp&#34; // is a helper utility header for printing</span><span class="cp">
 </span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
@@ -305,7 +305,7 @@
 <span class="p">}</span>
 
 </code></pre></div><p>Let`s view the output of the above program.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">int</span><span class="p">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">int</span><span class="p">]</span>
 
 
 <span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">]</span>
@@ -313,7 +313,7 @@
 <p>In this example, <code>func</code> is a function templated with <code>type paramter T</code>, and <code>func</code> takes an argument of type <code>T</code>.</p>
 <p>From the <code>main function</code> we can pass any kind of values to the function <code>func</code> and the type of <code>T</code> will be deduced.</p>
 <p>Lets try to print the type of <code>x</code> using our print utility functions. (ignore the type_name utility for now. It just prints the required type )</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span> 
     <span class="n">PrinF</span><span class="p">;</span>
 
@@ -326,7 +326,7 @@
     <span class="c1">// do something with x
 </span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><p>Here is the output:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">int</span><span class="p">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">int</span><span class="p">]</span>
 <span class="n">Type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="kt">int</span>
 <span class="n">Type</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">:</span> <span class="kt">int</span>
 
@@ -338,16 +338,16 @@
 
 </code></pre></div><p>It seems that type of <code>T</code> and type of <code>x</code> is same, which is very intuitive also in this particular example. But that might not be always true as we will see below.</p>
 <p>Whenever we write <code>func(some_value)</code> compiler tries to <code>find</code> Or <code>resolve</code> the type of <code>T</code> as well as type of <code>x</code>. This type <code>resolving task</code> is also called as <code>template type deduction</code>. With these rules of <code>template type deduction</code> the deduction happens in two folds.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">step</span> <span class="mf">1.</span> <span class="n">Deduction</span> <span class="n">of</span> <span class="n">T</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">step</span> <span class="mf">1.</span> <span class="n">Deduction</span> <span class="n">of</span> <span class="n">T</span>
 <span class="n">step</span> <span class="mf">2.</span> <span class="n">Deduction</span> <span class="n">of</span> <span class="n">type</span> <span class="n">of</span> <span class="n">argument</span> <span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </code></pre></div><p>The iteresting thing is that, <code>step 1</code> depends on how we declare the function arguments.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">
 <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
 <span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="n">T</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
 
 </code></pre></div><p>In our current example, we declare the arguments as <code>T x</code>. With type deduction rules, the type of <code>x</code> and <code>T</code> will be same in this case.</p>
 <p>Lets try to change the argument declaration to <code>const T&amp; x</code> (why <code>const</code> ?? it has to do with lvalue or rvalue binding. we will not discuss that now)</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&#34;PrintHelper.hpp&#34;</span><span class="cp">
 </span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
@@ -372,7 +372,7 @@
 <span class="p">}</span>
 
 </code></pre></div><p>Output:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">int</span><span class="p">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mi">8</span><span class="o">:</span><span class="kt">void</span> <span class="n">func</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">[</span><span class="n">with</span> <span class="n">T</span> <span class="o">=</span> <span class="kt">int</span><span class="p">]</span>
 <span class="n">Type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">:</span> <span class="kt">int</span> <span class="k">const</span><span class="o">&amp;</span>
 <span class="n">Type</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">:</span> <span class="kt">int</span>
 
@@ -389,7 +389,7 @@ Therefore the basic question is how a single definition of <code>func</code> han
 <p>The answer is : <code>&quot;Compiler generates required functions for us&quot;</code>. So in the above example,
 we have two instances of calling <code>func(....)</code>, one with <code>int</code> and the other one with <code>const char*</code>.
 Compiler sees this and generates two function definitions for us. We can check this in gdb.</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// compile the code
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// compile the code
 </span><span class="c1"></span><span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">ggdb</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span> <span class="n">p01</span><span class="p">.</span><span class="n">cpp</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">address</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">leak</span>
 <span class="c1">// run gdb
 </span><span class="c1"></span><span class="n">gdb</span> <span class="p">.</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span>
@@ -402,17 +402,17 @@ Compiler sees this and generates two function definitions for us. We can check t
 
 </code></pre></div><hr>
 <p>Moving on, there can be three different types of template parameters:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span> <span class="n">parameter</span><span class="o">-</span><span class="n">list</span> <span class="o">&gt;</span> 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span> <span class="o">&lt;</span> <span class="n">parameter</span><span class="o">-</span><span class="n">list</span> <span class="o">&gt;</span> 
 <span class="n">declaration</span>
 </code></pre></div><p>Each parameter in parameter-list may be:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mf">1.</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">type</span> <span class="k">template</span> <span class="n">parameter</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="mf">1.</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">type</span> <span class="k">template</span> <span class="n">parameter</span>
 <span class="mf">2.</span> <span class="n">a</span> <span class="n">type</span> <span class="k">template</span> <span class="n">parameter</span>
 <span class="mf">3.</span> <span class="n">a</span> <span class="k">template</span> <span class="k">template</span> <span class="n">parameter</span><span class="p">.</span>
 </code></pre></div><p>We have only discusseed <code>2. a type template parameter</code> in the above examples.</p>
 <p>Lets know about <code>1. a non-type template parameter</code></p>
 <p>A <code>non-type template parameter</code> is an expression whose value can be determined at compiler time such as constant expression and address of function etc. More on <a href="https://en.cppreference.com/w/cpp/language/template_parameters#Non-type_template_parameter">this</a>.</p>
 <p>Here is an example: [Example 2]</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&#34;PrintHelper.hpp&#34;</span><span class="cp">
 </span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
 
@@ -448,18 +448,18 @@ Compiler sees this and generates two function definitions for us. We can check t
 </code></pre></div><p>Before viewing the output, lets check the template intantiation syntax in the above example.</p>
 <p><code>func&lt;6&gt;(args ...)</code> this is one more way specifying the template parameter.</p>
 <p>If we consider the earlier example, we could have instantiate <code>func</code> template function as follows:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">func</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">func</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 <span class="n">func</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&#34;abc&#34;</span><span class="p">));</span>
 <span class="n">func</span><span class="o">&lt;</span><span class="n">some_type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">value_of_that_type</span><span class="p">)</span>
 
 </code></pre></div><p>Back to the example 2, <code>func&lt;6&gt;(args ...)</code> is going to fix the template parameter N = 6 and the compiler is going to create a character array of size 6.</p>
 <p>Here is the output:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> 
 <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x1</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> 
 <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x1</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x4</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> 
 <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x1</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x4</span> <span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x9</span> <span class="n">x</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span> <span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0</span>
 </code></pre></div><p>GDB output also using <code>info functions</code> command:</p>
-<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">info</span> <span class="n">functions</span> <span class="n">func</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">info</span> <span class="n">functions</span> <span class="n">func</span>
 <span class="n">All</span> <span class="n">functions</span> <span class="n">matching</span> <span class="n">regular</span> <span class="n">expression</span> <span class="s">&#34;func&#34;</span><span class="o">:</span>
 
 <span class="n">File</span> <span class="n">p02</span><span class="p">.</span><span class="nl">cpp</span><span class="p">:</span>
@@ -655,7 +655,7 @@ Compiler sees this and generates two function definitions for us. We can check t
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.80.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.88.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
