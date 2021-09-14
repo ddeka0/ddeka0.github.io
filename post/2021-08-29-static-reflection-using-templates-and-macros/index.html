@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>Custom Static Reflection in C&#43;&#43; (Part-1) - Ethereal</title>
+  <title>Practical Template Meta Programming (Part-1) - Ethereal</title>
   <meta name="description" content="Static reflection using Template Meta Programming and Macros">
   <meta name="author" content="Debashish Deka"/><script type="application/ld+json">
 {
@@ -45,7 +45,7 @@
         "position": 3,
         "item": {
           "@id": "https:\/\/ddeka0.github.io\/post\/2021-08-29-static-reflection-using-templates-and-macros\/",
-          "name": "Custom static reflection in c ( part 1)"
+          "name": "Practical template meta programming ( part 1)"
         }
     }]
 }
@@ -56,10 +56,10 @@
   "author": {
     "name" : "Debashish Deka"
   },
-  "headline": "Custom Static Reflection in C\u002b\u002b (Part-1)",
+  "headline": "Practical Template Meta Programming (Part-1)",
   "description" : "In this blog we would implement a generic Print(user defined struct) utility function capable of printing all the public members of any user defined POD struct. For example:\n\/\/ We would like to Print MessageA \/\/ which has messageB as member item struct messageA { int a; messageB b; }; \/\/ messageB has messageD as member struct messageB { int p; messageD d[3]; }; \/\/ struct layout struct messageD { double t; int v; }; and we expect the output as shown below after executing the following program:",
   "inLanguage" : "en",
-  "wordCount":  2290 ,
+  "wordCount":  2301 ,
   "datePublished" : "2021-08-29T00:00:00",
   "dateModified" : "2021-08-29T00:00:00",
   "image" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
@@ -78,14 +78,14 @@
 }
 </script>
 
-<meta property="og:title" content="Custom Static Reflection in C&#43;&#43; (Part-1)" />
+<meta property="og:title" content="Practical Template Meta Programming (Part-1)" />
 <meta property="og:description" content="Static reflection using Template Meta Programming and Macros">
 <meta property="og:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
 <meta property="og:url" content="https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Ethereal" />
 
-  <meta name="twitter:title" content="Custom Static Reflection in C&#43;&#43; (Part-1)" />
+  <meta name="twitter:title" content="Practical Template Meta Programming (Part-1)" />
   <meta name="twitter:description" content="Static reflection using Template Meta Programming and Macros">
   <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
   <meta name="twitter:card" content="summary" />
@@ -226,7 +226,7 @@
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="post-heading">
               
-                <h1>Custom Static Reflection in C&#43;&#43; (Part-1)</h1>
+                <h1>Practical Template Meta Programming (Part-1)</h1>
               
               
               
@@ -244,7 +244,7 @@
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;11&nbsp;minutes
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2290&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2301&nbsp;words
   
   
     
@@ -316,7 +316,7 @@
       <span class="nl">v</span> <span class="p">:</span> <span class="mi">14</span>
   <span class="p">]</span>
 
-</code></pre></div><p><code>C++</code> does not support such utility function by default. In the remaining sections of this blog, we will explore the <code>Print</code> function.</p>
+</code></pre></div><p><code>C++</code> does not support such utility function by default. In the remaining sections of this blog, we will explore the <code>Print</code> function w.r.t to use of Templates.</p>
 <hr>
 <p>How do we usualy print the <a href="https://en.cppreference.com/w/cpp/language/access#Public_member_access">public members</a> of an <code>object</code> in <code>C++</code> ? We simply write code to print each members:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">member1</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
@@ -735,7 +735,7 @@ To understand the formation of the list, lets consider the line:</p>
 <span class="p">}</span>
 </code></pre></div><p>As we can see <code>CreateMetaInfo(A,2,&amp;A::x,&amp;A::y)</code> macro is used one time, to generate the <code>MetaClass</code> and the <code>ListOfMeta</code> needed for the print function to work. In the helper <code>Print</code> function we have used <code>using L = typename MetaClass&lt;T&gt;::type;</code> to extract out the <code>ListOfMeta</code> information and subsequently to pass to the recursive <code>print</code> function which does the actual printing work.</p>
 <p>For the purpose of this blog, I have reduced some of the details, required to handle nested struct, enums, or arrays. I have implemented these features in this <a href="https://github.com/ddeka0/cppLearn/tree/master/struct_serialization/final">(link)</a>.</p>
-<p>Continuing on the topic of templates and static reflection, we will see how we can achieve this with purely using templates.</p>
+<p>Continuing on the topic of templates and Meta Programming, in the next part, we will see how we can achieve the same solution without using any macros.</p>
 
 
         
@@ -762,7 +762,7 @@ To understand the formation of the list, lets consider the line:</p>
     <ul class="share">
       
       <li>
-        <a href="//twitter.com/share?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;text=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29&amp;via=" target="_blank" title="Share on Twitter">
+        <a href="//twitter.com/share?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;text=Practical%20Template%20Meta%20Programming%20%28Part-1%29&amp;via=" target="_blank" title="Share on Twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -776,28 +776,28 @@ To understand the formation of the list, lets consider the line:</p>
   
       
       <li>
-        <a href="//reddit.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;title=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29" target="_blank" title="Share on Reddit">
+        <a href="//reddit.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;title=Practical%20Template%20Meta%20Programming%20%28Part-1%29" target="_blank" title="Share on Reddit">
           <i class="fab fa-reddit"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;title=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29" target="_blank" title="Share on LinkedIn">
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;title=Practical%20Template%20Meta%20Programming%20%28Part-1%29" target="_blank" title="Share on LinkedIn">
           <i class="fab fa-linkedin"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;title=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29" target="_blank" title="Share on StumbleUpon">
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;title=Practical%20Template%20Meta%20Programming%20%28Part-1%29" target="_blank" title="Share on StumbleUpon">
           <i class="fab fa-stumbleupon"></i>
         </a>
       </li>
   
       
       <li>
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;description=Custom%20Static%20Reflection%20in%20C%2b%2b%20%28Part-1%29" target="_blank" title="Share on Pinterest">
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2021-08-29-static-reflection-using-templates-and-macros%2f&amp;description=Practical%20Template%20Meta%20Programming%20%28Part-1%29" target="_blank" title="Share on Pinterest">
           <i class="fab fa-pinterest"></i>
         </a>
       </li>

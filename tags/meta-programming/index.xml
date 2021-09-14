@@ -9,7 +9,7 @@
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
     <lastBuildDate>Sun, 29 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/tags/meta-programming/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Custom Static Reflection in C&#43;&#43; (Part-1)</title>
+      <title>Practical Template Meta Programming (Part-1)</title>
       <link>https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/</link>
       <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
       <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
