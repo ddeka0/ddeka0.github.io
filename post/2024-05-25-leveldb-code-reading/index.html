@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>A Deep Dive into the LSM Tree #1 - </title>
+
+  <meta name="description" content="Understanding LSM Tree using leveldb">
+  <meta name="author" content="Debashish Deka"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Ethereal",
+    
+    "url": "https:\/\/ddeka0.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ddeka0.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ddeka0.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ddeka0.github.io\/post\/2024-05-25-leveldb-code-reading\/",
+          "name": "A deep dive into the lsm tree #1"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Debashish Deka"
+  },
+  "headline": "A Deep Dive into the LSM Tree #1",
+  "description" : "I\u0026rsquo;ve been reading about LSM trees for a while but never really dived into any implementation. I thought of starting with an existing codebase. RocksDB came to mind since I\u0026rsquo;ve used it before at work, but its codebase is quite large. So, I decided to start with LevelDB, which has a much smaller codebase and, at first glance, looks more straightforward to understand.\nBefore I delve into LevelDB, here\u0026rsquo;s a brief introduction to LSM trees.",
+  "inLanguage" : "en",
+  "wordCount":  4637 ,
+  "datePublished" : "2024-05-25T00:00:00\u002b00:00",
+  "dateModified" : "2024-05-25T00:00:00\u002b00:00",
+  "image" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "c\u002b\u002b, LSMTree, leveldb" ],
+  "mainEntityOfPage" : "https:\/\/ddeka0.github.io\/post\/2024-05-25-leveldb-code-reading\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ddeka0.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+
+<meta property="og:title" content="A Deep Dive into the LSM Tree #1" />
+<meta property="og:description" content="Understanding LSM Tree using leveldb">
+<meta property="og:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ddeka0.github.io/post/2024-05-25-leveldb-code-reading/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Ethereal" />
+
+  <meta name="twitter:title" content="A Deep Dive into the LSM Tree #1" />
+  <meta name="twitter:description" content="Understanding LSM Tree using leveldb">
+  <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://ddeka0.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.126.1">
+  <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ddeka0.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ddeka0.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+  
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ddeka0.github.io/">Ethereal</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Ethereal" href="https://ddeka0.github.io/">
+            <img class="avatar-img" src="https://ddeka0.github.io/img/avatar-icon.png" alt="Ethereal" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>A Deep Dive into the LSM Tree #1</h1>
+              
+              
+              
+                
+                  <h2 class="post-subheading">Understanding LSM Tree using leveldb</h2>
+                
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on May 25, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;22&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;4637&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Debashish Deka
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>I&rsquo;ve been reading about LSM trees for a while but never really dived into any implementation. I thought of starting with an existing codebase. RocksDB came to mind since I&rsquo;ve used it before at work, but its codebase is quite large. So, I decided to start with LevelDB, which has a much smaller codebase and, at first glance, looks more straightforward to understand.</p>
+<p>Before I delve into LevelDB, here&rsquo;s a brief introduction to LSM trees.</p>
+<h4 id="lsm-tree-background">LSM Tree background</h4>
+<p>LSM-based key-value stores are great for writing data. When new data is added, it first goes into a fast, in-memory structure. Once this space fills up, the data is flushed to disk as a sorted file. Over time, these sorted files accumulate on the disk. The system periodically merges these files, cleaning up outdated versions and creating a more compact, organized structure for efficient reads. This approach, combining in-memory buffering with sorted file merging on disk, optimizes write speed while maintaining reasonable read performance.</p>
+<ol>
+<li><strong>In-memory Buffering:</strong> New data (key-value pairs) are first written to a fast, in-memory data structure.</li>
+<li><strong>Write-Ahead Log (WAL):</strong> Before or concurrently with updating the in-memory buffer, the data is also appended to a Write-Ahead Log (WAL) on disk. This log acts as a temporary record of the writes and ensures data durability in case of a system crash.</li>
+<li><strong>Flush to Disk:</strong> Once the in-memory buffer reaches its capacity, the data is flushed to disk as a new sorted file (SSTable).</li>
+<li><strong>Background Compaction:</strong> In the background, a separate process merges SSTables and the WAL. During compaction, outdated versions of keys are discarded, data is re-sorted, and written to a new, more efficient SSTable. The WAL entries corresponding to the included data in the new SSTable are then cleaned up.</li>
+</ol>
+<p>Including the WAL ensures that even if a crash occurs after data is written to the in-memory buffer but before it&rsquo;s flushed as an SSTable, the data can still be recovered during the next startup by replaying the unprocessed entries in the WAL.</p>
+<h3 id="leveldb">LevelDB</h3>
+<p>Here is a high-level overview diagram of LevelDB. We&rsquo;ll discuss all the components in detail with multiple examples below. (<a href="https://ieeexplore.ieee.org/ielx7/6287639/8948470/09056561.pdf">image source</a>)</p>
+<p><img src="/img/leveldb_diagram.png" alt="leveldb-overview"></p>
+<p>Lets <a href="https://github.com/google/leveldb#:~:text=of%20the%20box.-,Build%20for%20POSIX,-Quick%20start%3A">install</a> leveldb on a linux machine:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone --recurse-submodules https://github.com/google/leveldb.git
+</span></span><span class="line"><span class="cl">mkdir -p build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> build
+</span></span><span class="line"><span class="cl">cmake -DCMAKE_BUILD_TYPE<span class="o">=</span>Release .. <span class="o">&amp;&amp;</span> cmake --build .
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// Inside build directory:
+</span></span><span class="line"><span class="cl">-rw-rw-r--  <span class="m">1</span> ddk ddk  <span class="m">725606</span> May  <span class="m">4</span> 13:04 libleveldb.a
+</span></span></code></pre></div><p>While compiling our first leveldb program, we need to link to this static library <code>libleveldb.a</code> using <code>-lleveldb</code>.</p>
+<p>First Program:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cm">/* file: example1.cpp */</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;random&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;leveldb/db.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Function to generate random lowercase English letters
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">char</span> <span class="nf">randomLowercaseLetter</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">random_device</span> <span class="n">rd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">mt19937</span> <span class="n">gen</span><span class="p">(</span><span class="n">rd</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">uniform_int_distribution</span><span class="o">&lt;&gt;</span> <span class="n">dis</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">,</span> <span class="sc">&#39;z&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dis</span><span class="p">(</span><span class="n">gen</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Function to generate a random key of size 4 letters
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">generateRandomKey</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key</span> <span class="o">+=</span> <span class="n">randomLowercaseLetter</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">key</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Open LevelDB database
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">leveldb</span><span class="o">::</span><span class="n">DB</span><span class="o">*</span> <span class="n">db</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">leveldb</span><span class="o">::</span><span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">create_if_missing</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* Ignore these parameters for now */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">write_buffer_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="cm">/* Ignore these parameters for now */</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">compression</span> <span class="o">=</span> <span class="n">leveldb</span><span class="o">::</span><span class="n">CompressionType</span><span class="o">::</span><span class="n">kNoCompression</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">leveldb</span><span class="o">::</span><span class="n">Status</span> <span class="n">status</span> <span class="o">=</span> <span class="n">leveldb</span><span class="o">::</span><span class="n">DB</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s">&#34;/tmp/testdb-8&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Unable to open database: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">num_keys</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_keys</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">key</span> <span class="o">=</span> <span class="n">generateRandomKey</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&#34;Value_&#34;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// Insert key-value pair into the database
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">status</span> <span class="o">=</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">Put</span><span class="p">(</span><span class="n">leveldb</span><span class="o">::</span><span class="n">WriteOptions</span><span class="p">(),</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Error while writing to database: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">delete</span> <span class="n">db</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Close the database
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">delete</span> <span class="n">db</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Successfully wrote &#34;</span><span class="o">&lt;&lt;</span> <span class="n">num_keys</span> <span class="o">&lt;&lt;</span><span class="s">&#34; key-value pairs to LevelDB.&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>In the above example, we are inserting two key-value pairs into the database. Let&rsquo;s examine the database files generated after executing the program.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">// Compile <span class="nb">command</span> using g++
+</span></span><span class="line"><span class="cl">g++-11 example1.cpp -I&lt;path to leveldb/include&gt; -L&lt;path to leveldb/build&gt; -lleveldb
+</span></span></code></pre></div><h6 id="db-files">DB Files:</h6>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> ddk  ddk   <span class="m">4096</span> May <span class="m">25</span> 10:34 .
+</span></span><span class="line"><span class="cl">drwxrwxrwt <span class="m">22</span> root root <span class="m">12288</span> May <span class="m">25</span> 10:38 ..
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> ddk  ddk     <span class="m">66</span> May <span class="m">25</span> 10:34 000003.log
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> ddk  ddk     <span class="m">16</span> May <span class="m">25</span> 10:34 CURRENT
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> ddk  ddk      <span class="m">0</span> May <span class="m">25</span> 10:34 LOCK
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> ddk  ddk    <span class="m">151</span> May <span class="m">25</span> 10:34 LOG
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> ddk  ddk     <span class="m">50</span> May <span class="m">25</span> 10:34 MANIFEST-000002
+</span></span></code></pre></div><p>We see there is one <code>.log</code> file. When a key-value pair is inserted, LevelDB adds it to the memtable and also records it in the log file. This log file helps LevelDB recover key-values in case of a crash. In the above code, we added just two key-value pairs, which is not enough to fill one memtable. Therefore, the memtable is not yet converted to an SSTable to be added to the level hierarchy. In this case, the log file ensures the key-value pairs are persistent.</p>
+<p>Today, we&rsquo;ll check the <code>.log</code> file only. Let&rsquo;s examine the contents of <code>000003.log</code> file.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">❯ xxd /tmp/testdb-8/000003.log
+</span></span><span class="line"><span class="cl">00000000: 60ed <span class="m">8757</span> 1a00 <span class="m">0101</span> <span class="m">0000</span> <span class="m">0000</span> <span class="m">0000</span> <span class="m">0001</span>  <span class="sb">`</span>..W............
+</span></span><span class="line"><span class="cl">00000010: <span class="m">0000</span> <span class="m">0001</span> <span class="m">0462</span> <span class="m">6966</span> <span class="m">6407</span> <span class="m">5661</span> 6c75 655f  .....bifd.Value_
+</span></span><span class="line"><span class="cl">00000020: 302a 9d78 101a <span class="m">0001</span> <span class="m">0200</span> <span class="m">0000</span> <span class="m">0000</span> <span class="m">0000</span>  0*.x............
+</span></span><span class="line"><span class="cl">00000030: <span class="m">0100</span> <span class="m">0000</span> <span class="m">0104</span> 6b77 <span class="m">6867</span> <span class="m">0756</span> 616c <span class="m">7565</span>  ......kwhg.Value
+</span></span><span class="line"><span class="cl">00000040: 5f31                                     _1
+</span></span></code></pre></div><p>From the above hex dump, the portion for the first record is:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">60ed 8757 1a00 0101 0000 0000 0000 0001 0000 0001 0462 6966 6407 5661 6c75 655f 30
+</span></span></code></pre></div><p>This series of bytes follows the layout mentioned <a href="https://github.com/google/leveldb/blob/main/doc/log_format.md">here</a>.</p>
+<p>Also, this <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/db/log_reader.cc#L216">code</a> parses the header (starting 7 bytes) and verifies the checksum.</p>
+<ul>
+<li><strong>Checksum:</strong> <code>60ed 8757</code></li>
+<li><strong>Length:</strong> <code>1a00</code> (little endian) = 26</li>
+<li><strong>Type:</strong> <code>01</code></li>
+</ul>
+<p>The remaining 26 bytes are as follows:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">01 0000 0000 0000 0001 0000 0001 0462 6966 6407 5661 6c75 655f 30
+</span></span></code></pre></div><ul>
+<li>The starting 8-byte value is the sequence number for the first key-value pair. This value is stored in little-endian format. Therefore, the first sequence number is 1.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">01 0000 0000 0000 00
+</span></span></code></pre></div><ul>
+<li>The next 4 bytes contain the number of key-value pairs present in this record. LevelDB has a concept of a write batch, which may contain one or more key-value pairs. After reading this <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/db/db_impl.cc#L1200">code</a>, it seems that write batches contain multiple key-value pairs only in multi-threaded situations. In our example, we are writing to the database using only one application thread, so any write batch should contain only one key-value pair. Indeed, the next 4 bytes show a value <code>01 0000 00</code> = 1 (little endian format).</li>
+</ul>
+<p>So, we are left with the last portion of this record:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">01 0462 6966 6407 5661 6c75 655f 30
+</span></span></code></pre></div><ul>
+<li><code>01</code> indicates that it is of <code>ValueType::kTypeValue</code>, which is used internally in LevelDB&rsquo;s codebase.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Value types encoded as the last component of internal keys.
+</span></span></span><span class="line"><span class="cl"><span class="c1">// DO NOT CHANGE THESE ENUM VALUES: they are embedded in the on-disk
+</span></span></span><span class="line"><span class="cl"><span class="c1">// data structures.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">enum</span> <span class="nc">ValueType</span> <span class="p">{</span> <span class="n">kTypeDeletion</span> <span class="o">=</span> <span class="mh">0x0</span><span class="p">,</span> <span class="n">kTypeValue</span> <span class="o">=</span> <span class="mh">0x1</span> <span class="p">};</span>
+</span></span></code></pre></div><ul>
+<li>The length of the key is 4 bytes, represented by <code>04</code>. Note that the length of the key could be more than 255, so LevelDB has an <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/util/coding.h#L108">interesting way</a> of encoding the length of keys and values, which we will discuss in a later post.</li>
+</ul>
+<p>Finally, we get to the actual key and value:</p>
+<ul>
+<li><code>62 6966 64</code> = &ldquo;bifd&rdquo;</li>
+<li><code>5661 6c75 655f 30</code> = &ldquo;Value_0&rdquo;</li>
+</ul>
+<p>The length of the value is 7 bytes.</p>
+<p>There is a tool provided by LevelDB called <code>leveldbutil</code>, which gets generated when you <a href="https://github.com/google/leveldb/tree/main?tab=readme-ov-file#build-for-posix">build LevelDB from source</a>. This tool allows us to observe the contents of any files generated by LevelDB.</p>
+<p>Let&rsquo;s use <code>leveldbutil</code> to examine the contents of the log file <code>000003.log</code>. <code>leveldbutil</code> will be present inside the build directory.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">❯ ./leveldbutil dump /tmp/testdb-8/000003.log
+</span></span><span class="line"><span class="cl">--- offset 0<span class="p">;</span> sequence <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  put <span class="s1">&#39;bifd&#39;</span> <span class="s1">&#39;Value_0&#39;</span>
+</span></span><span class="line"><span class="cl">--- offset 33<span class="p">;</span> sequence <span class="m">2</span>
+</span></span><span class="line"><span class="cl">  put <span class="s1">&#39;kwhg&#39;</span> <span class="s1">&#39;Value_1&#39;</span>
+</span></span></code></pre></div><p>This command will output the contents of the log file in a human-readable format, allowing us to see the key-value pairs and other information stored in it.</p>
+<p>I&rsquo;ve also added additional logging to the code to print messages during write operations.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;thread id&gt;     &lt;function name&gt;   : &lt;line num&gt; ...
+</span></span><span class="line"><span class="cl">130941237274432 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/MANIFEST-000001
+</span></span><span class="line"><span class="cl">130941237274432 Open : 1556 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">130941237274432 Put : 1504 Put - key: bifd
+</span></span><span class="line"><span class="cl">130941237274432 Write : 1240 Adding 1 records to log. last_sequence = 1
+</span></span><span class="line"><span class="cl">130941237274432 Write : 1250 Adding 1 records to mem table. last_sequence = 1
+</span></span><span class="line"><span class="cl">130941237274432 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">130941237274432 Put : 1504 Put - key: kwhg
+</span></span><span class="line"><span class="cl">130941237274432 Write : 1240 Adding 1 records to log. last_sequence = 2
+</span></span><span class="line"><span class="cl">130941237274432 Write : 1250 Adding 1 records to mem table. last_sequence = 2
+</span></span><span class="line"><span class="cl">130941237274432 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Successfully wrote 2 key-value pairs to LevelDB.
+</span></span></code></pre></div><p>As observed, the log file records are added first before the key-value pairs are inserted into the memtable. This protects against data loss in the event of system crashes or failures. It&rsquo;s worth noting that at this stage, no SST files exist in the system. SST files are stored within the levels of LevelDB.</p>
+<p>Now, let&rsquo;s explore a different example where we open the same database and read keys from it.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cm">/* file: example2.cpp */</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;leveldb/db.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Open LevelDB database
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">leveldb</span><span class="o">::</span><span class="n">DB</span><span class="o">*</span> <span class="n">db</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">leveldb</span><span class="o">::</span><span class="n">Options</span> <span class="n">options</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">create_if_missing</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">write_buffer_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">options</span><span class="p">.</span><span class="n">compression</span> <span class="o">=</span> <span class="n">leveldb</span><span class="o">::</span><span class="n">CompressionType</span><span class="o">::</span><span class="n">kNoCompression</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">leveldb</span><span class="o">::</span><span class="n">Status</span> <span class="n">status</span> <span class="o">=</span> <span class="n">leveldb</span><span class="o">::</span><span class="n">DB</span><span class="o">::</span><span class="n">Open</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="s">&#34;/tmp/testdb-8&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">db</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Unable to open database: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">status</span> <span class="o">=</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="n">leveldb</span><span class="o">::</span><span class="n">ReadOptions</span><span class="p">(),</span> <span class="s">&#34;abcd&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Key does not exits: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Value for key: abcd is: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">status</span> <span class="o">=</span> <span class="n">db</span><span class="o">-&gt;</span><span class="n">Get</span><span class="p">(</span><span class="n">leveldb</span><span class="o">::</span><span class="n">ReadOptions</span><span class="p">(),</span> <span class="s">&#34;bifd&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Key does not exits: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">ToString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Value for key: bifd is: &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">value</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Close the database
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">delete</span> <span class="n">db</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>In the above example, we are reading two keys from the database. The first key, &ldquo;abcd,&rdquo; is expected to not exist, while the second key, &ldquo;bifd,&rdquo; should exist.</p>
+<p>Here the trace output after running this program.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❯ ./a.out
+</span></span><span class="line"><span class="cl">124976298780480 BuildTable : 28 Created table file : /tmp/testdb-8/000005.ldb
+</span></span><span class="line"><span class="cl">124976298780480 WriteLevel0Table : 525 Writing to Level0 files, table: 5 of file size: 145
+</span></span><span class="line"><span class="cl">124976298780480 Recover : 384 Recovery done
+</span></span><span class="line"><span class="cl">124976298780480 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/000003.log
+</span></span><span class="line"><span class="cl">124976298780480 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/MANIFEST-000002
+</span></span><span class="line"><span class="cl">124976298780480 Open : 1556 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Key does not exits: NotFound: 
+</span></span><span class="line"><span class="cl">Value for key: bifd is: Value_0
+</span></span></code></pre></div><p>And the contents of the db directory</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❯ ls -all
+</span></span><span class="line"><span class="cl">total 36
+</span></span><span class="line"><span class="cl">drwxr-xr-x  2 ddk  ddk   4096 May 25 17:32 .
+</span></span><span class="line"><span class="cl">drwxrwxrwt 23 root root 12288 May 25 17:32 ..
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk    145 May 25 17:32 000005.ldb
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk      0 May 25 17:32 000006.log
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk     16 May 25 17:32 CURRENT
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk      0 May 25 17:20 LOCK
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk    452 May 25 17:32 LOG
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk    151 May 25 17:20 LOG.old
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk     81 May 25 17:32 MANIFEST-000004
+</span></span></code></pre></div><p>As observed from the log traces, a new SST file is created from with the file name <code>/tmp/testdb-8/000005.ldb</code>. This SST file is then added to Level 0, and the old log file (<code>000003.log</code>) is deleted. The creation of this SST file is based on the existing log file, meaning the log file is converted to an SST file during recovery if the log file was not empty.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1] 
+</span></span></code></pre></div><p>This is a concise representation of an SST file, where the file number is 5. File numbers are monotonically increasing and are persisted in the MANIFEST file, a topic we&rsquo;ll discuss in a later post.</p>
+<p>The segment <code>'bifd':1:1 -&gt; 'kwhg':2:1</code> indicates that the smallest key is &lsquo;bifd&rsquo; with sequence number 1 and value type 1 (or kTypeValue). The largest key in this file is &lsquo;kwhg&rsquo; with sequence number 2 and value type 1.</p>
+<p>A new log file, <code>000006.log</code>, is created, while the old log file is deleted.</p>
+<p>Let&rsquo;s examine the contents of <code>000005.ldb</code> using <code>leveldbutil</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❯ ./leveldbutil dump /tmp/testdb-8/000005.ldb
+</span></span><span class="line"><span class="cl">&#39;bifd&#39; @ 1 : val =&gt; &#39;Value_0&#39;
+</span></span><span class="line"><span class="cl">&#39;kwhg&#39; @ 2 : val =&gt; &#39;Value_1&#39;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">❯ ./leveldbutil dump /tmp/testdb-8/000006.log
+</span></span></code></pre></div><p>We can see that there are only two key-value pairs in <code>000005.ldb</code>, and <code>000006.log</code> is empty, as expected, since no new keys were inserted.</p>
+<p>Additionally, you can try running the second program multiple times and observe that each time, the old log file is deleted and a new log file is created.</p>
+<p>Let&rsquo;s fill the memtable by adding 12 new keys. You can achieve this by modifying the <code>num_keys</code> variable in your <code>example1.cpp</code> code to 12.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❯ ./a.out
+</span></span><span class="line"><span class="cl">137757878200128 Recover : 384 Recovery done
+</span></span><span class="line"><span class="cl">137757878200128 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/MANIFEST-000004
+</span></span><span class="line"><span class="cl">137757878200128 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/000006.log
+</span></span><span class="line"><span class="cl">137757878200128 Open : 1556 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: pmyh
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 3
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 3
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: itpe
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 4
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 4
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: tosu
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 5
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 5
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: qocp
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 6
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 6
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: bcct
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 7
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 7
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: zlzj
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 8
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 8
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: sxxg
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 9
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 9
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: brfd
+</span></span><span class="line"><span class="cl">137757878200128 MakeRoomForWrite : 1378 There is no more space in the current 1st mem table. Creating a new log file for the 2nd memtable with log number : 9
+</span></span><span class="line"><span class="cl">137757878200128 MakeRoomForWrite : 1382 Created new log file /tmp/testdb-8/000009.log
+</span></span><span class="line"><span class="cl">137757878200128 MakeRoomForWrite : 1412 Scheduling compaction ...
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 10
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 10
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: --- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757871568448 BackgroundCompaction : 708 Starting Background Compaction
+</span></span><span class="line"><span class="cl">137757871568448 BackgroundCompaction : 709 Before compaction: Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: xlww
+</span></span><span class="line"><span class="cl">137757871568448 CompactMemTable : 553 Compacting mem table
+</span></span><span class="line"><span class="cl">137757871568448 BuildTable : 28 Created table file : /tmp/testdb-8/000010.ldb
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 11
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 11
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: xbmp
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 12
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 12
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: fzkj
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 13
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 13
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: zmqx
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1240 Adding 1 records to log. last_sequence = 14
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1250 Adding 1 records to mem table. last_sequence = 14
+</span></span><span class="line"><span class="cl">137757878200128 Write : 1282 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">137757871568448 WriteLevel0Table : 525 Writing to Level0 files, table: 10 of file size: 256
+</span></span><span class="line"><span class="cl">Successfully wrote 12 key-value pairs to LevelDB.
+</span></span></code></pre></div><p>A couple of noticeable things happened this time. During the insertion of the key &ldquo;brfd&rdquo;, LevelDB determined that there was no additional space in the memtable. Consequently, LevelDB switched to a second memtable and scheduled compaction to move the first memtable to a new SST file. This new SST file will typically be added to Level 0. Note that a new log file, <code>000015.log</code>, was also created for the second memtable. LevelDB maintains two memtables, with one active at a time while the other may be getting flushed to disk.</p>
+<p>Additionally, note that the thread ID in the following two trace lines is different:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">137757871568448 BackgroundCompaction : 708 Starting Background Compaction
+</span></span><span class="line"><span class="cl">137757878200128 Put : 1504 Put - key: xlww
+</span></span></code></pre></div><p>This indicates that the compaction occurs in a different thread, which is managed by LevelDB.</p>
+<p>However, we haven&rsquo;t observed any traces indicating new SST files being added to the leveled files. This could be due to the application thread ending before the compaction process completed.</p>
+<p>Lets check the database files</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">total 48
+</span></span><span class="line"><span class="cl">drwxr-xr-x  2 ddk  ddk   4096 May 25 17:59 .
+</span></span><span class="line"><span class="cl">drwxrwxrwt 23 root root 12288 May 25 18:04 ..
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk    145 May 25 17:32 000005.ldb
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk    231 May 25 17:59 000008.log
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk    167 May 25 17:59 000009.log
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk    256 May 25 17:59 000010.ldb
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk     16 May 25 17:59 CURRENT
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk      0 May 25 17:20 LOCK
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk    454 May 25 17:59 LOG
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk    452 May 25 17:32 LOG.old
+</span></span><span class="line"><span class="cl">-rw-r--r--  1 ddk  ddk     81 May 25 17:59 MANIFEST-000007
+</span></span></code></pre></div><p>We can observe two log files: <code>000008.log</code>, which is older, and <code>000009.log</code>, the newer one (as indicated by the traces above). Ideally, after memtable compaction, <code>000008.log</code> should have been deleted because the new SST file, <code>000010.ldb</code>, should contain all the records present in <code>000008.log</code>. Let&rsquo;s verify this first using <code>leveldbutil</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❯ ./leveldbutil dump /tmp/testdb-8/000008.log
+</span></span><span class="line"><span class="cl">--- offset 0; sequence 3
+</span></span><span class="line"><span class="cl">  put &#39;pmyh&#39; &#39;Value_0&#39;
+</span></span><span class="line"><span class="cl">--- offset 33; sequence 4
+</span></span><span class="line"><span class="cl">  put &#39;itpe&#39; &#39;Value_1&#39;
+</span></span><span class="line"><span class="cl">--- offset 66; sequence 5
+</span></span><span class="line"><span class="cl">  put &#39;tosu&#39; &#39;Value_2&#39;
+</span></span><span class="line"><span class="cl">--- offset 99; sequence 6
+</span></span><span class="line"><span class="cl">  put &#39;qocp&#39; &#39;Value_3&#39;
+</span></span><span class="line"><span class="cl">--- offset 132; sequence 7
+</span></span><span class="line"><span class="cl">  put &#39;bcct&#39; &#39;Value_4&#39;
+</span></span><span class="line"><span class="cl">--- offset 165; sequence 8
+</span></span><span class="line"><span class="cl">  put &#39;zlzj&#39; &#39;Value_5&#39;
+</span></span><span class="line"><span class="cl">--- offset 198; sequence 9
+</span></span><span class="line"><span class="cl">  put &#39;sxxg&#39; &#39;Value_6&#39;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">❯ ./leveldbutil dump /tmp/testdb-8/000010.ldb
+</span></span><span class="line"><span class="cl">&#39;bcct&#39; @ 7 : val =&gt; &#39;Value_4&#39;
+</span></span><span class="line"><span class="cl">&#39;itpe&#39; @ 4 : val =&gt; &#39;Value_1&#39;
+</span></span><span class="line"><span class="cl">&#39;pmyh&#39; @ 3 : val =&gt; &#39;Value_0&#39;
+</span></span><span class="line"><span class="cl">&#39;qocp&#39; @ 6 : val =&gt; &#39;Value_3&#39;
+</span></span><span class="line"><span class="cl">&#39;sxxg&#39; @ 9 : val =&gt; &#39;Value_6&#39;
+</span></span><span class="line"><span class="cl">&#39;tosu&#39; @ 5 : val =&gt; &#39;Value_2&#39;
+</span></span><span class="line"><span class="cl">&#39;zlzj&#39; @ 8 : val =&gt; &#39;Value_5&#39;
+</span></span></code></pre></div><p>So, our guess was correct. One of the memtables got compacted, and a new SST file was persisted to the disk. However, the corresponding log file still exists in the database folder. It&rsquo;s possible that the application ended, and the log file would have been deleted soon after. Additionally, note that SST files (.ldb) are sorted by keys, which is a well-known property of SST files.</p>
+<p>Lets try to run it again without inserting any new keys.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❯ ./a.out
+</span></span><span class="line"><span class="cl">130164466403136 BuildTable : 28 Created table file : /tmp/testdb-8/000010.ldb
+</span></span><span class="line"><span class="cl">130164466403136 WriteLevel0Table : 525 Writing to Level0 files, table: 10 of file size: 256
+</span></span><span class="line"><span class="cl">130164466403136 BuildTable : 28 Created table file : /tmp/testdb-8/000011.ldb
+</span></span><span class="line"><span class="cl">130164466403136 WriteLevel0Table : 525 Writing to Level0 files, table: 11 of file size: 212
+</span></span><span class="line"><span class="cl">130164466403136 Recover : 384 Recovery done
+</span></span><span class="line"><span class="cl">130164466403136 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/000009.log
+</span></span><span class="line"><span class="cl">130164466403136 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/MANIFEST-000007
+</span></span><span class="line"><span class="cl">130164466403136 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/000008.log
+</span></span><span class="line"><span class="cl">130164466403136 Open : 1556 Current version status: --- level 0 ---
+</span></span><span class="line"><span class="cl"> 10:256[&#39;bcct&#39;:7:1 -&gt; &#39;zlzj&#39;:8:1]
+</span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
+</span></span><span class="line"><span class="cl"> 11:212[&#39;brfd&#39;:10:1 -&gt; &#39;zmqx&#39;:14:1]
+</span></span><span class="line"><span class="cl">--- level 1 ---
+</span></span><span class="line"><span class="cl">--- level 2 ---
+</span></span><span class="line"><span class="cl">--- level 3 ---
+</span></span><span class="line"><span class="cl">--- level 4 ---
+</span></span><span class="line"><span class="cl">--- level 5 ---
+</span></span><span class="line"><span class="cl">--- level 6 ---
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Successfully wrote 0 key-value pairs to LevelDB.
+</span></span></code></pre></div><p>So, this time, two new SST files were created and added to Level 0, while both <code>000009.log</code> and <code>000008.log</code> were deleted. This behavior during LevelDB recovery is expected, as we observed in the previous section.</p>
+<!-- raw HTML omitted -->
+<p>Up to this point, we&rsquo;ve only discussed memtable compaction and adding SST files to Level 0. LevelDB also performs compaction of Level 0 files and adds them to Level 1, and so on. However, this topic is not covered in this blog.</p>
+<p>You may have noticed how quickly the memtable fills up, even with only a few keys inserted. This is due to the limit set on the write_buffer_size. I forgot to include memtable memory usage in the previous examples, so I created a new database instance and inserted a few keys to fill up the memtable.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">134426232211264 Put : 1505 Put - key: phrv
+</span></span><span class="line"><span class="cl">134426232211264 MakeRoomForWrite : 1343 mem_-&gt;ApproximateMemoryUsage() = 520
+</span></span><span class="line"><span class="cl">134426232211264 MakeRoomForWrite : 1379 There is no more space in the current 1st mem table. Creating a new log file for the 2nd memtable with log number : 4
+</span></span></code></pre></div><p>As observed, when the memtable memory usage reaches 520, it stops adding keys and starts preparing to flush to disk. This is because we have set the write_buffer_size to 512. It&rsquo;s worth noting that the memtable is an in-memory data structure that uses a <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/db/skiplist.h#L180C70-L180C78">skiplist</a>, which in turn uses an <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/util/arena.cc#L38">arena</a> memory allocator. Therefore, some additional memory is used to maintain the skiplist data structure, beyond the target write_buffer_size.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">options</span><span class="p">.</span><span class="n">write_buffer_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">;</span>
+</span></span></code></pre></div><p>I also had to reduce the <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/util/arena.cc#L9">block size</a> in the <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/util/arena.cc#L38">arena</a> allocator to <code>128</code> bytes. This was necessary because the default value of <code>4k</code> block size is too large and would fit a lot of key-value pairs, which would not be suitable for our examples. Additionally, it also requires that the <code>write_buffer_size</code> be at least 5k bytes with <code>4k</code> arena block size. Setting <code>write_buffer_size</code> to <code>512</code> bytes while keeping arena block size defaulted to <code>4k</code> makes LevelDB go into an unexpected loop, with the memtable always full even without adding any keys.</p>
+<p>Please check the <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/include/leveldb/options.h#L75">comment</a> about <code>write_buffer_size</code> to know more about it.</p>
+<!-- raw HTML omitted -->
+<p>Finally, I want to briefly discuss the multi-threaded key insertion operation in LevelDB.</p>
+<p>Here is the user-facing API for writing data:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Status</span> <span class="n">DB</span><span class="o">::</span><span class="n">Put</span><span class="p">(</span><span class="k">const</span> <span class="n">WriteOptions</span><span class="o">&amp;</span> <span class="n">opt</span><span class="p">,</span> <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">,</span> <span class="k">const</span> <span class="n">Slice</span><span class="o">&amp;</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">WriteBatch</span> <span class="n">batch</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">batch</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nf">Write</span><span class="p">(</span><span class="n">opt</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">batch</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Every key-value insertion is first encapsulated into a <code>WriteBatch</code>. This batch is then processed by the following function:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Status</span> <span class="n">DBImpl</span><span class="o">::</span><span class="n">Write</span><span class="p">(</span><span class="k">const</span> <span class="n">WriteOptions</span><span class="o">&amp;</span> <span class="n">options</span><span class="p">,</span> <span class="n">WriteBatch</span><span class="o">*</span> <span class="n">updates</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="n">Writer</span> <span class="nf">w</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">w</span><span class="p">.</span><span class="n">batch</span> <span class="o">=</span> <span class="n">updates</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">w</span><span class="p">.</span><span class="n">sync</span> <span class="o">=</span> <span class="n">options</span><span class="p">.</span><span class="n">sync</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="n">w</span><span class="p">.</span><span class="n">done</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="n">MutexLock</span> <span class="nf">l</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="n">writers_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="o">&amp;</span><span class="n">w</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// Loop where other writes get blocked and 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="c1">// waits for the front writer to exit this function
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">w</span><span class="p">.</span><span class="n">done</span> <span class="o">&amp;&amp;</span> <span class="o">&amp;</span><span class="n">w</span> <span class="o">!=</span> <span class="n">writers_</span><span class="p">.</span><span class="n">front</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">w</span><span class="p">.</span><span class="n">cv</span><span class="p">.</span><span class="n">Wait</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">done</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">w</span><span class="p">.</span><span class="n">status</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">....</span>
+</span></span><span class="line"><span class="cl">  <span class="p">....</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// May temporarily unlock and wait.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="n">Status</span> <span class="n">status</span> <span class="o">=</span> <span class="n">MakeRoomForWrite</span><span class="p">(</span><span class="n">updates</span> <span class="o">==</span> <span class="k">nullptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">updates</span> <span class="o">!=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Collect more batches to create a larger batch
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">WriteBatch</span><span class="o">*</span> <span class="n">write_batch</span> <span class="o">=</span> <span class="n">BuildBatchGroup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">last_writer</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">....</span>
+</span></span><span class="line"><span class="cl">    <span class="p">....</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">mutex_</span><span class="p">.</span><span class="n">Unlock</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">// This is a slow operation
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>      <span class="n">status</span> <span class="o">=</span> <span class="n">log_</span><span class="o">-&gt;</span><span class="n">AddRecord</span><span class="p">(</span><span class="n">WriteBatchInternal</span><span class="o">::</span><span class="n">Contents</span><span class="p">(</span><span class="n">write_batch</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="n">status</span><span class="p">.</span><span class="n">ok</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">// Adds the batch to memtable
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="n">status</span> <span class="o">=</span> <span class="n">WriteBatchInternal</span><span class="o">::</span><span class="n">InsertInto</span><span class="p">(</span><span class="n">write_batch</span><span class="p">,</span> <span class="n">mem_</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="n">mutex_</span><span class="p">.</span><span class="n">Lock</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">      <span class="p">....</span>
+</span></span><span class="line"><span class="cl">      <span class="p">....</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Writer</span><span class="o">*</span> <span class="n">ready</span> <span class="o">=</span> <span class="n">writers_</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">writers_</span><span class="p">.</span><span class="n">pop_front</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ready</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="n">ready</span><span class="o">-&gt;</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">ready</span><span class="o">-&gt;</span><span class="n">done</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="n">ready</span><span class="o">-&gt;</span><span class="n">cv</span><span class="p">.</span><span class="n">Signal</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">ready</span> <span class="o">==</span> <span class="n">last_writer</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="c1">// Notify new head of write queue
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">writers_</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">writers_</span><span class="p">.</span><span class="n">front</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">cv</span><span class="p">.</span><span class="n">Signal</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">status</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>In this function, every application thread that attempts key insertion becomes a writer thread and pushes a writer object to the <code>writers_</code> deque. While one of the writers (say w1) is inside the critical section (<code>BuildBatchGroup</code>), other concurrent writers (say w2, w3, w4, &hellip;) will get stuck at the line <code>MutexLock l(&amp;mutex_);</code>. When w1 unlocks the mutex and initiates appending to the log and memtable, the writes waiting on the mutex will now have access to the <code>writers_</code> queue and push their write objects to it. However, these writers cannot proceed further due to the next while loop, as they are waiting for w1 to exit this function. W1 will notify the next writer (w2) at the front of the queue. At this point, w2 will enter the critical section and group multiple write batches with single records into a larger write batch containing multiple records or key-value pairs.</p>
+<p>So that&rsquo;s it for this entry of the LevelDB blog. In the next post, I will cover versions and delve into the details of compaction in LevelDB. For curious readers, <a href="https://groups.google.com/g/leveldb/c/2yrOsOneooY/m/oJq4UNDGXhgJ">here</a> is a brief description about versions.</p>
+
+
+        
+          <div class="blog-tags">
+            
+              <a href="https://ddeka0.github.io//tags/c&#43;&#43;/">c&#43;&#43;</a>&nbsp;
+            
+              <a href="https://ddeka0.github.io//tags/lsmtree/">LSMTree</a>&nbsp;
+            
+              <a href="https://ddeka0.github.io//tags/leveldb/">leveldb</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2024-05-25-leveldb-code-reading%2f&amp;text=A%20Deep%20Dive%20into%20the%20LSM%20Tree%20%231&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fddeka0.github.io%2fpost%2f2024-05-25-leveldb-code-reading%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2024-05-25-leveldb-code-reading%2f&amp;title=A%20Deep%20Dive%20into%20the%20LSM%20Tree%20%231" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2024-05-25-leveldb-code-reading%2f&amp;title=A%20Deep%20Dive%20into%20the%20LSM%20Tree%20%231" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2024-05-25-leveldb-code-reading%2f&amp;title=A%20Deep%20Dive%20into%20the%20LSM%20Tree%20%231" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fddeka0.github.io%2fpost%2f2024-05-25-leveldb-code-reading%2f&amp;description=A%20Deep%20Dive%20into%20the%20LSM%20Tree%20%231" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/2020-12-26-cpp-chronicle-2/">Cpp chronicle #2</a></li>
+                
+                    <li><a href="/post/2020-07-23-cpp-chronicle-1/">Cpp chronicle #1</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/" data-toggle="tooltip" data-placement="top" title="Practical Template Meta Programming (Part-1)">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:debashishdekanits2015@gmail.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://www.facebook.com/username" title="Facebook">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/ddeka0" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://linkedin.com/in/deka-debashish" title="LinkedIn">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://stackoverflow.com/users/4044050/debashish" title="StackOverflow">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://www.youtube.com/channel/UCXhljYypuZkCoo__Y0fNz9w" title="Youtube">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-youtube fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Debashish Deka
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ddeka0.github.io/">Ethereal</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.126.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://ddeka0.github.io/js/main.js"></script>
+<script src="https://ddeka0.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ddeka0.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

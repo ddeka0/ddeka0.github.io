@@ -7,7 +7,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>Tour of Registers - Ethereal</title>
+ 
+
+
+      <title>Tour of Registers - </title>
+
   <meta name="description" content="User Space Thead in C&#43;&#43;">
   <meta name="author" content="Debashish Deka"/><script type="application/ld+json">
 {
@@ -59,9 +63,9 @@
   "headline": "Tour of Registers",
   "description" : "This is a series of blogs exploring the implementation of User Space Thread in C\u002b\u002b. A user-space thread is managed by the userspace code with very minimal involvement of the Kernel APIs. This blog will not discuss the pros and cons of User Space Thread, nevertheless, you might want to check this. I believe that knowing the machinery of User Space Thread implementation will help us to understand the new Coroutine feature released in C\u002b\u002b20 (Talk from cppcon 2015).",
   "inLanguage" : "en",
-  "wordCount":  2749 ,
-  "datePublished" : "2021-01-15T00:00:00",
-  "dateModified" : "2021-01-15T00:00:00",
+  "wordCount":  2750 ,
+  "datePublished" : "2021-01-15T00:00:00\u002b00:00",
+  "dateModified" : "2021-01-15T00:00:00\u002b00:00",
   "image" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
   "keywords" : [ "C\u002b\u002b, x86_64, assembly, thread" ],
   "mainEntityOfPage" : "https:\/\/ddeka0.github.io\/post\/2021-01-16-tour-of-registers-1\/",
@@ -78,6 +82,7 @@
 }
 </script>
 
+
 <meta property="og:title" content="Tour of Registers" />
 <meta property="og:description" content="User Space Thead in C&#43;&#43;">
 <meta property="og:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
@@ -88,17 +93,18 @@
   <meta name="twitter:title" content="Tour of Registers" />
   <meta name="twitter:description" content="User Space Thead in C&#43;&#43;">
   <meta name="twitter:image" content="https://ddeka0.github.io/img/avatar-icon.png" />
-  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link href='https://ddeka0.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.88.1" />
-  <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css" integrity="sha384-9eLZqc9ds8eNjO3TmqPeYcDj8n+Qfa4nuSiGYa6DjLNcv9BtN69ZIulL9+8CqC9Y" crossorigin="anonymous">
+  <meta name="generator" content="Hugo 0.126.1">
+  <link rel="alternate" href="https://ddeka0.github.io/index.xml" type="application/rss+xml" title="Ethereal"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://ddeka0.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
   <link rel="stylesheet" href="https://ddeka0.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ddeka0.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
 
 
+  
 
 
   </head>
@@ -220,6 +226,7 @@
 
   <header class="header-section ">
     
+    
     <div class="intro-header no-img">
       <div class="container">
         <div class="row">
@@ -238,13 +245,13 @@
                 <span class="post-meta">
   
   
-  <i class="fas fa-calendar"></i>&nbsp;
+  <i class="fas fa-calendar"></i>&nbsp;Posted on January 15, 2021
   
   
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;13&nbsp;minutes
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2749&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2750&nbsp;words
   
   
     
@@ -261,6 +268,7 @@
         </div>
       </div>
     </div>
+  
   </header>
 
 
@@ -325,97 +333,96 @@
 <p>We will spend most of the time explaining Point <code>2</code>. But before that we will see Point <code>1</code></p>
 <p>Let&rsquo;s see how we can use <code>jmp</code> or <code>call</code> instruction to make <code>%rip</code> point to the starting instruction of <code>G</code>.</p>
 <p>In the following code, we used inline assembly to setup the user thread context, mainly stack pointer.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-</span><span class="cp"></span>
-<span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">stackSize</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">;</span>
-
-<span class="kt">void</span> <span class="nf">func</span><span class="p">()</span> <span class="p">{</span>
-
-     <span class="c1">// some dummy local variable
-</span><span class="c1"></span>     <span class="kt">int</span> <span class="n">x</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
-     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;func() called&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-    
-     <span class="c1">// why not return from here ??
-</span><span class="c1"></span>     <span class="c1">// we will check this point in the next section
-</span><span class="c1"></span>     <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-
-     <span class="c1">// allocate 1 MB memory on heap
-</span><span class="c1"></span>     <span class="c1">// we will use for the child thread to use it as stack
-</span><span class="c1"></span>     <span class="kt">char</span> <span class="o">*</span> <span class="n">heapMemory</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">stackSize</span><span class="p">];</span>
-
-     <span class="c1">// get the highest address of the allocated memory area
-</span><span class="c1"></span>     <span class="c1">// that will be initial stack top for the child thread
-</span><span class="c1"></span>     <span class="kt">uint64_t</span> <span class="n">Stack</span> <span class="o">=</span> <span class="kt">uint64_t</span><span class="p">(</span><span class="n">heapMemory</span> <span class="o">+</span> <span class="n">stackSize</span><span class="p">);</span>
-
-     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Initial Stack top addr = &#34;</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)(</span><span class="n">Stack</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-
-     <span class="kt">uint64_t</span> <span class="n">fptr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">func</span><span class="p">;</span>
-
-     <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span>
-
-          <span class="c1">// store function pointer to %r8
-</span><span class="c1"></span>          <span class="c1">// jmp or call instruction will use it to jump
-</span><span class="c1"></span>          <span class="s">&#34;movq %[_func], %%r8</span><span class="se">\n\t</span><span class="s">&#34;</span>
-
-          <span class="c1">// store input stack address to %r9
-</span><span class="c1"></span>          <span class="s">&#34;movq %[_rsp], %%r9</span><span class="se">\n\t</span><span class="s">&#34;</span>
-
-          <span class="c1">// Now load the actual %rsp
-</span><span class="c1"></span>          <span class="s">&#34;movq %%r9, %%rsp</span><span class="se">\n\t</span><span class="s">&#34;</span>
-
-
-          <span class="c1">// then jump to the value stored in r8 -&gt; func
-</span><span class="c1"></span>          <span class="c1">// We can use call instruction also
-</span><span class="c1"></span>          <span class="c1">// callq *%%r8
-</span><span class="c1"></span>
-          <span class="s">&#34;jmp *%%r8 </span><span class="se">\n\t</span><span class="s">&#34;</span>
-
-
-          <span class="cm">/* Output variable section (Empty)*/</span>
-          <span class="o">:</span>
-          <span class="cm">/* Input variable section */</span>
-          <span class="o">:</span><span class="p">[</span><span class="n">_func</span><span class="p">]</span> <span class="s">&#34;m&#34;</span> <span class="p">(</span><span class="n">fptr</span><span class="p">)</span> <span class="p">,</span> <span class="p">[</span><span class="n">_rsp</span><span class="p">]</span> <span class="s">&#34;m&#34;</span> <span class="p">(</span><span class="n">Stack</span><span class="p">)</span>
-
-          <span class="cm">/* cloberred register list : see below */</span>
-          <span class="o">:</span><span class="s">&#34;r8&#34;</span><span class="p">,</span><span class="s">&#34;r9&#34;</span>
-     <span class="p">);</span>
-
-     <span class="cm">/**clobbered list: =&gt; The compiler avoids using a register in this list 
-</span><span class="cm">      * as an input or output operand, or using it to store 
-</span><span class="cm">      * another value when the assembly code is executed.   */</span>
-
-     <span class="cm">/*control will not reach here, due a problem in our code
-</span><span class="cm">     we will fix it in the next section */</span>
-     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Main again!&#34;</span> <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-     <span class="k">delete</span><span class="p">[]</span> <span class="n">heapMemory</span><span class="p">;</span>
-<span class="p">}</span>
-
-</code></pre></div><p>The instruction <code>movq %[_rsp], %%r9</code> loads the newly allocated stack pointer to <em><code>%r9</code></em> register and then finally it is being loaded to <em><code>%rsp</code></em> register.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">stackSize</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="c1">// some dummy local variable
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="kt">int</span> <span class="n">x</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;func() called&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">     <span class="c1">// why not return from here ??
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="c1">// we will check this point in the next section
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="c1">// allocate 1 MB memory on heap
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="c1">// we will use for the child thread to use it as stack
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="kt">char</span> <span class="o">*</span> <span class="n">heapMemory</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">stackSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="c1">// get the highest address of the allocated memory area
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="c1">// that will be initial stack top for the child thread
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="kt">uint64_t</span> <span class="n">Stack</span> <span class="o">=</span> <span class="kt">uint64_t</span><span class="p">(</span><span class="n">heapMemory</span> <span class="o">+</span> <span class="n">stackSize</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Initial Stack top addr = &#34;</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)(</span><span class="n">Stack</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="kt">uint64_t</span> <span class="n">fptr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">func</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">          <span class="c1">// store function pointer to %r8
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="c1">// jmp or call instruction will use it to jump
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="s">&#34;movq %[_func], %%r8</span><span class="se">\n\t</span><span class="s">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">          <span class="c1">// store input stack address to %r9
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="s">&#34;movq %[_rsp], %%r9</span><span class="se">\n\t</span><span class="s">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">          <span class="c1">// Now load the actual %rsp
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="s">&#34;movq %%r9, %%rsp</span><span class="se">\n\t</span><span class="s">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">          <span class="c1">// then jump to the value stored in r8 -&gt; func
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="c1">// We can use call instruction also
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>          <span class="c1">// callq *%%r8
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">          <span class="s">&#34;jmp *%%r8 </span><span class="se">\n\t</span><span class="s">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">          <span class="cm">/* Output variable section (Empty)*/</span>
+</span></span><span class="line"><span class="cl">          <span class="o">:</span>
+</span></span><span class="line"><span class="cl">          <span class="cm">/* Input variable section */</span>
+</span></span><span class="line"><span class="cl">          <span class="o">:</span><span class="p">[</span><span class="n">_func</span><span class="p">]</span> <span class="s">&#34;m&#34;</span> <span class="p">(</span><span class="n">fptr</span><span class="p">)</span> <span class="p">,</span> <span class="p">[</span><span class="n">_rsp</span><span class="p">]</span> <span class="s">&#34;m&#34;</span> <span class="p">(</span><span class="n">Stack</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">          <span class="cm">/* cloberred register list : see below */</span>
+</span></span><span class="line"><span class="cl">          <span class="o">:</span><span class="s">&#34;r8&#34;</span><span class="p">,</span><span class="s">&#34;r9&#34;</span>
+</span></span><span class="line"><span class="cl">     <span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="cm">/**clobbered list: =&gt; The compiler avoids using a register in this list 
+</span></span></span><span class="line"><span class="cl"><span class="cm">      * as an input or output operand, or using it to store 
+</span></span></span><span class="line"><span class="cl"><span class="cm">      * another value when the assembly code is executed.   */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="cm">/*control will not reach here, due a problem in our code
+</span></span></span><span class="line"><span class="cl"><span class="cm">     we will fix it in the next section */</span>
+</span></span><span class="line"><span class="cl">     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;Main again!&#34;</span> <span class="o">&lt;&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">     <span class="k">delete</span><span class="p">[]</span> <span class="n">heapMemory</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The instruction <code>movq %[_rsp], %%r9</code> loads the newly allocated stack pointer to <em><code>%r9</code></em> register and then finally it is being loaded to <em><code>%rsp</code></em> register.</p>
 <p>We can verify the new stack address using gdb:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">print</span><span class="o">/</span><span class="n">x</span> <span class="n">Stack</span>
-<span class="err">$</span><span class="mi">2</span> <span class="o">=</span> <span class="mh">0x7ffff7fd1010</span>
-
-<span class="nl">func</span><span class="p">:</span>
-
-<span class="o">=&gt;</span><span class="mh">0x0000555555554a4a</span>  <span class="n">func</span><span class="p">()</span><span class="o">+</span><span class="mi">0</span>  <span class="n">push</span>   <span class="o">%</span><span class="n">rbp</span>
-  <span class="mh">0x0000555555554a4b</span>  <span class="n">func</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span>  <span class="n">mov</span>    <span class="o">%</span><span class="n">rsp</span><span class="p">,</span><span class="o">%</span><span class="n">rbp</span>
-  <span class="mh">0x0000555555554a4e</span>  <span class="n">func</span><span class="p">()</span><span class="o">+</span><span class="mi">4</span>  <span class="n">sub</span>    <span class="err">$</span><span class="mh">0x30</span><span class="p">,</span><span class="o">%</span><span class="n">rsp</span>
-
-<span class="c1">// At this point GDB output
-</span><span class="c1"></span>
-<span class="n">func</span> <span class="p">()</span> <span class="n">at</span> <span class="n">first</span><span class="p">.</span><span class="nl">cpp</span><span class="p">:</span><span class="mi">5</span>
-<span class="mi">5</span>   <span class="kt">void</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">print</span> <span class="err">$</span><span class="n">rsp</span>
-<span class="err">$</span><span class="mi">3</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="mh">0x7ffff7fd1010</span>
-</code></pre></div><p>The <code>jmp</code> instruction loads the <code>%rip</code> register with the next instruction address, which is in this case is the start address of <code>G</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">print</span><span class="o">/</span><span class="n">x</span> <span class="n">Stack</span>
+</span></span><span class="line"><span class="cl"><span class="err">$</span><span class="mi">2</span> <span class="o">=</span> <span class="mh">0x7ffff7fd1010</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">func</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">=&gt;</span><span class="mh">0x0000555555554a4a</span>  <span class="n">func</span><span class="p">()</span><span class="o">+</span><span class="mi">0</span>  <span class="n">push</span>   <span class="o">%</span><span class="n">rbp</span>
+</span></span><span class="line"><span class="cl">  <span class="mh">0x0000555555554a4b</span>  <span class="n">func</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span>  <span class="n">mov</span>    <span class="o">%</span><span class="n">rsp</span><span class="p">,</span><span class="o">%</span><span class="n">rbp</span>
+</span></span><span class="line"><span class="cl">  <span class="mh">0x0000555555554a4e</span>  <span class="n">func</span><span class="p">()</span><span class="o">+</span><span class="mi">4</span>  <span class="n">sub</span>    <span class="err">$</span><span class="mh">0x30</span><span class="p">,</span><span class="o">%</span><span class="n">rsp</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// At this point GDB output
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="n">func</span> <span class="p">()</span> <span class="n">at</span> <span class="n">first</span><span class="p">.</span><span class="nl">cpp</span><span class="p">:</span><span class="mi">5</span>
+</span></span><span class="line"><span class="cl"><span class="mi">5</span>   <span class="kt">void</span> <span class="n">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">print</span> <span class="err">$</span><span class="n">rsp</span>
+</span></span><span class="line"><span class="cl"><span class="err">$</span><span class="mi">3</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="mh">0x7ffff7fd1010</span>
+</span></span></code></pre></div><p>The <code>jmp</code> instruction loads the <code>%rip</code> register with the next instruction address, which is in this case is the start address of <code>G</code>.</p>
 <p>Once the <code>jmp *%%r8</code> instruction is executed, CPU starts executing the instructions of <code>G</code> and uses the newly allocated stack area. We just spawned a <em><strong><code>child thread</code></strong></em> !!.</p>
 <p>Here is the output:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Initial</span> <span class="n">Stack</span> <span class="n">top</span> <span class="n">addr</span> <span class="o">=</span> <span class="mh">0x7ffff7fd1010</span>
-<span class="n">func</span><span class="p">()</span> <span class="n">called</span>
-</code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">Initial</span> <span class="n">Stack</span> <span class="n">top</span> <span class="n">addr</span> <span class="o">=</span> <span class="mh">0x7ffff7fd1010</span>
+</span></span><span class="line"><span class="cl"><span class="n">func</span><span class="p">()</span> <span class="n">called</span>
+</span></span></code></pre></div><hr>
 <p>We did not address the issue of returning to the main function till now and <code>exit(0)</code> is used in the <code>func</code> function. You may try to change the <code>exit(0)</code> to <code>return</code>, but the program will crash.</p>
 <hr>
 <p>It is obvious by now that the above program is not following the usual method of calling a function, where it is possible to arrive at the start of pending instruction of <code>main</code> when control returns from function <code>func</code>. In this case, are manually calling <code>jmp</code> instruction but did not remember the return address inside <code>main</code>.</p>
@@ -424,47 +431,47 @@
 <p><em>Call and Ret instruction when calling a function from another function</em></p>
 <p>When the compiler uses these two instructions? We will see below with the help of a simple program and its associated assembly.</p>
 <p>Let&rsquo;s suppose we are inside <code>main</code> and about to call <code>func</code> directly using <code>func()</code>.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-</span><span class="cp"></span><span class="kt">void</span> <span class="nf">func</span><span class="p">()</span> <span class="p">{</span>
-    <span class="kt">int</span> <span class="n">x</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span> 
-    <span class="k">return</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">func</span><span class="p">();</span>
-<span class="p">}</span>
-</code></pre></div><p>The compiler in <em><strong>x86_64</strong></em> architecture will emit the following instructions for <em><code>main</code></em> function.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">   <span class="mh">0x0000000000000f59</span> <span class="o">&lt;+</span><span class="mi">0</span><span class="o">&gt;:</span> <span class="n">push</span>   <span class="o">%</span><span class="n">rbp</span>
-   <span class="mh">0x0000000000000f5a</span> <span class="o">&lt;+</span><span class="mi">1</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="o">%</span><span class="n">rsp</span><span class="p">,</span><span class="o">%</span><span class="n">rbp</span>
-   <span class="mh">0x0000000000000f5d</span> <span class="o">&lt;+</span><span class="mi">4</span><span class="o">&gt;:</span> <span class="n">callq</span>  <span class="mh">0xe4a</span> <span class="o">&lt;</span><span class="n">func</span><span class="p">()</span><span class="o">&gt;</span>
-   <span class="mh">0x0000000000000f62</span> <span class="o">&lt;+</span><span class="mi">9</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="err">$</span><span class="mh">0x0</span><span class="p">,</span><span class="o">%</span><span class="n">eax</span>
-   <span class="mh">0x0000000000000f67</span> <span class="o">&lt;+</span><span class="mi">14</span><span class="o">&gt;:</span>    <span class="n">pop</span>    <span class="o">%</span><span class="n">rbp</span>
-   <span class="mh">0x0000000000000f68</span> <span class="o">&lt;+</span><span class="mi">15</span><span class="o">&gt;:</span>    <span class="n">retq</span>
-</code></pre></div><p>Notice the <code>callq</code> instruction makes the instruction pointer jumps to <em><code>func()</code></em>. It is the <code>64</code> bit version of the <code>call</code> instruction. But the <code>call</code> instruction involves two implicit steps. First, the return address (for this function) is pushed, and then the actual jump to the required function location/address.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp">     <span class="c1">// the return address is pushed onto the stack and 
-</span><span class="c1"></span>     <span class="n">push</span> <span class="n">ret_address</span>  <span class="c1">// ret_address -&gt; 0x0000000000000f62
-</span><span class="c1"></span>     <span class="c1">// Assume that the value of %rsp at this point is 0xAB
-</span><span class="c1"></span>     <span class="n">jmp</span> <span class="n">func</span>
-</code></pre></div><p>The callee function is going to use the stack after completion of the above two steps. When the func() almost completes its execution, the <code>CPU</code> will make sure that the stack pointer is restored (<code>%rsp</code> becomes <code>0xAB</code>, this is done using <code>leaveq</code> instruction, check more <a href="https://stackoverflow.com/questions/29790175/assembly-x86-leave-instruction">here</a>).</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">void</span> <span class="nf">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">x</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">func</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The compiler in <em><strong>x86_64</strong></em> architecture will emit the following instructions for <em><code>main</code></em> function.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">   <span class="mh">0x0000000000000f59</span> <span class="o">&lt;+</span><span class="mi">0</span><span class="o">&gt;:</span> <span class="n">push</span>   <span class="o">%</span><span class="n">rbp</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x0000000000000f5a</span> <span class="o">&lt;+</span><span class="mi">1</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="o">%</span><span class="n">rsp</span><span class="p">,</span><span class="o">%</span><span class="n">rbp</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x0000000000000f5d</span> <span class="o">&lt;+</span><span class="mi">4</span><span class="o">&gt;:</span> <span class="n">callq</span>  <span class="mh">0xe4a</span> <span class="o">&lt;</span><span class="n">func</span><span class="p">()</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x0000000000000f62</span> <span class="o">&lt;+</span><span class="mi">9</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="err">$</span><span class="mh">0x0</span><span class="p">,</span><span class="o">%</span><span class="n">eax</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x0000000000000f67</span> <span class="o">&lt;+</span><span class="mi">14</span><span class="o">&gt;:</span>    <span class="n">pop</span>    <span class="o">%</span><span class="n">rbp</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x0000000000000f68</span> <span class="o">&lt;+</span><span class="mi">15</span><span class="o">&gt;:</span>    <span class="n">retq</span>
+</span></span></code></pre></div><p>Notice the <code>callq</code> instruction makes the instruction pointer jumps to <em><code>func()</code></em>. It is the <code>64</code> bit version of the <code>call</code> instruction. But the <code>call</code> instruction involves two implicit steps. First, the return address (for this function) is pushed, and then the actual jump to the required function location/address.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl">     <span class="c1">// the return address is pushed onto the stack and 
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="n">push</span> <span class="n">ret_address</span>  <span class="c1">// ret_address -&gt; 0x0000000000000f62
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="c1">// Assume that the value of %rsp at this point is 0xAB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="n">jmp</span> <span class="n">func</span>
+</span></span></code></pre></div><p>The callee function is going to use the stack after completion of the above two steps. When the func() almost completes its execution, the <code>CPU</code> will make sure that the stack pointer is restored (<code>%rsp</code> becomes <code>0xAB</code>, this is done using <code>leaveq</code> instruction, check more <a href="https://stackoverflow.com/questions/29790175/assembly-x86-leave-instruction">here</a>).</p>
 <p>Lets see the dissassembly of <em><code>func()</code></em> also:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">&gt;&gt;&gt;</span> <span class="n">disassemble</span> <span class="n">func</span>
-<span class="n">Dump</span> <span class="n">of</span> <span class="n">assembler</span> <span class="n">code</span> <span class="k">for</span> <span class="n">function</span> <span class="n">func</span><span class="p">()</span><span class="o">:</span>
-   <span class="mh">0x00000000000007aa</span> <span class="o">&lt;+</span><span class="mi">0</span><span class="o">&gt;:</span> <span class="n">push</span>   <span class="o">%</span><span class="n">rbp</span>
-   <span class="mh">0x00000000000007ab</span> <span class="o">&lt;+</span><span class="mi">1</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="o">%</span><span class="n">rsp</span><span class="p">,</span><span class="o">%</span><span class="n">rbp</span>
-   <span class="mh">0x00000000000007ae</span> <span class="o">&lt;+</span><span class="mi">4</span><span class="o">&gt;:</span> <span class="n">sub</span>    <span class="err">$</span><span class="mh">0x30</span><span class="p">,</span><span class="o">%</span><span class="n">rsp</span>
-   <span class="mh">0x00000000000007b2</span> <span class="o">&lt;+</span><span class="mi">8</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="o">%</span><span class="nl">fs</span><span class="p">:</span><span class="mh">0x28</span><span class="p">,</span><span class="o">%</span><span class="n">rax</span>
-   <span class="mh">0x00000000000007bb</span> <span class="o">&lt;+</span><span class="mi">17</span><span class="o">&gt;:</span>    <span class="n">mov</span>    <span class="o">%</span><span class="n">rax</span><span class="p">,</span><span class="o">-</span><span class="mh">0x8</span><span class="p">(</span><span class="o">%</span><span class="n">rbp</span><span class="p">)</span>
-   <span class="mh">0x00000000000007bf</span> <span class="o">&lt;+</span><span class="mi">21</span><span class="o">&gt;:</span>    <span class="n">xor</span>    <span class="o">%</span><span class="n">eax</span><span class="p">,</span><span class="o">%</span><span class="n">eax</span>
-   <span class="mh">0x00000000000007c1</span> <span class="o">&lt;+</span><span class="mi">23</span><span class="o">&gt;:</span>    <span class="n">nop</span>
-   <span class="mh">0x00000000000007c2</span> <span class="o">&lt;+</span><span class="mi">24</span><span class="o">&gt;:</span>    <span class="n">mov</span>    <span class="o">-</span><span class="mh">0x8</span><span class="p">(</span><span class="o">%</span><span class="n">rbp</span><span class="p">),</span><span class="o">%</span><span class="n">rax</span>
-   <span class="mh">0x00000000000007c6</span> <span class="o">&lt;+</span><span class="mi">28</span><span class="o">&gt;:</span>    <span class="n">xor</span>    <span class="o">%</span><span class="nl">fs</span><span class="p">:</span><span class="mh">0x28</span><span class="p">,</span><span class="o">%</span><span class="n">rax</span>
-   <span class="mh">0x00000000000007cf</span> <span class="o">&lt;+</span><span class="mi">37</span><span class="o">&gt;:</span>    <span class="n">je</span>     <span class="mh">0x7d6</span> <span class="o">&lt;</span><span class="n">func</span><span class="p">()</span><span class="o">+</span><span class="mi">44</span><span class="o">&gt;</span>
-   <span class="mh">0x00000000000007d1</span> <span class="o">&lt;+</span><span class="mi">39</span><span class="o">&gt;:</span>    <span class="n">callq</span>  <span class="mh">0x670</span> <span class="o">&lt;</span><span class="n">__stack_chk_fail</span><span class="err">@</span><span class="n">plt</span><span class="o">&gt;</span>
-   <span class="mh">0x00000000000007d6</span> <span class="o">&lt;+</span><span class="mi">44</span><span class="o">&gt;:</span>    <span class="n">leaveq</span>
-
-   <span class="c1">// just before returning from the function func()
-</span><span class="c1"></span>   <span class="c1">// The value of %rsp at this point is also 0xAB
-</span><span class="c1"></span>   <span class="mh">0x00000000000007d7</span> <span class="o">&lt;+</span><span class="mi">45</span><span class="o">&gt;:</span>    <span class="n">retq</span>  <span class="c1">// retq is the 64 bit version of ret instruction
-</span></code></pre></div><p>The <em><code>ret</code></em> instruction pops the top of the stack and loads the value into the <em><code>%rip</code></em> register. After the <em><code>ret</code></em> instruction, the instruction pointer points to the return address that we pushed in <code>main</code> function before jumping to the <em><code>func()</code></em> function.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="o">&gt;&gt;&gt;</span> <span class="n">disassemble</span> <span class="n">func</span>
+</span></span><span class="line"><span class="cl"><span class="n">Dump</span> <span class="n">of</span> <span class="n">assembler</span> <span class="n">code</span> <span class="k">for</span> <span class="n">function</span> <span class="n">func</span><span class="p">()</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007aa</span> <span class="o">&lt;+</span><span class="mi">0</span><span class="o">&gt;:</span> <span class="n">push</span>   <span class="o">%</span><span class="n">rbp</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007ab</span> <span class="o">&lt;+</span><span class="mi">1</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="o">%</span><span class="n">rsp</span><span class="p">,</span><span class="o">%</span><span class="n">rbp</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007ae</span> <span class="o">&lt;+</span><span class="mi">4</span><span class="o">&gt;:</span> <span class="n">sub</span>    <span class="err">$</span><span class="mh">0x30</span><span class="p">,</span><span class="o">%</span><span class="n">rsp</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007b2</span> <span class="o">&lt;+</span><span class="mi">8</span><span class="o">&gt;:</span> <span class="n">mov</span>    <span class="o">%</span><span class="nl">fs</span><span class="p">:</span><span class="mh">0x28</span><span class="p">,</span><span class="o">%</span><span class="n">rax</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007bb</span> <span class="o">&lt;+</span><span class="mi">17</span><span class="o">&gt;:</span>    <span class="n">mov</span>    <span class="o">%</span><span class="n">rax</span><span class="p">,</span><span class="o">-</span><span class="mh">0x8</span><span class="p">(</span><span class="o">%</span><span class="n">rbp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007bf</span> <span class="o">&lt;+</span><span class="mi">21</span><span class="o">&gt;:</span>    <span class="n">xor</span>    <span class="o">%</span><span class="n">eax</span><span class="p">,</span><span class="o">%</span><span class="n">eax</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007c1</span> <span class="o">&lt;+</span><span class="mi">23</span><span class="o">&gt;:</span>    <span class="n">nop</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007c2</span> <span class="o">&lt;+</span><span class="mi">24</span><span class="o">&gt;:</span>    <span class="n">mov</span>    <span class="o">-</span><span class="mh">0x8</span><span class="p">(</span><span class="o">%</span><span class="n">rbp</span><span class="p">),</span><span class="o">%</span><span class="n">rax</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007c6</span> <span class="o">&lt;+</span><span class="mi">28</span><span class="o">&gt;:</span>    <span class="n">xor</span>    <span class="o">%</span><span class="nl">fs</span><span class="p">:</span><span class="mh">0x28</span><span class="p">,</span><span class="o">%</span><span class="n">rax</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007cf</span> <span class="o">&lt;+</span><span class="mi">37</span><span class="o">&gt;:</span>    <span class="n">je</span>     <span class="mh">0x7d6</span> <span class="o">&lt;</span><span class="n">func</span><span class="p">()</span><span class="o">+</span><span class="mi">44</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007d1</span> <span class="o">&lt;+</span><span class="mi">39</span><span class="o">&gt;:</span>    <span class="n">callq</span>  <span class="mh">0x670</span> <span class="o">&lt;</span><span class="n">__stack_chk_fail</span><span class="err">@</span><span class="n">plt</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">   <span class="mh">0x00000000000007d6</span> <span class="o">&lt;+</span><span class="mi">44</span><span class="o">&gt;:</span>    <span class="n">leaveq</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1">// just before returning from the function func()
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="c1">// The value of %rsp at this point is also 0xAB
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="mh">0x00000000000007d7</span> <span class="o">&lt;+</span><span class="mi">45</span><span class="o">&gt;:</span>    <span class="n">retq</span>  <span class="c1">// retq is the 64 bit version of ret instruction
+</span></span></span></code></pre></div><p>The <em><code>ret</code></em> instruction pops the top of the stack and loads the value into the <em><code>%rip</code></em> register. After the <em><code>ret</code></em> instruction, the instruction pointer points to the return address that we pushed in <code>main</code> function before jumping to the <em><code>func()</code></em> function.</p>
 <p>Therefore with the combination of <em><code>call</code></em> followed by <em><code>ret</code></em> instruction helps the <code>CPU</code> to arrive at the correct place after the callee function returns. In this example, we don’t switch stacks and remain in the same stack across function calls (with different offsets of course!). The following diagram represents the call and the ret instruction mechanism which saves and restores <em><code>%rsp</code></em> and <em><code>%rip</code></em>. registers.</p>
 <p><img src="/img/rsp3.jpg" alt="rsp3"></p>
 <!-- raw HTML omitted -->
@@ -504,134 +511,133 @@
 <!-- raw HTML omitted -->
 <p>Also, we have not properly defined the term <code>context</code>. We assumed that <em><code>%rsp</code></em> value is the only context required across function calls. Well, that is not the case for <strong><code>x86_64</code></strong> architecture. The <strong><code>x86_64</code></strong> has a set of registers which values must be preserved across function calls. In other words, a function <code>A</code> calling another function <code>B</code> can expect those registers to contain the same values after function <code>B</code> returns as they had when function <code>B</code> was called because the callee (<code>B</code>) saves and restore those values.</p>
 <p>Those registers are <em><code>%rsp</code></em>,<em><code>%rbp</code></em>, <em><code>%rbx</code></em>, <em><code>%r12</code></em>, <em><code>%r13</code></em>, <em><code>%r14</code></em> and <em><code>%r15</code></em>.  We will define a struct to contain all the above registers and will call it the context for our user thread.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nc">Context</span> <span class="p">{</span>
-    <span class="kt">uint64_t</span> <span class="n">rsp</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">r15</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">r14</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">r13</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">r12</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">rbp</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">rbx</span><span class="p">;</span>
-<span class="p">};</span>
-</code></pre></div><p>If we have two user-level threads, we need to have two <code>Context</code> variables to save their contexts.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nc">Context</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">rsp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">r15</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">r14</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">r13</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">r12</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">rbp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">rbx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span></code></pre></div><p>If we have two user-level threads, we need to have two <code>Context</code> variables to save their contexts.</p>
 <p>Let&rsquo;s code the entire discussion in two files, <code>main.cpp</code> and <code>ContextSwitch.S</code>. The objective of the program is to switch to a different user level thread from the main thread and then return to main safely.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cm">/* Ubuntu 18.04 x86_64 */</span>
-<span class="cm">/* Compiler gcc version 7.5.0 */</span>
-<span class="cm">/* Linux 5.6.2 */</span>
-<span class="cm">/* g++ -g -std=c++11 main.cpp ContextSwitch.S */</span>
-
-<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-</span><span class="cp"></span>
-<span class="c1">// 1 MB User Space Stack is enough for now
-</span><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="n">stackSize</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">;</span>
-
-<span class="c1">// A Set of Registers to Represent the Context of Thread
-</span><span class="c1">// These register values are presered across function calls
-</span><span class="c1">// in x86-64 ABI
-</span><span class="c1"></span><span class="k">struct</span> <span class="nc">Context</span> <span class="p">{</span>
-    <span class="kt">uint64_t</span> <span class="n">rsp</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">r15</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">r14</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">r13</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">r12</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">rbp</span><span class="p">;</span>
-    <span class="kt">uint64_t</span> <span class="n">rbx</span><span class="p">;</span>
-<span class="p">};</span>
-
-<span class="c1">// This is a function defined inside an Assembly file
-</span><span class="c1">// According to x86-64 ABI convention
-</span><span class="c1">// %rdi == curr and %rsi == next
-</span><span class="c1"></span><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="kt">void</span> <span class="n">ContextSwitch</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">curr</span><span class="p">,</span><span class="n">Context</span> <span class="o">*</span><span class="n">next</span><span class="p">);</span>
-
-<span class="c1">//Let&#39;s take only two Thread
-</span><span class="c1"></span><span class="k">static</span> <span class="k">struct</span> <span class="nc">Context</span> <span class="n">Main</span><span class="p">;</span>
-<span class="k">static</span> <span class="k">struct</span> <span class="nc">Context</span> <span class="n">Child</span><span class="p">;</span>
-
-<span class="c1">// Child thread is going to run this function
-</span><span class="c1"></span><span class="kt">void</span> <span class="nf">func</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[child] func completes its execution&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-    <span class="c1">// at present we have to write the following line
-</span><span class="c1"></span>    <span class="c1">// to return safely to main
-</span><span class="c1"></span>    <span class="n">ContextSwitch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Child</span><span class="p">,</span><span class="o">&amp;</span><span class="n">Main</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="c1">// this is main user thread
-</span><span class="c1"></span>
-    <span class="c1">// allocate stack memory for the Child Thread
-</span><span class="c1"></span>    <span class="kt">char</span> <span class="o">*</span> <span class="n">childStack</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">stackSize</span><span class="p">];</span>
-
-    <span class="c1">// the following line we have to do it manually
-</span><span class="c1"></span>    <span class="c1">// to pretend that before this main thread is scheduled
-</span><span class="c1"></span>    <span class="c1">// the Child thread was running (which is not actually)
-</span><span class="c1"></span>    <span class="c1">// that&#39;s why we have to manually save the func pointer
-</span><span class="c1"></span>    <span class="c1">// in the child thread&#39;s stack top
-</span><span class="c1"></span>
-    <span class="c1">// func() will be pointed by rip just before ContextSwitch() returns below
-</span><span class="c1"></span>    <span class="o">*</span><span class="p">(</span><span class="kt">uint64_t</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">childStack</span><span class="p">[</span><span class="n">stackSize</span> <span class="o">-</span>  <span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">func</span><span class="p">;</span>
-
-    <span class="c1">// when ContextSwitch tries to return from the call below,
-</span><span class="c1"></span>    <span class="c1">// rsp value will be loaded in rip due to ret call
-</span><span class="c1"></span>    <span class="c1">// which makes rip == addr of func()
-</span><span class="c1"></span>    <span class="n">Child</span><span class="p">.</span><span class="n">rsp</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">childStack</span><span class="p">[</span><span class="n">stackSize</span> <span class="o">-</span> <span class="mi">8</span><span class="p">];</span>
-
-    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[main] Child user thread context ready!&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-    
-    <span class="c1">// Just before the next call, the return address for main is pushed
-</span><span class="c1"></span>    <span class="c1">// onto the main thread&#39;s stack
-</span><span class="c1"></span>    <span class="n">ContextSwitch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Main</span><span class="p">,</span><span class="o">&amp;</span><span class="n">Child</span><span class="p">);</span>
-
-    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[main] scheduled again!&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
-    <span class="k">delete</span><span class="p">[]</span> <span class="n">childStack</span><span class="p">;</span>
-<span class="p">}</span>
-
-</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="nf">.globl</span> <span class="nv">ContextSwitch</span>    <span class="o">//</span> <span class="nv">make</span> <span class="nv">the</span> <span class="nv">Symbol</span> <span class="nv">ContextSwitch</span> <span class="nv">available</span> <span class="nv">in</span> <span class="nv">link</span> <span class="nv">time</span>
-<span class="nl">ContextSwitch:</span>
-
-        <span class="err">//</span> <span class="nf">According</span> <span class="nv">to</span> <span class="nv">x86_64</span> <span class="nv">calling</span> <span class="nv">convention</span>
-        <span class="err">//</span> <span class="nf">first</span> <span class="nv">argument</span> <span class="nv">to</span> <span class="nv">ContextSwitch</span> <span class="nv">is</span> <span class="nv">stored</span> <span class="nv">in</span> <span class="o">%</span><span class="nb">rdi</span>
-        <span class="err">//</span> <span class="nf">second</span> <span class="nv">argument</span> <span class="nv">to</span> <span class="nv">ContextSwitch</span> <span class="nv">is</span> <span class="nv">stored</span> <span class="nv">in</span> <span class="o">%</span><span class="nb">rsi</span>
-
-        <span class="err">//</span> <span class="nf">Therefore</span> <span class="o">%</span><span class="nb">rdi</span> <span class="o">-&gt;</span> <span class="nv">addrss</span> <span class="nv">of</span> <span class="nv">Main</span> <span class="nv">Conext</span> <span class="nv">struct</span>
-        <span class="err">//</span> <span class="nf">Use</span> <span class="nv">Offset</span> <span class="nv">addressing</span> <span class="nv">to</span> <span class="nv">store</span> <span class="nv">each</span> <span class="nv">registers</span> <span class="nv">to</span> <span class="nv">Main</span> <span class="nv">Context</span>
-        <span class="nf">movq</span>     <span class="o">%</span><span class="nb">rsp</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
-        <span class="nf">movq</span>     <span class="o">%</span><span class="nv">r15</span><span class="p">,</span> <span class="mh">0x08</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
-        <span class="nf">movq</span>     <span class="o">%</span><span class="nv">r14</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
-        <span class="nf">movq</span>     <span class="o">%</span><span class="nv">r13</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
-        <span class="nf">movq</span>     <span class="o">%</span><span class="nv">r12</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
-        <span class="nf">movq</span>     <span class="o">%</span><span class="nb">rbp</span><span class="p">,</span> <span class="mh">0x28</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
-        <span class="nf">movq</span>     <span class="o">%</span><span class="nb">rbx</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
-
-        <span class="err">//</span> <span class="nf">Therefore</span> <span class="o">%</span><span class="nb">rsi</span> <span class="o">-&gt;</span> <span class="nv">addrss</span> <span class="nv">of</span> <span class="nb">Ch</span><span class="nv">ild</span> <span class="nv">Conext</span> <span class="nv">struct</span>
-        <span class="err">//</span> <span class="nf">Use</span> <span class="nv">Offset</span> <span class="nv">addressing</span> <span class="nv">to</span> <span class="nv">load</span> <span class="nv">each</span> <span class="nv">registers</span> <span class="nv">from</span> <span class="nb">Ch</span><span class="nv">ild</span> <span class="nv">Context</span>
-        <span class="nf">movq</span>     <span class="mh">0x00</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nb">rsp</span>
-        <span class="nf">movq</span>     <span class="mh">0x08</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nv">r15</span>
-        <span class="nf">movq</span>     <span class="mh">0x10</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nv">r14</span>
-        <span class="nf">movq</span>     <span class="mh">0x18</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nv">r13</span>
-        <span class="nf">movq</span>     <span class="mh">0x20</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nv">r12</span>
-        <span class="nf">movq</span>     <span class="mh">0x28</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nb">rbp</span>
-        <span class="nf">movq</span>     <span class="mh">0x30</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nb">rbx</span>
-
-        <span class="nf">ret</span>      <span class="o">//</span> <span class="nv">rip</span> <span class="nv">is</span> <span class="nv">loaded</span> <span class="nv">with</span> <span class="p">[</span><span class="nb">rsp</span><span class="p">,</span><span class="nb">rsp</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]</span>
-</code></pre></div><p>The line <code>*(uint64_t *)&amp;childStack[stackSize -  8] = (uint64_t)func;</code> is important. The thread from which the child thread is created has to perform this operation to store the required function pointer on the callee thread&rsquo;s stack. Because the program control is not starting from the child thread.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cm">/* Ubuntu 18.04 x86_64 */</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* Compiler gcc version 7.5.0 */</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* Linux 5.6.2 */</span>
+</span></span><span class="line"><span class="cl"><span class="cm">/* g++ -g -std=c++11 main.cpp ContextSwitch.S */</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 1 MB User Space Stack is enough for now
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">const</span> <span class="kt">int</span> <span class="n">stackSize</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// A Set of Registers to Represent the Context of Thread
+</span></span></span><span class="line"><span class="cl"><span class="c1">// These register values are presered across function calls
+</span></span></span><span class="line"><span class="cl"><span class="c1">// in x86-64 ABI
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">Context</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">rsp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">r15</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">r14</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">r13</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">r12</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">rbp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint64_t</span> <span class="n">rbx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// This is a function defined inside an Assembly file
+</span></span></span><span class="line"><span class="cl"><span class="c1">// According to x86-64 ABI convention
+</span></span></span><span class="line"><span class="cl"><span class="c1">// %rdi == curr and %rsi == next
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="kt">void</span> <span class="n">ContextSwitch</span><span class="p">(</span><span class="n">Context</span> <span class="o">*</span><span class="n">curr</span><span class="p">,</span><span class="n">Context</span> <span class="o">*</span><span class="n">next</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//Let&#39;s take only two Thread
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">static</span> <span class="k">struct</span> <span class="nc">Context</span> <span class="n">Main</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">static</span> <span class="k">struct</span> <span class="nc">Context</span> <span class="n">Child</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Child thread is going to run this function
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">void</span> <span class="nf">func</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[child] func completes its execution&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// at present we have to write the following line
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// to return safely to main
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ContextSwitch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Child</span><span class="p">,</span><span class="o">&amp;</span><span class="n">Main</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// this is main user thread
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// allocate stack memory for the Child Thread
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">char</span> <span class="o">*</span> <span class="n">childStack</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">stackSize</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// the following line we have to do it manually
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// to pretend that before this main thread is scheduled
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// the Child thread was running (which is not actually)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// that&#39;s why we have to manually save the func pointer
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// in the child thread&#39;s stack top
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// func() will be pointed by rip just before ContextSwitch() returns below
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="o">*</span><span class="p">(</span><span class="kt">uint64_t</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">childStack</span><span class="p">[</span><span class="n">stackSize</span> <span class="o">-</span>  <span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">func</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// when ContextSwitch tries to return from the call below,
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// rsp value will be loaded in rip due to ret call
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// which makes rip == addr of func()
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">Child</span><span class="p">.</span><span class="n">rsp</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">childStack</span><span class="p">[</span><span class="n">stackSize</span> <span class="o">-</span> <span class="mi">8</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[main] Child user thread context ready!&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// Just before the next call, the return address for main is pushed
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="c1">// onto the main thread&#39;s stack
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">ContextSwitch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Main</span><span class="p">,</span><span class="o">&amp;</span><span class="n">Child</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">&#34;[main] scheduled again!&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">delete</span><span class="p">[]</span> <span class="n">childStack</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="nf">.globl</span> <span class="nv">ContextSwitch</span>    <span class="o">//</span> <span class="nv">make</span> <span class="nv">the</span> <span class="nv">Symbol</span> <span class="nv">ContextSwitch</span> <span class="nv">available</span> <span class="nv">in</span> <span class="nv">link</span> <span class="nv">time</span>
+</span></span><span class="line"><span class="cl"><span class="nl">ContextSwitch:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="err">//</span> <span class="nf">According</span> <span class="nv">to</span> <span class="nv">x86_64</span> <span class="nv">calling</span> <span class="nv">convention</span>
+</span></span><span class="line"><span class="cl">        <span class="err">//</span> <span class="nf">first</span> <span class="nv">argument</span> <span class="nv">to</span> <span class="nv">ContextSwitch</span> <span class="nv">is</span> <span class="nv">stored</span> <span class="nv">in</span> <span class="o">%</span><span class="nb">rdi</span>
+</span></span><span class="line"><span class="cl">        <span class="err">//</span> <span class="nf">second</span> <span class="nv">argument</span> <span class="nv">to</span> <span class="nv">ContextSwitch</span> <span class="nv">is</span> <span class="nv">stored</span> <span class="nv">in</span> <span class="o">%</span><span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="err">//</span> <span class="nf">Therefore</span> <span class="o">%</span><span class="nb">rdi</span> <span class="o">-&gt;</span> <span class="nv">addrss</span> <span class="nv">of</span> <span class="nv">Main</span> <span class="nv">Conext</span> <span class="nv">struct</span>
+</span></span><span class="line"><span class="cl">        <span class="err">//</span> <span class="nf">Use</span> <span class="nv">Offset</span> <span class="nv">addressing</span> <span class="nv">to</span> <span class="nv">store</span> <span class="nv">each</span> <span class="nv">registers</span> <span class="nv">to</span> <span class="nv">Main</span> <span class="nv">Context</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="o">%</span><span class="nb">rsp</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="o">%</span><span class="nv">r15</span><span class="p">,</span> <span class="mh">0x08</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="o">%</span><span class="nv">r14</span><span class="p">,</span> <span class="mh">0x10</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="o">%</span><span class="nv">r13</span><span class="p">,</span> <span class="mh">0x18</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="o">%</span><span class="nv">r12</span><span class="p">,</span> <span class="mh">0x20</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="o">%</span><span class="nb">rbp</span><span class="p">,</span> <span class="mh">0x28</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="o">%</span><span class="nb">rbx</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">(</span><span class="o">%</span><span class="nb">rdi</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="err">//</span> <span class="nf">Therefore</span> <span class="o">%</span><span class="nb">rsi</span> <span class="o">-&gt;</span> <span class="nv">addrss</span> <span class="nv">of</span> <span class="nb">Ch</span><span class="nv">ild</span> <span class="nv">Conext</span> <span class="nv">struct</span>
+</span></span><span class="line"><span class="cl">        <span class="err">//</span> <span class="nf">Use</span> <span class="nv">Offset</span> <span class="nv">addressing</span> <span class="nv">to</span> <span class="nv">load</span> <span class="nv">each</span> <span class="nv">registers</span> <span class="nv">from</span> <span class="nb">Ch</span><span class="nv">ild</span> <span class="nv">Context</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="mh">0x00</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nb">rsp</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="mh">0x08</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nv">r15</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="mh">0x10</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nv">r14</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="mh">0x18</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nv">r13</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="mh">0x20</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nv">r12</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="mh">0x28</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nb">rbp</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">movq</span>     <span class="mh">0x30</span><span class="p">(</span><span class="o">%</span><span class="nb">rsi</span><span class="p">),</span> <span class="o">%</span><span class="nb">rbx</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nf">ret</span>      <span class="o">//</span> <span class="nv">rip</span> <span class="nv">is</span> <span class="nv">loaded</span> <span class="nv">with</span> <span class="p">[</span><span class="nb">rsp</span><span class="p">,</span><span class="nb">rsp</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]</span>
+</span></span></code></pre></div><p>The line <code>*(uint64_t *)&amp;childStack[stackSize -  8] = (uint64_t)func;</code> is important. The thread from which the child thread is created has to perform this operation to store the required function pointer on the callee thread&rsquo;s stack. Because the program control is not starting from the child thread.</p>
 <p>Other details are trivial and commented. Output of the above code:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// Compile it
-</span><span class="c1"></span><span class="o">&gt;&gt;</span> <span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span> <span class="n">main</span><span class="p">.</span><span class="n">cpp</span> <span class="n">ContextSwitch</span><span class="p">.</span><span class="n">S</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">address</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">leak</span>
-
-<span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="n">Child</span> <span class="n">user</span> <span class="kr">thread</span> <span class="n">context</span> <span class="n">ready</span><span class="o">!</span>
-<span class="p">[</span><span class="n">child</span><span class="p">]</span> <span class="n">func</span> <span class="n">completes</span> <span class="n">its</span> <span class="n">execution</span>
-<span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="n">scheduled</span> <span class="n">again</span><span class="o">!</span>
-
-<span class="c1">// valgrind check for memory leak
-</span><span class="c1"></span><span class="o">&gt;&gt;</span> <span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span> <span class="n">main</span><span class="p">.</span><span class="n">cpp</span> <span class="n">ContextSwitch</span><span class="p">.</span><span class="n">S</span>
-<span class="o">&gt;&gt;</span> <span class="n">valgrind</span> <span class="o">--</span><span class="n">leak</span><span class="o">-</span><span class="n">check</span><span class="o">=</span><span class="n">full</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">leak</span><span class="o">-</span><span class="n">kinds</span><span class="o">=</span><span class="n">all</span> <span class="o">--</span><span class="n">track</span><span class="o">-</span><span class="n">origins</span><span class="o">=</span><span class="n">yes</span> <span class="p">.</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span>
-
-<span class="o">==</span><span class="mi">29667</span><span class="o">==</span> <span class="n">HEAP</span> <span class="nl">SUMMARY</span><span class="p">:</span>
-<span class="o">==</span><span class="mi">29667</span><span class="o">==</span>     <span class="n">in</span> <span class="n">use</span> <span class="n">at</span> <span class="nl">exit</span><span class="p">:</span> <span class="mi">0</span> <span class="n">bytes</span> <span class="n">in</span> <span class="mi">0</span> <span class="n">blocks</span>
-<span class="o">==</span><span class="mi">29667</span><span class="o">==</span>   <span class="n">total</span> <span class="n">heap</span> <span class="nl">usage</span><span class="p">:</span> <span class="mi">3</span> <span class="n">allocs</span><span class="p">,</span> <span class="mi">3</span> <span class="n">frees</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">122</span><span class="p">,</span><span class="mi">304</span> <span class="n">bytes</span> <span class="n">allocated</span>
-<span class="o">==</span><span class="mi">29667</span><span class="o">==</span> 
-<span class="o">==</span><span class="mi">29667</span><span class="o">==</span> <span class="n">All</span> <span class="n">heap</span> <span class="n">blocks</span> <span class="n">were</span> <span class="n">freed</span> <span class="o">--</span> <span class="n">no</span> <span class="n">leaks</span> <span class="n">are</span> <span class="n">possible</span>
-</code></pre></div><p>So, we completed the user Thread switching. But we have to explicitly write the <code>ContextSwitch(&amp;Child,&amp;Main)</code> in the callee thread. Context Switch is a low-level detail and the programmer who is using a user thread package need not worry about internal details. In the next blog in this series, we will discuss cleaning up this ContextSwitch mechanism and handle more than two threads.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// Compile it
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">&gt;&gt;</span> <span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span> <span class="n">main</span><span class="p">.</span><span class="n">cpp</span> <span class="n">ContextSwitch</span><span class="p">.</span><span class="n">S</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">address</span> <span class="o">-</span><span class="n">fsanitize</span><span class="o">=</span><span class="n">leak</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="n">Child</span> <span class="n">user</span> <span class="kr">thread</span> <span class="n">context</span> <span class="n">ready</span><span class="o">!</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">child</span><span class="p">]</span> <span class="n">func</span> <span class="n">completes</span> <span class="n">its</span> <span class="n">execution</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">main</span><span class="p">]</span> <span class="n">scheduled</span> <span class="n">again</span><span class="o">!</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// valgrind check for memory leak
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="o">&gt;&gt;</span> <span class="n">g</span><span class="o">++</span> <span class="o">-</span><span class="n">g</span> <span class="o">-</span><span class="n">std</span><span class="o">=</span><span class="n">c</span><span class="o">++</span><span class="mi">11</span> <span class="n">main</span><span class="p">.</span><span class="n">cpp</span> <span class="n">ContextSwitch</span><span class="p">.</span><span class="n">S</span>
+</span></span><span class="line"><span class="cl"><span class="o">&gt;&gt;</span> <span class="n">valgrind</span> <span class="o">--</span><span class="n">leak</span><span class="o">-</span><span class="n">check</span><span class="o">=</span><span class="n">full</span> <span class="o">--</span><span class="n">show</span><span class="o">-</span><span class="n">leak</span><span class="o">-</span><span class="n">kinds</span><span class="o">=</span><span class="n">all</span> <span class="o">--</span><span class="n">track</span><span class="o">-</span><span class="n">origins</span><span class="o">=</span><span class="n">yes</span> <span class="p">.</span><span class="o">/</span><span class="n">a</span><span class="p">.</span><span class="n">out</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">==</span><span class="mi">29667</span><span class="o">==</span> <span class="n">HEAP</span> <span class="nl">SUMMARY</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span><span class="mi">29667</span><span class="o">==</span>     <span class="n">in</span> <span class="n">use</span> <span class="n">at</span> <span class="nl">exit</span><span class="p">:</span> <span class="mi">0</span> <span class="n">bytes</span> <span class="n">in</span> <span class="mi">0</span> <span class="n">blocks</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span><span class="mi">29667</span><span class="o">==</span>   <span class="n">total</span> <span class="n">heap</span> <span class="nl">usage</span><span class="p">:</span> <span class="mi">3</span> <span class="n">allocs</span><span class="p">,</span> <span class="mi">3</span> <span class="n">frees</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">122</span><span class="p">,</span><span class="mi">304</span> <span class="n">bytes</span> <span class="n">allocated</span>
+</span></span><span class="line"><span class="cl"><span class="o">==</span><span class="mi">29667</span><span class="o">==</span> 
+</span></span><span class="line"><span class="cl"><span class="o">==</span><span class="mi">29667</span><span class="o">==</span> <span class="n">All</span> <span class="n">heap</span> <span class="n">blocks</span> <span class="n">were</span> <span class="n">freed</span> <span class="o">--</span> <span class="n">no</span> <span class="n">leaks</span> <span class="n">are</span> <span class="n">possible</span>
+</span></span></code></pre></div><p>So, we completed the user Thread switching. But we have to explicitly write the <code>ContextSwitch(&amp;Child,&amp;Main)</code> in the callee thread. Context Switch is a low-level detail and the programmer who is using a user thread package need not worry about internal details. In the next blog in this series, we will discuss cleaning up this ContextSwitch mechanism and handle more than two threads.</p>
 <p>** There is very interesting paper on <a href="http://web.stanford.edu/class/cs240/readings/cooperative_task_management.pdf">cooperative_task_management</a>. I am currenly reading this paper to know alternate design option for the Step 5 of our project. See you in the next blog!.</p>
 
 
@@ -754,12 +760,15 @@
       
 <footer>
   <div class="container">
+    
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <ul class="list-inline text-center footer-links">
           
               <li>
-                <a href="mailto:debashishdekanits2015@gmail.com" title="Email me">
+		
+		  <a href="mailto:debashishdekanits2015@gmail.com" title="Email me">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
@@ -767,7 +776,9 @@
                 </a>
               </li>
               <li>
-                <a href="https://www.facebook.com/username" title="Facebook">
+		
+		  <a href="https://www.facebook.com/username" title="Facebook">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-facebook fa-stack-1x fa-inverse"></i>
@@ -775,7 +786,9 @@
                 </a>
               </li>
               <li>
-                <a href="https://github.com/ddeka0" title="GitHub">
+		
+		  <a href="https://github.com/ddeka0" title="GitHub">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-github fa-stack-1x fa-inverse"></i>
@@ -783,7 +796,9 @@
                 </a>
               </li>
               <li>
-                <a href="https://linkedin.com/in/deka-debashish" title="LinkedIn">
+		
+		  <a href="https://linkedin.com/in/deka-debashish" title="LinkedIn">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
@@ -791,7 +806,9 @@
                 </a>
               </li>
               <li>
-                <a href="https://stackoverflow.com/users/4044050/debashish" title="StackOverflow">
+		
+		  <a href="https://stackoverflow.com/users/4044050/debashish" title="StackOverflow">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
@@ -799,7 +816,9 @@
                 </a>
               </li>
               <li>
-                <a href="https://www.youtube.com/channel/UCXhljYypuZkCoo__Y0fNz9w" title="Youtube">
+		
+		  <a href="https://www.youtube.com/channel/UCXhljYypuZkCoo__Y0fNz9w" title="Youtube">
+		
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     <i class="fab fa-youtube fa-stack-1x fa-inverse"></i>
@@ -817,7 +836,7 @@
 
           &nbsp;&bull;&nbsp;&copy;
           
-            2021
+            2024
           
 
           
@@ -827,21 +846,21 @@
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.88.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          <a href="https://gohugo.io">Hugo v0.126.1</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
       </div>
     </div>
   </div>
-</footer><script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.js" integrity="sha384-K3vbOmF2BtaVai+Qk37uypf7VrgBubhQreNQe9aGsz9lB63dIFiQVlJbr92dw2Lx" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/contrib/auto-render.min.js" integrity="sha384-kmZOZB5ObwgQnS/DuDg6TScgOiWWBiVt0plIRkZCmE6rDZGrEOQeHM5PcHi+nyqe" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
 <script src="https://ddeka0.github.io/js/main.js"></script>
 <script src="https://ddeka0.github.io/js/highlight.min.js"></script>
 <script> hljs.initHighlightingOnLoad(); </script>
-<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script> renderMathInElement(document.body); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ddeka0.github.io/js/load-photoswipe.js"></script>
 
 

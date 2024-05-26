@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ubuntu on Ethereal</title>
+    <title>Ubuntu on Ethereal</title>
     <link>https://ddeka0.github.io/tags/ubuntu/</link>
-    <description>Recent content in ubuntu on Ethereal</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in Ubuntu on Ethereal</description>
+    <generator>Hugo</generator>
+    <language>en</language>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
-    <lastBuildDate>Sat, 30 Nov 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/tags/ubuntu/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 30 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://ddeka0.github.io/tags/ubuntu/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Ubuntu Customization</title>
       <link>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</link>
-      <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</guid>
-      <description>How about customizing your new ubuntu installation? Default installation of Ubuntu 18.04 does not come with few things like, a good terminal theme, vim 8, touch-pad gestures for laptop, power management etc. This blog will explore some of the cool tools that we can use to make ubuntu a more convenient for developers.
-First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh makes your terminal work really simplified.</description>
+      <description>How about customizing your new ubuntu installation? Default installation of Ubuntu 18.04 does not come with few things like, a good terminal theme, vim 8, touch-pad gestures for laptop, power management etc. This blog will explore some of the cool tools that we can use to make ubuntu a more convenient for developers.&#xA;First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh makes your terminal work really simplified.</description>
     </item>
-    
   </channel>
 </rss>

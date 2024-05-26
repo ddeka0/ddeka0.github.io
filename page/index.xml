@@ -4,19 +4,17 @@
     <title>Pages on Ethereal</title>
     <link>https://ddeka0.github.io/page/</link>
     <description>Recent content in Pages on Ethereal</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
+    <language>en</language>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
-    <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster><atom:link href="https://ddeka0.github.io/page/index.xml" rel="self" type="application/rss+xml" />
+    <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
+    <atom:link href="https://ddeka0.github.io/page/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About me</title>
       <link>https://ddeka0.github.io/page/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/page/about/</guid>
-      <description>My name is Debashish Deka. I have the following qualities:
- I love to code for long hours. I like to travel to natural places with my friends.  What else do you need?
-my history To be honest, I&amp;rsquo;m having some trouble remembering right now, so why don&amp;rsquo;t you just watch my movie and it will answer all your questions.</description>
+      <description>Hi, I am Debashish.&#xA;I love to code for long hours. I like to travel to natural places with my friends. What else do you need?&#xA;my history To be honest, I&amp;rsquo;m having some trouble remembering right now, so why don&amp;rsquo;t you just watch my movie and it will answer all your questions.</description>
     </item>
-    
   </channel>
 </rss>

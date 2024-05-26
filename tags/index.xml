@@ -4,108 +4,102 @@
     <title>Tags on Ethereal</title>
     <link>https://ddeka0.github.io/tags/</link>
     <description>Recent content in Tags on Ethereal</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
+    <language>en</language>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
-    <lastBuildDate>Sun, 29 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 May 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://ddeka0.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>c&#43;&#43;</title>
+      <title>C&#43;&#43;</title>
       <link>https://ddeka0.github.io/tags/c&#43;&#43;/</link>
-      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/c&#43;&#43;/</guid>
       <description></description>
     </item>
-    
+    <item>
+      <title>Leveldb</title>
+      <link>https://ddeka0.github.io/tags/leveldb/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/tags/leveldb/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>LSMTree</title>
+      <link>https://ddeka0.github.io/tags/lsmtree/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/tags/lsmtree/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Macro</title>
       <link>https://ddeka0.github.io/tags/macro/</link>
-      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/macro/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>Meta Programming</title>
       <link>https://ddeka0.github.io/tags/meta-programming/</link>
-      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/meta-programming/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>template</title>
+      <title>Template</title>
       <link>https://ddeka0.github.io/tags/template/</link>
-      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/template/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>assembly</title>
+      <title>Assembly</title>
       <link>https://ddeka0.github.io/tags/assembly/</link>
-      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/assembly/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>thread</title>
+      <title>Thread</title>
       <link>https://ddeka0.github.io/tags/thread/</link>
-      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/thread/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>x86_64</title>
+      <title>X86_64</title>
       <link>https://ddeka0.github.io/tags/x86_64/</link>
-      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/x86_64/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>3gpp</title>
       <link>https://ddeka0.github.io/tags/3gpp/</link>
-      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/3gpp/</guid>
       <description></description>
     </item>
-    
     <item>
       <title>MM</title>
       <link>https://ddeka0.github.io/tags/mm/</link>
-      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/mm/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>ubuntu</title>
+      <title>Ubuntu</title>
       <link>https://ddeka0.github.io/tags/ubuntu/</link>
-      <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/ubuntu/</guid>
       <description></description>
     </item>
-    
     <item>
-      <title>zsh</title>
+      <title>Zsh</title>
       <link>https://ddeka0.github.io/tags/zsh/</link>
-      <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/tags/zsh/</guid>
       <description></description>
     </item>
-    
   </channel>
 </rss>

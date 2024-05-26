@@ -4,18 +4,18 @@
     <title>MM on Ethereal</title>
     <link>https://ddeka0.github.io/tags/mm/</link>
     <description>Recent content in MM on Ethereal</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
+    <language>en</language>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
-    <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/tags/mm/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://ddeka0.github.io/tags/mm/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Cellular Network</title>
       <link>https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/</link>
-      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/</guid>
       <description>Let us assume you are in conversation with someone on your phone while traveling on a train. Currently, your phone is connected to a nearby cellular tower that provides a wireless connection to your phone and transfers voice signals to the other end of the phone call. When you move far away from your current connected cellular tower, do you think the phone will still be connected to the current cellular tower?</description>
     </item>
-    
   </channel>
 </rss>

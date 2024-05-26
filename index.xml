@@ -4,81 +4,67 @@
     <title>Ethereal</title>
     <link>https://ddeka0.github.io/</link>
     <description>Recent content on Ethereal</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
+    <language>en</language>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
-    <lastBuildDate>Sun, 29 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 May 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://ddeka0.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Deep Dive into the LSM Tree #1</title>
+      <link>https://ddeka0.github.io/post/2024-05-25-leveldb-code-reading/</link>
+      <pubDate>Sat, 25 May 2024 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <guid>https://ddeka0.github.io/post/2024-05-25-leveldb-code-reading/</guid>
+      <description>I&amp;rsquo;ve been reading about LSM trees for a while but never really dived into any implementation. I thought of starting with an existing codebase. RocksDB came to mind since I&amp;rsquo;ve used it before at work, but its codebase is quite large. So, I decided to start with LevelDB, which has a much smaller codebase and, at first glance, looks more straightforward to understand.&#xA;Before I delve into LevelDB, here&amp;rsquo;s a brief introduction to LSM trees.</description>
+    </item>
     <item>
       <title>Practical Template Meta Programming (Part-1)</title>
       <link>https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/</link>
-      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Sun, 29 Aug 2021 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2021-08-29-static-reflection-using-templates-and-macros/</guid>
-      <description>In this blog we will implement a generic Print(user defined struct) utility function capable of printing all the public members of any user defined POD struct. For example:
-// We would like to Print MessageA // which has messageB as member item struct messageA { int a; messageB b; }; // messageB has messageD as member struct messageB { int p; messageD d[3]; }; // struct layout struct messageD { double t; int v; }; and we expect the output as shown below after executing the following program:</description>
+      <description>In this blog we will implement a generic Print(user defined struct) utility function capable of printing all the public members of any user defined POD struct. For example:&#xA;// We would like to Print MessageA // which has messageB as member item struct messageA { int a; messageB b; }; // messageB has messageD as member struct messageB { int p; messageD d[3]; }; // struct layout struct messageD { double t; int v; }; and we expect the output as shown below after executing the following program:</description>
     </item>
-    
     <item>
       <title>Tour of Registers</title>
       <link>https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/</link>
-      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/</guid>
       <description>This is a series of blogs exploring the implementation of User Space Thread in C++. A user-space thread is managed by the userspace code with very minimal involvement of the Kernel APIs. This blog will not discuss the pros and cons of User Space Thread, nevertheless, you might want to check this. I believe that knowing the machinery of User Space Thread implementation will help us to understand the new Coroutine feature released in C++20 (Talk from cppcon 2015).</description>
     </item>
-    
     <item>
       <title>Cpp chronicle #2</title>
       <link>https://ddeka0.github.io/post/2020-12-26-cpp-chronicle-2/</link>
-      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Sat, 26 Dec 2020 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2020-12-26-cpp-chronicle-2/</guid>
-      <description>Template is a great C++ language feature, with which we can make classes and functions operate on generic types without actually writing code for all possible valid types.
-For example std::vector container in C++11 is a template class. We can use it for with different value types, with the following syntax.
-std::vector&amp;lt;int&amp;gt; v1; std::vector&amp;lt;char&amp;gt; v2; Here, v1 can hold values of type int and v2 can hold values of type char.</description>
+      <description>Template is a great C++ language feature, with which we can make classes and functions operate on generic types without actually writing code for all possible valid types.&#xA;For example std::vector container in C++11 is a template class. We can use it for with different value types, with the following syntax.&#xA;std::vector&amp;lt;int&amp;gt; v1; std::vector&amp;lt;char&amp;gt; v2; Here, v1 can hold values of type int and v2 can hold values of type char.</description>
     </item>
-    
     <item>
       <title>Cpp chronicle #1</title>
       <link>https://ddeka0.github.io/post/2020-07-23-cpp-chronicle-1/</link>
-      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Sat, 22 Aug 2020 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2020-07-23-cpp-chronicle-1/</guid>
-      <description>What are some of the problems with the std::thread ?
-The following program will cause core dump.
-/* gcc version 10.0.1 20200314 (experimental) (GCC) Ubuntu 18.04.5 LTS x86_64 GNU/Linux 5.6.2 */ #include &amp;lt;thread&amp;gt;#include &amp;lt;iostream&amp;gt; int main() { std::thread t{[]() { std::cout &amp;lt;&amp;lt;&amp;#34;Hello from thread t&amp;#34;&amp;lt;&amp;lt;std::endl; }}; } The reason for the core dump is std::terminate() called by the destructor of the std::thread object t.
-// from std::thread header ~thread() { if (joinable()) std::terminate(); } The default terminate handler calls abort.</description>
+      <description>What are some of the problems with the std::thread ?&#xA;The following program will cause core dump.&#xA;/* gcc version 10.0.1 20200314 (experimental) (GCC) Ubuntu 18.04.5 LTS x86_64 GNU/Linux 5.6.2 */ #include &amp;lt;thread&amp;gt; #include &amp;lt;iostream&amp;gt; int main() { std::thread t{[]() { std::cout &amp;lt;&amp;lt;&amp;#34;Hello from thread t&amp;#34;&amp;lt;&amp;lt;std::endl; }}; } The reason for the core dump is std::terminate() called by the destructor of the std::thread object t.&#xA;// from std::thread header ~thread() { if (joinable()) std::terminate(); } The default terminate handler calls abort.</description>
     </item>
-    
     <item>
       <title>Cellular Network</title>
       <link>https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/</link>
-      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2020-05-21-cellular-network-part-1/</guid>
       <description>Let us assume you are in conversation with someone on your phone while traveling on a train. Currently, your phone is connected to a nearby cellular tower that provides a wireless connection to your phone and transfers voice signals to the other end of the phone call. When you move far away from your current connected cellular tower, do you think the phone will still be connected to the current cellular tower?</description>
     </item>
-    
     <item>
       <title>Ubuntu Customization</title>
       <link>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</link>
-      <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Sat, 30 Nov 2019 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2019-11-30-ubuntu-customization/</guid>
-      <description>How about customizing your new ubuntu installation? Default installation of Ubuntu 18.04 does not come with few things like, a good terminal theme, vim 8, touch-pad gestures for laptop, power management etc. This blog will explore some of the cool tools that we can use to make ubuntu a more convenient for developers.
-First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh makes your terminal work really simplified.</description>
+      <description>How about customizing your new ubuntu installation? Default installation of Ubuntu 18.04 does not come with few things like, a good terminal theme, vim 8, touch-pad gestures for laptop, power management etc. This blog will explore some of the cool tools that we can use to make ubuntu a more convenient for developers.&#xA;First lets install zsh + oh my zsh terminal: The combination of zsh and ohmyzsh makes your terminal work really simplified.</description>
     </item>
-    
     <item>
       <title>About me</title>
       <link>https://ddeka0.github.io/page/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/page/about/</guid>
-      <description>My name is Debashish Deka. I have the following qualities:
- I love to code for long hours. I like to travel to natural places with my friends.  What else do you need?
-my history To be honest, I&amp;rsquo;m having some trouble remembering right now, so why don&amp;rsquo;t you just watch my movie and it will answer all your questions.</description>
+      <description>Hi, I am Debashish.&#xA;I love to code for long hours. I like to travel to natural places with my friends. What else do you need?&#xA;my history To be honest, I&amp;rsquo;m having some trouble remembering right now, so why don&amp;rsquo;t you just watch my movie and it will answer all your questions.</description>
     </item>
-    
   </channel>
 </rss>

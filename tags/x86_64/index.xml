@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>x86_64 on Ethereal</title>
+    <title>X86_64 on Ethereal</title>
     <link>https://ddeka0.github.io/tags/x86_64/</link>
-    <description>Recent content in x86_64 on Ethereal</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <description>Recent content in X86_64 on Ethereal</description>
+    <generator>Hugo</generator>
+    <language>en</language>
     <managingEditor>debashishdekanits2015@gmail.com (Debashish Deka)</managingEditor>
     <webMaster>debashishdekanits2015@gmail.com (Debashish Deka)</webMaster>
-    <lastBuildDate>Fri, 15 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://ddeka0.github.io/tags/x86_64/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Jan 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://ddeka0.github.io/tags/x86_64/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Tour of Registers</title>
       <link>https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/</link>
-      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate>
-      <author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
+      <pubDate>Fri, 15 Jan 2021 00:00:00 +0000</pubDate><author>debashishdekanits2015@gmail.com (Debashish Deka)</author>
       <guid>https://ddeka0.github.io/post/2021-01-16-tour-of-registers-1/</guid>
       <description>This is a series of blogs exploring the implementation of User Space Thread in C++. A user-space thread is managed by the userspace code with very minimal involvement of the Kernel APIs. This blog will not discuss the pros and cons of User Space Thread, nevertheless, you might want to check this. I believe that knowing the machinery of User Space Thread implementation will help us to understand the new Coroutine feature released in C++20 (Talk from cppcon 2015).</description>
     </item>
-    
   </channel>
 </rss>
