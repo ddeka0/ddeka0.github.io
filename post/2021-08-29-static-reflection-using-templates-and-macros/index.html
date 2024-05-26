@@ -61,9 +61,9 @@
     "name" : "Debashish Deka"
   },
   "headline": "Practical Template Meta Programming (Part-1)",
-  "description" : "In this blog we will implement a generic Print(user defined struct) utility function capable of printing all the public members of any user defined POD struct. For example:\n\/\/ We would like to Print MessageA \/\/ which has messageB as member item struct messageA { int a; messageB b; }; \/\/ messageB has messageD as member struct messageB { int p; messageD d[3]; }; \/\/ struct layout struct messageD { double t; int v; }; and we expect the output as shown below after executing the following program:",
+  "description" : "In this blog, we will implement a generic Print(user defined struct) utility function capable of printing all the public members of any user-defined POD struct. For example:\n\/\/ We would like to Print MessageA \/\/ which has messageB as member item struct messageA { int a; messageB b; }; \/\/ messageB has messageD as member struct messageB { int p; messageD d[3]; }; \/\/ struct layout struct messageD { double t; int v; }; and we expect the output as shown below after executing the following program:",
   "inLanguage" : "en",
-  "wordCount":  2302 ,
+  "wordCount":  2304 ,
   "datePublished" : "2021-08-29T00:00:00\u002b00:00",
   "dateModified" : "2021-08-29T00:00:00\u002b00:00",
   "image" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
@@ -251,7 +251,7 @@
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;11&nbsp;minutes
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2302&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2304&nbsp;words
   
   
     
@@ -277,7 +277,7 @@
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        <p>In this blog we will implement a generic <code>Print(user defined struct)</code> utility function capable of printing all the public members of any user defined <a href="https://en.cppreference.com/w/cpp/named_req/PODType">POD</a> struct. For example:</p>
+        <p>In this blog, we will implement a generic <code>Print(user defined struct)</code> utility function capable of printing all the public members of any user-defined <a href="https://en.cppreference.com/w/cpp/named_req/PODType">POD</a> struct. For example:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="c1">// We would like to Print MessageA
 </span></span></span><span class="line"><span class="cl"><span class="c1">// which has messageB as member item
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">struct</span> <span class="nc">messageA</span> <span class="p">{</span>
@@ -323,7 +323,7 @@
 </span></span><span class="line"><span class="cl">      <span class="nl">t</span> <span class="p">:</span> <span class="mf">1.4</span>
 </span></span><span class="line"><span class="cl">      <span class="nl">v</span> <span class="p">:</span> <span class="mi">14</span>
 </span></span><span class="line"><span class="cl">  <span class="p">]</span>
-</span></span></code></pre></div><p><code>C++</code> does not support such utility function by default. In the remaining sections of this blog, we will explore the <code>Print</code> function w.r.t to use of Templates.</p>
+</span></span></code></pre></div><p>C++ does not support such a utility function by default. In the remaining sections of this blog, we will explore the <code>Print</code> function with respect to the use of templates.</p>
 <hr>
 <p>How do we usualy print the <a href="https://en.cppreference.com/w/cpp/language/access#Public_member_access">public members</a> of an <code>object</code> in <code>C++</code> ? We simply write code to print each members:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">obj</span><span class="p">.</span><span class="n">member1</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>

@@ -63,7 +63,7 @@
   "headline": "A Deep Dive into the LSM Tree #1",
   "description" : "I\u0026rsquo;ve been reading about LSM trees for a while but never really dived into any implementation. I thought of starting with an existing codebase. RocksDB came to mind since I\u0026rsquo;ve used it before at work, but its codebase is quite large. So, I decided to start with LevelDB, which has a much smaller codebase and, at first glance, looks more straightforward to understand.\nBefore I delve into LevelDB, here\u0026rsquo;s a brief introduction to LSM trees.",
   "inLanguage" : "en",
-  "wordCount":  4637 ,
+  "wordCount":  4703 ,
   "datePublished" : "2024-05-25T00:00:00\u002b00:00",
   "dateModified" : "2024-05-25T00:00:00\u002b00:00",
   "image" : "https:\/\/ddeka0.github.io\/img\/avatar-icon.png",
@@ -248,10 +248,10 @@
   <i class="fas fa-calendar"></i>&nbsp;Posted on May 25, 2024
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;22&nbsp;minutes
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;23&nbsp;minutes
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;4637&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;4703&nbsp;words
   
   
     
@@ -547,6 +547,9 @@
 </span></span><span class="line"><span class="cl">❯ ./leveldbutil dump /tmp/testdb-8/000006.log
 </span></span></code></pre></div><p>We can see that there are only two key-value pairs in <code>000005.ldb</code>, and <code>000006.log</code> is empty, as expected, since no new keys were inserted.</p>
 <p>Additionally, you can try running the second program multiple times and observe that each time, the old log file is deleted and a new log file is created.</p>
+<blockquote>
+<p>I was curious to know why it is required to create a new log file every time LevelDB recovers. However, it seems there is an <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/include/leveldb/options.h#L138">option</a> to <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/db/db_impl.cc#L471">reuse</a> existing log files as well. This option, <code>reuse_logs</code>, is defaulted to <code>false</code>, which is why we are seeing new log files every time LevelDB recovers and the old log files are converted to SST files.</p>
+</blockquote>
 <p>Let&rsquo;s fill the memtable by adding 12 new keys. You can achieve this by modifying the <code>num_keys</code> variable in your <code>example1.cpp</code> code to 12.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❯ ./a.out
 </span></span><span class="line"><span class="cl">137757878200128 Recover : 384 Recovery done
@@ -791,7 +794,8 @@
 </span></span><span class="line"><span class="cl">130164466403136 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/000009.log
 </span></span><span class="line"><span class="cl">130164466403136 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/MANIFEST-000007
 </span></span><span class="line"><span class="cl">130164466403136 RemoveObsoleteFiles : 289 Deleted /tmp/testdb-8/000008.log
-</span></span><span class="line"><span class="cl">130164466403136 Open : 1556 Current version status: --- level 0 ---
+</span></span><span class="line"><span class="cl">130164466403136 Open : 1556 Current version status: 
+</span></span><span class="line"><span class="cl">--- level 0 ---
 </span></span><span class="line"><span class="cl"> 10:256[&#39;bcct&#39;:7:1 -&gt; &#39;zlzj&#39;:8:1]
 </span></span><span class="line"><span class="cl"> 5:145[&#39;bifd&#39;:1:1 -&gt; &#39;kwhg&#39;:2:1]
 </span></span><span class="line"><span class="cl"> 11:212[&#39;brfd&#39;:10:1 -&gt; &#39;zmqx&#39;:14:1]
@@ -810,7 +814,7 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">134426232211264 Put : 1505 Put - key: phrv
 </span></span><span class="line"><span class="cl">134426232211264 MakeRoomForWrite : 1343 mem_-&gt;ApproximateMemoryUsage() = 520
 </span></span><span class="line"><span class="cl">134426232211264 MakeRoomForWrite : 1379 There is no more space in the current 1st mem table. Creating a new log file for the 2nd memtable with log number : 4
-</span></span></code></pre></div><p>As observed, when the memtable memory usage reaches 520, it stops adding keys and starts preparing to flush to disk. This is because we have set the write_buffer_size to 512. It&rsquo;s worth noting that the memtable is an in-memory data structure that uses a <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/db/skiplist.h#L180C70-L180C78">skiplist</a>, which in turn uses an <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/util/arena.cc#L38">arena</a> memory allocator. Therefore, some additional memory is used to maintain the skiplist data structure, beyond the target write_buffer_size.</p>
+</span></span></code></pre></div><p>As observed, when the memtable memory usage reaches 520, it stops adding keys to that memtable and starts preparing to flush to disk. This is because we have set the <code>write_buffer_size</code> to 512. It&rsquo;s worth noting that the memtable is an in-memory data structure that uses a <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/db/skiplist.h#L180C70-L180C78">skiplist</a>, which in turn uses an <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/util/arena.cc#L38">arena</a> memory allocator. Therefore, some additional memory is used to maintain the skiplist data structure, contributing to the total memory usage within the target <code>write_buffer_size</code>.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">options</span><span class="p">.</span><span class="n">write_buffer_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">;</span>
 </span></span></code></pre></div><p>I also had to reduce the <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/util/arena.cc#L9">block size</a> in the <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/util/arena.cc#L38">arena</a> allocator to <code>128</code> bytes. This was necessary because the default value of <code>4k</code> block size is too large and would fit a lot of key-value pairs, which would not be suitable for our examples. Additionally, it also requires that the <code>write_buffer_size</code> be at least 5k bytes with <code>4k</code> arena block size. Setting <code>write_buffer_size</code> to <code>512</code> bytes while keeping arena block size defaulted to <code>4k</code> makes LevelDB go into an unexpected loop, with the memtable always full even without adding any keys.</p>
 <p>Please check the <a href="https://github.com/google/leveldb/blob/068d5ee1a3ac40dabd00d211d5013af44be55bea/include/leveldb/options.h#L75">comment</a> about <code>write_buffer_size</code> to know more about it.</p>
@@ -881,7 +885,7 @@
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="n">status</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>In this function, every application thread that attempts key insertion becomes a writer thread and pushes a writer object to the <code>writers_</code> deque. While one of the writers (say w1) is inside the critical section (<code>BuildBatchGroup</code>), other concurrent writers (say w2, w3, w4, &hellip;) will get stuck at the line <code>MutexLock l(&amp;mutex_);</code>. When w1 unlocks the mutex and initiates appending to the log and memtable, the writes waiting on the mutex will now have access to the <code>writers_</code> queue and push their write objects to it. However, these writers cannot proceed further due to the next while loop, as they are waiting for w1 to exit this function. W1 will notify the next writer (w2) at the front of the queue. At this point, w2 will enter the critical section and group multiple write batches with single records into a larger write batch containing multiple records or key-value pairs.</p>
-<p>So that&rsquo;s it for this entry of the LevelDB blog. In the next post, I will cover versions and delve into the details of compaction in LevelDB. For curious readers, <a href="https://groups.google.com/g/leveldb/c/2yrOsOneooY/m/oJq4UNDGXhgJ">here</a> is a brief description about versions.</p>
+<p>So that&rsquo;s it for this entry of the LevelDB blog. In the next post, I will cover read operation and versions. For curious readers, <a href="https://groups.google.com/g/leveldb/c/2yrOsOneooY/m/oJq4UNDGXhgJ">here</a> is a brief description about versions.</p>
 
 
         
